@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LinkWhisper vs LinkBoss: An Honest Comparison (2026)</title>
+  <meta name="description" content="Comparing LinkWhisper and LinkBoss? Here's the honest breakdown — features, pricing model, and who each tool is actually built for. Updated 2026.">
+
+  <!-- FAQPage Schema -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Is LinkWhisper better than LinkBoss?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "It depends on your priority. LinkWhisper uses embedding-based semantic AI and a flat annual license ($77/yr for one site) — no credits, unlimited use. LinkBoss uses a credit system (500 credits on Starter) and offers stronger bulk automation. For bloggers who want predictable pricing and suggestion quality, LinkWhisper is the better fit. For agencies needing to bulk-interlink hundreds of posts and comfortable with the credit model, LinkBoss has advantages."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What's the difference between LinkWhisper and LinkBoss?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The clearest difference is pricing model: LinkWhisper charges a flat annual license (unlimited use), while LinkBoss uses a credit system — each action consumes credits from your balance. In terms of features, LinkBoss offers stronger bulk automation (up to 1,000 posts at once), while LinkWhisper focuses on context-aware suggestions with a human review workflow."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does LinkWhisper use AI?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. LinkWhisper v2.7.0 (August 2025) uses embedding-based content understanding — not keyword matching. It reads the full context of your post and matches it against other posts by semantic similarity, suggesting links based on what content is actually about."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How much does LinkBoss cost?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "LinkBoss Starter is $50/year for one site with 500 credits. Pro is $350/year with more credits and more sites. Note: credits are consumed by actions — suggestions, link building, page analysis all draw from your balance. Some affiliate sites still show older pricing ($99/$199/$399) — always verify at linkboss.io."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does LinkBoss use credits?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. LinkBoss uses a credit system — every action (suggesting a link, building a link, analyzing a page) consumes credits from your plan balance. The Starter plan includes 500 credits. For sites with 200–500 posts, this means the credit balance depletes faster than many users expect. LinkWhisper has no credit system — it's a flat annual license."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does LinkBoss support Shopify?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "LinkBoss added Shopify support in Q4 2025 via their 'Any CMS beta' — but it requires manual copy-paste and is marked with an asterisk on their own FAQ. LinkWhisper has had native, full Shopify support since 2020. For Shopify users, LinkWhisper's support is more mature."
+        }
+      }
+    ]
+  }
+  </script>
+
+  <!-- Retargeting pixel placeholder — activate when Boss confirms ad platform -->
+  <!--
+    For Google Ads: paste Google tag here
+    For Meta: paste Meta Pixel base code here
+    Then add per-page audience event:
+    gtag('event', 'comparison_view', { competitor: 'linkboss' });
+    fbq('trackCustom', 'ComparisonView', { competitor: 'linkboss' });
+  -->
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --lw-blue: #2563eb;
+      --lw-blue-dark: #1d4ed8;
+      --lw-green: #16a34a;
+      --lw-red: #dc2626;
+      --lw-amber: #d97706;
+      --lw-gray-50: #f9fafb;
+      --lw-gray-100: #f3f4f6;
+      --lw-gray-200: #e5e7eb;
+      --lw-gray-400: #9ca3af;
+      --lw-gray-600: #4b5563;
+      --lw-gray-700: #374151;
+      --lw-gray-900: #111827;
+      --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --max-w: 860px;
+    }
+    body { font-family: var(--font-sans); color: var(--lw-gray-700); line-height: 1.7; background: #fff; }
+    .container { max-width: var(--max-w); margin: 0 auto; padding: 0 1.25rem; }
+
+    /* Hero */
+    .hero { background: var(--lw-gray-50); border-bottom: 1px solid var(--lw-gray-200); padding: 4rem 0 3rem; }
+    .hero .tag { display: inline-block; background: var(--lw-blue); color: #fff; font-size: .75rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; padding: .25rem .75rem; border-radius: 4px; margin-bottom: 1.25rem; }
+    .hero h1 { font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 800; color: var(--lw-gray-900); line-height: 1.2; margin-bottom: 1rem; }
+    .hero .subhead { font-size: 1.15rem; color: var(--lw-gray-600); max-width: 680px; margin-bottom: 2rem; }
+    .cta-group { display: flex; flex-wrap: wrap; gap: .75rem; }
+    .btn { display: inline-block; padding: .75rem 1.5rem; border-radius: 6px; font-weight: 600; font-size: .95rem; text-decoration: none; transition: opacity .15s; }
+    .btn-primary { background: var(--lw-blue); color: #fff; }
+    .btn-primary:hover { opacity: .9; }
+    .btn-secondary { background: #fff; color: var(--lw-blue); border: 2px solid var(--lw-blue); }
+    .btn-secondary:hover { background: var(--lw-gray-50); }
+
+    /* TL;DR */
+    .tldr { background: #eff6ff; border-left: 4px solid var(--lw-blue); padding: 1.5rem; border-radius: 0 8px 8px 0; margin: 2.5rem 0; }
+    .tldr h2 { font-size: 1rem; font-weight: 700; color: var(--lw-blue); margin-bottom: .75rem; }
+    .tldr p { margin-bottom: .5rem; font-size: .95rem; }
+
+    /* Content */
+    .content { padding: 3rem 0; }
+    .section { margin-bottom: 3.5rem; }
+    .section h2 { font-size: 1.5rem; font-weight: 700; color: var(--lw-gray-900); margin-bottom: 1rem; }
+    .section h3 { font-size: 1.15rem; font-weight: 700; color: var(--lw-gray-900); margin: 1.5rem 0 .75rem; }
+    .section p { margin-bottom: 1rem; }
+    .section ul, .section ol { margin: .75rem 0 1rem 1.5rem; }
+    .section li { margin-bottom: .4rem; }
+
+    /* Warning callout */
+    .callout-warn { background: #fffbeb; border: 1px solid #fde68a; border-left: 4px solid var(--lw-amber); padding: 1.25rem 1.5rem; border-radius: 0 8px 8px 0; margin: 1.5rem 0; }
+    .callout-warn h3 { color: var(--lw-amber); font-size: 1rem; margin-bottom: .5rem; }
+
+    /* Blockquote */
+    blockquote { border-left: 3px solid var(--lw-gray-200); padding-left: 1.25rem; margin: 1.25rem 0; color: var(--lw-gray-600); font-style: italic; }
+
+    /* Tables */
+    .table-wrap { overflow-x: auto; margin: 1.5rem 0; }
+    table { width: 100%; border-collapse: collapse; font-size: .9rem; }
+    th { background: var(--lw-gray-100); font-weight: 700; color: var(--lw-gray-900); padding: .65rem 1rem; text-align: left; border: 1px solid var(--lw-gray-200); }
+    td { padding: .6rem 1rem; border: 1px solid var(--lw-gray-200); vertical-align: top; }
+    tr:nth-child(even) td { background: var(--lw-gray-50); }
+    .yes { color: var(--lw-green); font-weight: 600; }
+    .no { color: var(--lw-red); }
+    .warn { color: var(--lw-amber); }
+
+    /* Two-column CTA (for ILJ page) */
+    .two-col-cta { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin: 2rem 0; }
+    .two-col-cta .col { padding: 1.5rem; border-radius: 8px; }
+    .two-col-cta .col.them { background: var(--lw-gray-50); border: 1px solid var(--lw-gray-200); }
+    .two-col-cta .col.us { background: #eff6ff; border: 1px solid #bfdbfe; }
+    .two-col-cta h4 { font-size: .85rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; margin-bottom: .75rem; }
+    .two-col-cta .flow-step { font-size: .95rem; padding: .5rem 0; border-bottom: 1px solid var(--lw-gray-200); }
+    .two-col-cta .flow-step:last-child { border-bottom: none; }
+    @media (max-width: 600px) { .two-col-cta { grid-template-columns: 1fr; } }
+
+    /* CTA section */
+    .cta-section { background: var(--lw-gray-50); border: 1px solid var(--lw-gray-200); border-radius: 12px; padding: 2.5rem; text-align: center; margin: 3rem 0; }
+    .cta-section h2 { font-size: 1.5rem; margin-bottom: .75rem; }
+    .cta-section p { color: var(--lw-gray-600); margin-bottom: 1.5rem; }
+
+    /* FAQ */
+    .faq-item { border-bottom: 1px solid var(--lw-gray-200); padding: 1.25rem 0; }
+    .faq-item:last-child { border-bottom: none; }
+    .faq-q { font-weight: 700; color: var(--lw-gray-900); margin-bottom: .5rem; }
+
+    /* Cross-links */
+    .cross-links { background: var(--lw-gray-50); border-radius: 8px; padding: 1.5rem; }
+    .cross-links h3 { font-size: 1rem; font-weight: 700; margin-bottom: 1rem; }
+    .cross-links ul { list-style: none; margin: 0; padding: 0; }
+    .cross-links li { padding: .3rem 0; }
+    .cross-links a { color: var(--lw-blue); text-decoration: none; }
+    .cross-links a:hover { text-decoration: underline; }
+
+    /* Footer */
+    footer { border-top: 1px solid var(--lw-gray-200); padding: 2rem 0; text-align: center; color: var(--lw-gray-400); font-size: .85rem; }
+  </style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="container">
+    <span class="tag">Comparison</span>
+    <h1>LinkWhisper vs LinkBoss: Which Internal Linking Plugin Is Right for Your Site?</h1>
+    <p class="subhead">An honest breakdown — features, pricing model, and who each tool is actually built for. Updated February 2026.</p>
+    <div class="cta-group">
+      <a href="https://linkwhisper.com/check?utm_source=compare-linkboss&utm_medium=comparison&utm_campaign=vs-pages" class="btn btn-secondary">Run a Free Link Audit First →</a>
+      <a href="https://linkwhisper.com/pricing?utm_source=compare-linkboss&utm_medium=comparison&utm_campaign=vs-pages" class="btn btn-primary">Start with LinkWhisper →</a>
+    </div>
+  </div>
+</div>
+
+<div class="content">
+  <div class="container">
+
+    <div class="tldr">
+      <h2>TL;DR</h2>
+      <p><strong>LinkBoss</strong> is built for volume. Bulk interlinking, AI silos, 1,000 links at once. If you're running an enterprise content team and want automation at scale, it's a real option.</p>
+      <p><strong>LinkWhisper</strong> is built for WordPress bloggers who want suggestions that actually make sense — context-aware AI that reads your content, not keyword matching. Flat pricing, no credits, and a free tool that shows you where your site stands before you touch anything.</p>
+      <p><strong>Before you decide: these tools price very differently.</strong> LinkWhisper is a flat annual license ($77/year — use it as much as you want). LinkBoss uses a credit system. That distinction matters more than the sticker price.</p>
+    </div>
+
+    <!-- SECTION 1 -->
+    <div class="section">
+      <h2>Why people are comparing these two tools</h2>
+      <p>You searched "link whisper vs linkboss" for a reason. Maybe LinkBoss's marketing found you. Maybe someone told you LinkWhisper uses an "obsolete algorithm." Maybe you just want to know what your money is buying.</p>
+      <p>Fair. Here's the honest version.</p>
+      <p>Both tools help WordPress site owners build internal links faster. Beyond that, they're going after different users with different needs.</p>
+      <p>LinkBoss wants to be your bulk-linking machine. Big volumes, AI silos, agency workflows. LinkWhisper wants to be the smartest suggestion engine in your WordPress dashboard — one that reads your posts and actually understands what they're about.</p>
+    </div>
+
+    <!-- SECTION 2: PRICING -->
+    <div class="section">
+      <div class="callout-warn">
+        <h3>⚠️ Read this before you compare</h3>
+        <p><strong>LinkWhisper pricing:</strong> Flat annual license. $77/year for one site. Use it as much as you want — no credits, no meter.</p>
+        <p style="margin-top:.75rem"><strong>LinkBoss pricing:</strong> Credit-based. The Starter plan is $50/year — but that plan comes with 500 credits. Each action (suggesting, building, analyzing) consumes credits.</p>
+        <p style="margin-top:.75rem">Here's the real-world math: if you have 400 posts and want a full-site analysis, your 500 credits don't last long. One Reddit user: <em>"I didn't understand their credit system. I can afford the plan but will have 400 posts soon."</em></p>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th></th><th>LinkWhisper</th><th>LinkBoss</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Pricing model</strong></td><td>Flat annual license</td><td>Credit-based</td></tr>
+            <tr><td><strong>Starting price</strong></td><td>$77/yr (1 site)</td><td>$50/yr (1 site)</td></tr>
+            <tr><td><strong>Unlimited use?</strong></td><td class="yes">✅ Yes</td><td class="no">❌ Credits consumed per action</td></tr>
+            <tr><td><strong>Starter credits</strong></td><td>N/A</td><td>500 credits</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p><strong>Bottom line:</strong> LinkBoss's $50 sticker price is lower, but "lower price" and "lower cost" aren't always the same thing. For a site actively building links across 300+ posts, LinkWhisper's flat model is more predictable.</p>
+    </div>
+
+    <!-- SECTION 3: AT A GLANCE -->
+    <div class="section">
+      <h2>At-a-glance comparison</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th></th><th>LinkWhisper</th><th>LinkBoss</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Starting price</strong></td><td>$77/yr</td><td>$50/yr</td></tr>
+            <tr><td><strong>Pricing model</strong></td><td>Flat license — unlimited use</td><td>Credit-based — 500 credits on Starter</td></tr>
+            <tr><td><strong>Free trial / free tool</strong></td><td class="yes">✅ Free Internal Link Health Checker</td><td class="no">❌ No free standalone tool</td></tr>
+            <tr><td><strong>Link suggestion method</strong></td><td>Embedding-based AI</td><td>NLP + keyword + "Big Data"</td></tr>
+            <tr><td><strong>Bulk interlinking</strong></td><td>By category/batch</td><td>Up to 1,000 at once</td></tr>
+            <tr><td><strong>WordPress-native</strong></td><td class="yes">✅</td><td class="yes">✅ WP-first</td></tr>
+            <tr><td><strong>Shopify support</strong></td><td class="yes">✅ Native, full support</td><td class="warn">⚠️ Added Q4 2025 — beta only; manual copy-paste ("Any CMS beta")</td></tr>
+            <tr><td><strong>Orphan page finder</strong></td><td class="yes">✅</td><td>Dashboard only</td></tr>
+            <tr><td><strong>Auto silo building</strong></td><td>Manual control</td><td>Automated silo creation</td></tr>
+            <tr><td><strong>Setup complexity</strong></td><td>Low</td><td>Medium</td></tr>
+            <tr><td><strong>Ideal user</strong></td><td>Blogger, 50–500 posts</td><td>Agency / power user, 200+ posts</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p><em>LinkBoss pricing from linkboss.io, Feb 2026. Verify before purchasing.</em></p>
+      <p><strong>On Shopify:</strong> A third-party review site (survivezeal.com, July 2025) told readers: <em>"If you're looking for an Internal linking Plugin that also works for Shopify, check out Link Whisper for Shopify."</em> At that time, LinkBoss was WordPress-only. They've since added a beta Shopify version — but it's asterisked on their own FAQ, requires manual copy-paste, and is still under "Any CMS beta." <!-- LW Shopify launch year: 2020 — confirmed via Shopify App Store listing --> The difference between "native, full support" and "beta copy-paste" is meaningful for any serious Shopify store.</p>
+    </div>
+
+    <!-- SECTION 4: ALGORITHM -->
+    <div class="section">
+      <h2>The algorithm question (let's address this directly)</h2>
+      <p>LinkBoss says LinkWhisper uses an "obsolete keyword matching algorithm." Here's what's actually true:</p>
+      <p><strong>LinkWhisper v2.7.0 moved from keyword matching to embedding-based content understanding.</strong> It no longer matches links by shared keywords — it reads the full content of your post, generates an understanding of the topic, and matches it against other posts by semantic similarity.</p>
+      <p>What that means in practice: if you write a post about "best running shoes for flat feet," LinkWhisper suggests links to posts about foot strike mechanics, arch support, or running form — not just posts that contain the phrase "running shoes." It understands what the post is <em>about</em>.</p>
+      <p>That's not keyword matching. That's reading comprehension.</p>
+      <p>LinkBoss uses a combination of NLP, AI, and "Big Data." Their suggestions can be good. But the claim that LinkWhisper is stuck in the past hasn't been accurate since v2.7.0 shipped.</p>
+    </div>
+
+    <!-- SECTION 5: FEATURES -->
+    <div class="section">
+      <h2>Feature-by-feature breakdown</h2>
+
+      <h3>Internal link suggestions</h3>
+      <p><strong>LinkWhisper:</strong> When you write or edit a post, LW scans your existing content and surfaces suggestions directly in the WordPress editor — based on content understanding, not keyword overlap. You click to accept or skip.</p>
+      <p><strong>LinkBoss:</strong> Offers both manual suggestions and bulk automation — up to 1,000 posts at once.</p>
+      <p><em>Bottom line:</em> Thoughtful, one-at-a-time suggestions → LinkWhisper. Bulk automation at scale → LinkBoss has the edge.</p>
+
+      <h3>Orphan page and site health reporting</h3>
+      <p><strong>LinkWhisper:</strong> Surfaces orphaned pages in the core dashboard. Free users can also use the standalone <a href="https://linkwhisper.com/check?utm_source=compare-linkboss&utm_medium=comparison&utm_campaign=vs-pages">Internal Link Health Checker</a> — paste your sitemap URL, get a free scan in 60 seconds. No plugin install needed.</p>
+      <p><strong>LinkBoss:</strong> Site report dashboard inside the plugin. No equivalent free standalone tool.</p>
+
+      <h3>Pricing</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Plan</th><th>LinkWhisper</th><th>LinkBoss</th></tr></thead>
+          <tbody>
+            <tr><td>1 site</td><td>$77/yr</td><td>$50/yr (500 credits)</td></tr>
+            <tr><td>3 sites</td><td>$117/yr</td><td>—</td></tr>
+            <tr><td>10 sites</td><td>$167/yr</td><td>—</td></tr>
+            <tr><td>Agency/Pro</td><td>—</td><td>$350/yr</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p><em>Note: Some affiliate sites show old LinkBoss pricing ($99/$199/$399). Always verify at linkboss.io — these numbers are from Feb 2026.</em></p>
+
+      <h3>Bulk interlinking</h3>
+      <p><strong>LinkBoss:</strong> Up to 1,000 posts at once. Genuine differentiator for large sites needing fast coverage.</p>
+      <p><strong>LinkWhisper:</strong> Batch linking by category — not 1,000 at once, but designed for reviewing suggestions, not automating them.</p>
+
+      <h3>Silo building</h3>
+      <p><strong>LinkBoss:</strong> Auto silo creation — maps content architecture and builds topical clusters automatically.</p>
+      <p><strong>LinkWhisper:</strong> Manual architecture control, with LW surfacing suggestions that support your structure. Automated silos are convenient but opinionated.</p>
+    </div>
+
+    <!-- SECTION 6 & 7 -->
+    <div class="section">
+      <h2>What LinkBoss is better at</h2>
+      <ul>
+        <li><strong>Bulk interlinking at scale</strong> — 500+ posts interlinked quickly</li>
+        <li><strong>Automated silo creation</strong> — no manual architecture mapping needed</li>
+        <li><strong>Inbound link tools</strong> — dedicated inbound link management</li>
+        <li><strong>Anchor manager</strong> — explicit bulk anchor text control</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <h2>What LinkWhisper is better at</h2>
+      <ul>
+        <li><strong>Suggestion quality</strong> — embedding-based AI for niche sites</li>
+        <li><strong>Predictable pricing</strong> — $77/year flat, no credits</li>
+        <li><strong>Free diagnostic tool</strong> — check before you buy</li>
+        <li><strong>Simplicity</strong> — lower setup time, faster start</li>
+        <li><strong>Control</strong> — every link reviewed before it's added</li>
+        <li><strong>Shopify — mature support vs. LinkBoss's beta</strong></li>
+      </ul>
+    </div>
+
+    <!-- SECTION 8: WHO -->
+    <div class="section">
+      <h2>Who should choose which</h2>
+      <h3>Choose LinkWhisper if:</h3>
+      <ul>
+        <li>You run a WordPress blog or content site with 50–500 posts</li>
+        <li>You want link suggestions based on what your content is actually about</li>
+        <li>You care more about suggestion quality than bulk volume</li>
+        <li>You want a predictable annual cost with no credit metering</li>
+        <li>You want to audit your site's internal links before paying for anything</li>
+        <li>You run a Shopify store and want mature, native support</li>
+      </ul>
+      <h3>Choose LinkBoss if:</h3>
+      <ul>
+        <li>You're running an agency managing multiple large client sites</li>
+        <li>You need to bulk-interlink hundreds of posts quickly</li>
+        <li>You want automated silo creation</li>
+        <li>You've done the credit math and a plan fits your usage</li>
+        <li>Your primary pain is speed and scale, not suggestion accuracy</li>
+      </ul>
+    </div>
+
+    <!-- CTA section -->
+    <div class="cta-section">
+      <h2>Check your site first — free</h2>
+      <p>Before you pay for either tool, use the LinkWhisper Internal Link Health Checker. It's free, no account required, runs in 60 seconds. Paste your sitemap, get a score, see exactly which posts are orphaned, which are over-linked, and where the gaps are.</p>
+      <div class="cta-group" style="justify-content:center">
+        <a href="https://linkwhisper.com/check?utm_source=compare-linkboss&utm_medium=comparison&utm_campaign=vs-pages" class="btn btn-secondary">Check My Site Free →</a>
+        <a href="https://linkwhisper.com/pricing?utm_source=compare-linkboss&utm_medium=comparison&utm_campaign=vs-pages" class="btn btn-primary">Start with LinkWhisper — from $77/yr →</a>
+      </div>
+    </div>
+
+    <!-- FAQ -->
+    <div class="section">
+      <h2>Frequently asked questions</h2>
+      <div class="faq-item">
+        <div class="faq-q">Is LinkWhisper better than LinkBoss?</div>
+        <p>It depends on your priority. LinkWhisper uses embedding-based semantic AI and a flat annual license ($77/yr) — no credits, unlimited use. LinkBoss offers stronger bulk automation but uses a credit system. For bloggers wanting predictable pricing and suggestion quality, LinkWhisper wins. For agencies needing bulk volume, LinkBoss has advantages.</p>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">What's the difference between LinkWhisper and LinkBoss?</div>
+        <p>The clearest difference is pricing model: LinkWhisper charges a flat annual license; LinkBoss uses credits — each action consumes from your balance. Feature-wise, LinkBoss offers stronger bulk automation while LinkWhisper focuses on quality suggestions with human review.</p>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Does LinkWhisper use AI?</div>
+        <p>Yes. LinkWhisper v2.7.0 (August 2025) uses embedding-based content understanding — not keyword matching. It reads the full context of your post and matches by semantic similarity.</p>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">How much does LinkBoss cost?</div>
+        <p>LinkBoss Starter is $50/year (500 credits). Pro is $350/year. Always verify at linkboss.io — some affiliate sites still show older pricing.</p>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Does LinkBoss use credits?</div>
+        <p>Yes. Every action in LinkBoss consumes credits. The Starter plan includes 500 credits — which depletes quickly on sites with 200+ posts. LinkWhisper has no credit system.</p>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Does LinkBoss support Shopify?</div>
+        <p>LinkBoss added Shopify support in Q4 2025 via "Any CMS beta" — but it requires manual copy-paste and is asterisked on their own FAQ. LinkWhisper has native, full Shopify support. For serious Shopify users, LW's support is more mature.</p>
+      </div>
+    </div>
+
+    <!-- Cross-links -->
+    <div class="cross-links">
+      <h3>Also comparing before you decide?</h3>
+      <ul>
+        <li><a href="/link-whisper-vs-linksy/?utm_source
