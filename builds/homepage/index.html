@@ -1,0 +1,1544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Link Whisper — The Smarter Way to Build Internal Links for WordPress</title>
+  <meta name="description" content="Link Whisper scans your WordPress site, finds orphaned pages, and suggests links that actually make sense. 50,000+ sites. From $77/year." />
+  <style>
+    /* ===== RESET & BASE ===== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --lw-green: #3BB273;
+      --lw-green-dark: #2D9A5F;
+      --lw-blue: #1A6FB5;
+      --lw-blue-light: #EBF4FF;
+      --lw-dark: #1A1F2E;
+      --lw-gray: #64748B;
+      --lw-gray-light: #F8FAFC;
+      --lw-border: #E2E8F0;
+      --lw-text: #334155;
+      --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --radius: 12px;
+      --shadow: 0 4px 24px rgba(0,0,0,0.08);
+      --shadow-lg: 0 12px 40px rgba(0,0,0,0.12);
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font);
+      color: var(--lw-text);
+      line-height: 1.6;
+      background: #fff;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+
+    /* ===== TYPOGRAPHY ===== */
+    h1 { font-size: clamp(2rem, 5vw, 3.25rem); font-weight: 800; line-height: 1.15; color: var(--lw-dark); }
+    h2 { font-size: clamp(1.5rem, 3vw, 2.25rem); font-weight: 700; line-height: 1.25; color: var(--lw-dark); }
+    h3 { font-size: 1.2rem; font-weight: 600; color: var(--lw-dark); }
+    p { color: var(--lw-gray); line-height: 1.7; }
+
+    /* ===== LAYOUT ===== */
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+    .section { padding: 80px 0; }
+    .section--gray { background: var(--lw-gray-light); }
+    .section--dark { background: var(--lw-dark); color: #fff; }
+    .section-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--lw-green);
+      margin-bottom: 12px;
+    }
+    .text-center { text-align: center; }
+
+    /* ===== BUTTONS ===== */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 28px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: 2px solid transparent;
+      white-space: nowrap;
+    }
+    .btn-primary {
+      background: var(--lw-green);
+      color: #fff;
+    }
+    .btn-primary:hover { background: var(--lw-green-dark); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(59,178,115,0.35); }
+    .btn-secondary {
+      background: transparent;
+      color: var(--lw-dark);
+      border-color: var(--lw-border);
+    }
+    .btn-secondary:hover { border-color: var(--lw-green); color: var(--lw-green); }
+    .btn-lg { padding: 18px 36px; font-size: 1.05rem; }
+
+    /* ===== NAV ===== */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--lw-border);
+    }
+    .nav__inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 68px;
+    }
+    .nav__logo {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--lw-dark);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .nav__logo-icon {
+      width: 32px;
+      height: 32px;
+      background: var(--lw-green);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 1rem;
+    }
+    .nav__links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      list-style: none;
+    }
+    .nav__links a { font-size: 0.95rem; font-weight: 500; color: var(--lw-gray); transition: color 0.2s; }
+    .nav__links a:hover { color: var(--lw-dark); }
+    .nav__cta { display: flex; align-items: center; gap: 12px; }
+    @media (max-width: 768px) {
+      .nav__links { display: none; }
+    }
+
+    /* ===== HERO ===== */
+    .hero {
+      padding: 80px 0 60px;
+      text-align: center;
+    }
+    .hero__badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--lw-blue-light);
+      color: var(--lw-blue);
+      border-radius: 100px;
+      padding: 6px 16px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 24px;
+    }
+    .hero h1 { max-width: 760px; margin: 0 auto 20px; }
+    .hero__sub {
+      font-size: 1.2rem;
+      color: var(--lw-gray);
+      max-width: 580px;
+      margin: 0 auto 36px;
+    }
+    .hero__ctas {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 40px;
+    }
+    .hero__price-note {
+      font-size: 0.85rem;
+      color: var(--lw-gray);
+    }
+    .trust-bar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 32px;
+      flex-wrap: wrap;
+      padding: 20px 24px;
+      border-top: 1px solid var(--lw-border);
+      border-bottom: 1px solid var(--lw-border);
+      margin-bottom: 48px;
+    }
+    .trust-bar__item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--lw-dark);
+    }
+    .trust-bar__item .stars { color: #F59E0B; }
+
+    /* ===== SCREENSHOT PLACEHOLDER ===== */
+    .screenshot-placeholder {
+      background: linear-gradient(135deg, #F0F7FF 0%, #E8F4ED 100%);
+      border: 2px dashed var(--lw-border);
+      border-radius: var(--radius);
+      padding: 80px 24px;
+      text-align: center;
+      color: var(--lw-gray);
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+    .screenshot-placeholder__label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-weight: 700;
+      color: var(--lw-green);
+      margin-bottom: 8px;
+    }
+
+    /* ===== STATS COUNTER ===== */
+    .stats-bar {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 0;
+    }
+    .stats-bar__item {
+      padding: 32px 24px;
+      text-align: center;
+      border-right: 1px solid var(--lw-border);
+    }
+    .stats-bar__item:last-child { border-right: none; }
+    .stats-bar__number {
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: var(--lw-dark);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+    .stats-bar__label {
+      font-size: 0.9rem;
+      color: var(--lw-gray);
+    }
+
+    /* ===== PROBLEM SECTION ===== */
+    .problem-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+      margin-top: 48px;
+    }
+    .problem-card {
+      background: #fff;
+      border: 1px solid var(--lw-border);
+      border-radius: var(--radius);
+      padding: 28px;
+    }
+    .problem-card__icon {
+      font-size: 2rem;
+      margin-bottom: 16px;
+    }
+    .problem-card h3 { margin-bottom: 8px; }
+    .problem-card p { font-size: 0.95rem; }
+
+    /* ===== HOW IT WORKS ===== */
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 32px;
+      margin-top: 56px;
+    }
+    .step {
+      text-align: center;
+    }
+    .step__number {
+      width: 48px;
+      height: 48px;
+      background: var(--lw-green);
+      color: #fff;
+      border-radius: 50%;
+      font-size: 1.2rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+    }
+    .step h3 { margin-bottom: 12px; }
+    .step__screenshot { margin-top: 24px; }
+
+    /* ===== FEATURES — ALTERNATING LAYOUT ===== */
+    .features-section {
+      padding: 80px 0;
+    }
+    .features-section__intro {
+      text-align: center;
+      margin-bottom: 72px;
+    }
+    .feature-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: center;
+      padding: 56px 0;
+      border-bottom: 1px solid var(--lw-border);
+    }
+    .feature-row:last-child { border-bottom: none; }
+    .feature-row--reverse .feature-row__visual { order: -1; }
+    .feature-row__copy {}
+    .feature-row__tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--lw-green);
+      background: rgba(59, 178, 115, 0.1);
+      border-radius: 100px;
+      padding: 4px 12px;
+      margin-bottom: 16px;
+    }
+    .feature-row__tag--coming-soon {
+      color: var(--lw-blue);
+      background: rgba(26, 111, 181, 0.1);
+    }
+    .feature-row h3 {
+      font-size: clamp(1.35rem, 2.5vw, 1.75rem);
+      font-weight: 700;
+      line-height: 1.25;
+      color: var(--lw-dark);
+      margin-bottom: 16px;
+    }
+    .feature-row__desc {
+      color: var(--lw-gray);
+      font-size: 1rem;
+      line-height: 1.7;
+      margin-bottom: 20px;
+    }
+    .feature-row__outcomes {
+      list-style: none;
+      margin-bottom: 24px;
+    }
+    .feature-row__outcomes li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 10px;
+      font-size: 0.95rem;
+      color: var(--lw-text);
+    }
+    .feature-row__outcomes li::before {
+      content: "✓";
+      background: var(--lw-green);
+      color: #fff;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      font-size: 0.7rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .feature-row__outcomes--coming li::before {
+      background: var(--lw-blue);
+    }
+    .feature-row__quote {
+      background: var(--lw-gray-light);
+      border-left: 3px solid var(--lw-green);
+      padding: 16px 20px;
+      border-radius: 0 8px 8px 0;
+      margin-top: 20px;
+    }
+    .feature-row__quote blockquote {
+      font-style: italic;
+      font-size: 0.9rem;
+      color: var(--lw-text);
+      margin-bottom: 6px;
+    }
+    .feature-row__quote cite {
+      font-size: 0.8rem;
+      color: var(--lw-gray);
+      font-style: normal;
+    }
+    .feature-row__visual {
+      position: relative;
+    }
+    .feature-visual-placeholder {
+      background: linear-gradient(135deg, #F0FFF7 0%, #EBF4FF 100%);
+      border: 2px dashed var(--lw-border);
+      border-radius: 16px;
+      padding: 56px 24px;
+      text-align: center;
+      min-height: 280px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+    .feature-visual-placeholder__icon {
+      font-size: 2.5rem;
+    }
+    .feature-visual-placeholder__label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--lw-gray);
+      background: #fff;
+      border: 1px solid var(--lw-border);
+      border-radius: 4px;
+      padding: 4px 10px;
+    }
+    .feature-visual-placeholder__caption {
+      font-size: 0.85rem;
+      color: var(--lw-gray);
+      max-width: 240px;
+    }
+    /* Coming Soon row treatment */
+    .feature-row--coming-soon {
+      opacity: 0.85;
+      background: linear-gradient(180deg, transparent, rgba(26,111,181,0.03));
+      border-radius: 16px;
+      padding-left: 24px;
+      padding-right: 24px;
+      margin-left: -24px;
+      margin-right: -24px;
+    }
+    .feature-row--coming-soon .feature-visual-placeholder {
+      background: linear-gradient(135deg, #EBF4FF 0%, #F0F4FF 100%);
+    }
+    .roi-waitlist {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+    .roi-waitlist__input {
+      flex: 1;
+      min-width: 180px;
+      padding: 10px 14px;
+      border: 1px solid var(--lw-border);
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-family: var(--font);
+      color: var(--lw-text);
+      background: #fff;
+    }
+    .roi-waitlist__input:focus { outline: 2px solid var(--lw-blue); border-color: transparent; }
+    .roi-waitlist__btn {
+      padding: 10px 20px;
+      background: var(--lw-blue);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: var(--font);
+      white-space: nowrap;
+      transition: background 0.2s;
+    }
+    .roi-waitlist__btn:hover { background: #1558a0; }
+    @media (max-width: 768px) {
+      .feature-row {
+        grid-template-columns: 1fr;
+        gap: 32px;
+        padding: 40px 0;
+      }
+      .feature-row--reverse .feature-row__visual { order: 0; }
+      .feature-row--coming-soon { margin-left: 0; margin-right: 0; padding-left: 0; padding-right: 0; }
+    }
+
+    /* ===== AI SECTION ===== */
+    .ai-section {
+      background: linear-gradient(135deg, #F0FFF7 0%, #EBF4FF 100%);
+      border: 1px solid var(--lw-border);
+      border-radius: 20px;
+      padding: 56px;
+    }
+    .ai-section__grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: center;
+    }
+    .ai-section__bullets { margin-top: 24px; }
+    .ai-section__bullet {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .ai-section__bullet-check {
+      background: var(--lw-green);
+      color: #fff;
+      border-radius: 50%;
+      width: 22px;
+      height: 22px;
+      font-size: 0.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .ai-quote {
+      background: #fff;
+      border-left: 4px solid var(--lw-green);
+      padding: 24px;
+      border-radius: 0 12px 12px 0;
+      margin-top: 24px;
+    }
+    .ai-quote blockquote {
+      font-style: italic;
+      color: var(--lw-text);
+      margin-bottom: 8px;
+    }
+    .ai-quote cite { font-size: 0.85rem; color: var(--lw-gray); font-style: normal; }
+    @media (max-width: 768px) {
+      .ai-section { padding: 36px 24px; }
+      .ai-section__grid { grid-template-columns: 1fr; gap: 32px; }
+    }
+
+    /* ===== SOCIAL PROOF ===== */
+    .hero-testimonial {
+      background: var(--lw-dark);
+      color: #fff;
+      border-radius: var(--radius);
+      padding: 40px;
+      margin-bottom: 32px;
+      position: relative;
+    }
+    .hero-testimonial__quote {
+      font-size: 1.2rem;
+      font-style: italic;
+      line-height: 1.6;
+      color: rgba(255,255,255,0.9);
+      margin-bottom: 24px;
+    }
+    .hero-testimonial__quote::before { content: '"'; font-size: 3rem; color: var(--lw-green); line-height: 1; display: block; margin-bottom: -16px; }
+    .hero-testimonial__author {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .hero-testimonial__avatar {
+      width: 48px;
+      height: 48px;
+      background: var(--lw-green);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+    .hero-testimonial__name {
+      font-weight: 700;
+      color: #fff;
+    }
+    .hero-testimonial__title { font-size: 0.85rem; color: rgba(255,255,255,0.6); }
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+    .testimonial-card {
+      background: #fff;
+      border: 1px solid var(--lw-border);
+      border-radius: var(--radius);
+      padding: 24px;
+    }
+    .testimonial-card__text {
+      font-style: italic;
+      color: var(--lw-text);
+      margin-bottom: 16px;
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+    .testimonial-card__text::before { content: '"'; color: var(--lw-green); }
+    .testimonial-card__text::after { content: '"'; color: var(--lw-green); }
+    .testimonial-card__author { font-size: 0.85rem; font-weight: 600; color: var(--lw-dark); }
+    .testimonial-card__site { font-size: 0.8rem; color: var(--lw-gray); }
+    .trust-badges {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 32px;
+      flex-wrap: wrap;
+      margin-top: 40px;
+      padding-top: 32px;
+      border-top: 1px solid var(--lw-border);
+    }
+    .trust-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--lw-gray);
+    }
+    .trust-badge .stars { color: #F59E0B; }
+
+    /* ===== PRICING ===== */
+    .pricing-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      margin: 32px 0;
+    }
+    .toggle-label { font-size: 0.95rem; font-weight: 600; color: var(--lw-gray); }
+    .toggle-label.active { color: var(--lw-dark); }
+    .toggle-switch {
+      position: relative;
+      width: 52px;
+      height: 28px;
+      cursor: pointer;
+    }
+    .toggle-switch input { opacity: 0; width: 0; height: 0; }
+    .toggle-slider {
+      position: absolute;
+      inset: 0;
+      background: var(--lw-green);
+      border-radius: 100px;
+      transition: 0.3s;
+    }
+    .toggle-slider:before {
+      content: '';
+      position: absolute;
+      height: 20px;
+      width: 20px;
+      left: 4px;
+      bottom: 4px;
+      background: #fff;
+      border-radius: 50%;
+      transition: 0.3s;
+    }
+    .toggle-switch input:checked + .toggle-slider:before { transform: translateX(24px); }
+    .toggle-badge {
+      background: #FEF9C3;
+      color: #92400E;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 100px;
+    }
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+      margin-top: 16px;
+    }
+    .pricing-card {
+      background: #fff;
+      border: 1px solid var(--lw-border);
+      border-radius: var(--radius);
+      padding: 32px;
+      position: relative;
+    }
+    .pricing-card--featured {
+      border-color: var(--lw-green);
+      box-shadow: 0 0 0 3px rgba(59,178,115,0.15);
+    }
+    .pricing-card__badge {
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--lw-green);
+      color: #fff;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 4px 14px;
+      border-radius: 100px;
+      white-space: nowrap;
+    }
+    .pricing-card__name { font-size: 0.9rem; font-weight: 600; color: var(--lw-gray); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.08em; }
+    .pricing-card__price {
+      display: flex;
+      align-items: baseline;
+      gap: 4px;
+      margin-bottom: 8px;
+    }
+    .pricing-card__amount { font-size: 3rem; font-weight: 800; color: var(--lw-dark); }
+    .pricing-card__period { font-size: 0.9rem; color: var(--lw-gray); }
+    .pricing-card__desc { font-size: 0.9rem; color: var(--lw-gray); margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid var(--lw-border); }
+    .pricing-card__features { list-style: none; margin-bottom: 28px; }
+    .pricing-card__features li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 0.9rem;
+      color: var(--lw-text);
+      padding: 6px 0;
+    }
+    .pricing-card__features li::before {
+      content: '✓';
+      color: var(--lw-green);
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .pricing-cta { width: 100%; text-align: center; justify-content: center; }
+    .guarantee-box {
+      text-align: center;
+      margin-top: 32px;
+      padding: 20px;
+      background: var(--lw-gray-light);
+      border-radius: var(--radius);
+    }
+    .guarantee-box p { font-size: 0.95rem; }
+    .guarantee-box strong { color: var(--lw-dark); }
+
+    /* ===== FAQ ===== */
+    .faq-list { max-width: 720px; margin: 48px auto 0; }
+    .faq-item {
+      border-bottom: 1px solid var(--lw-border);
+    }
+    .faq-question {
+      width: 100%;
+      background: none;
+      border: none;
+      text-align: left;
+      padding: 20px 0;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--lw-dark);
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+    }
+    .faq-question:hover { color: var(--lw-green); }
+    .faq-arrow { font-size: 1.2rem; transition: transform 0.2s; flex-shrink: 0; }
+    .faq-item.open .faq-arrow { transform: rotate(180deg); }
+    .faq-answer {
+      display: none;
+      padding: 0 0 20px;
+      color: var(--lw-gray);
+      font-size: 0.95rem;
+      line-height: 1.7;
+    }
+    .faq-item.open .faq-answer { display: block; }
+
+    /* ===== FINAL CTA ===== */
+    .final-cta {
+      background: linear-gradient(135deg, var(--lw-green) 0%, #1A9A5C 100%);
+      color: #fff;
+      text-align: center;
+      padding: 96px 24px;
+    }
+    .final-cta h2 { color: #fff; margin-bottom: 16px; }
+    .final-cta p { color: rgba(255,255,255,0.85); font-size: 1.1rem; margin-bottom: 36px; }
+    .final-cta .btn-white {
+      background: #fff;
+      color: var(--lw-green-dark);
+    }
+    .final-cta .btn-white:hover { background: rgba(255,255,255,0.9); }
+    .final-cta .reassurance {
+      margin-top: 20px;
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.7);
+    }
+
+    /* ===== FOOTER ===== */
+    .footer {
+      background: var(--lw-dark);
+      color: rgba(255,255,255,0.6);
+      padding: 48px 0 32px;
+    }
+    .footer__grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 40px;
+      margin-bottom: 40px;
+    }
+    .footer__logo {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 12px;
+    }
+    .footer__desc { font-size: 0.9rem; max-width: 260px; }
+    .footer__col-title { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.4); margin-bottom: 16px; }
+    .footer__links { list-style: none; }
+    .footer__links li { margin-bottom: 10px; }
+    .footer__links a { font-size: 0.9rem; color: rgba(255,255,255,0.6); transition: color 0.2s; }
+    .footer__links a:hover { color: #fff; }
+    .footer__bottom {
+      border-top: 1px solid rgba(255,255,255,0.1);
+      padding-top: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      font-size: 0.85rem;
+    }
+    .footer__tagline { color: rgba(255,255,255,0.35); }
+    @media (max-width: 768px) {
+      .footer__grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 480px) {
+      .footer__grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== NAV ===== -->
+  <nav class="nav">
+    <div class="container">
+      <div class="nav__inner">
+        <a href="#" class="nav__logo">
+          <div class="nav__logo-icon">🔗</div>
+          Link Whisper
+        </a>
+        <ul class="nav__links">
+          <li><a href="#features">Features</a></li>
+          <li><a href="#pricing">Pricing</a></li>
+          <li><a href="#faq">FAQ</a></li>
+          <li><a href="#">Blog</a></li>
+        </ul>
+        <div class="nav__cta">
+          <a href="#pricing" class="btn btn-primary">Get Link Whisper →</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ===== HERO ===== -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero__badge">
+        ⚡ Trusted by 50,000+ WordPress sites
+      </div>
+
+      <!-- H1: Boss confirmed final wording 2026-02-25 -->
+      <h1>Stop losing rankings.<br>Fix your internal link building<br>in 60 seconds.</h1>
+
+      <p class="hero__sub">
+        Link Whisper scans your site, finds every orphaned page, and suggests
+        <strong>internal links that actually make sense</strong> — in the time it takes to make coffee.
+        No guesswork. No spreadsheets. No tech skills required.
+      </p>
+
+      <div class="hero__ctas">
+        <a href="#pricing" class="btn btn-primary btn-lg">Get Link Whisper — from $77/yr</a>
+        <a href="#how-it-works" class="btn btn-secondary btn-lg">See how it works ↓</a>
+      </div>
+
+      <!-- Trust bar -->
+      <div class="trust-bar">
+        <div class="trust-bar__item">
+          <span>Trusted by <strong>50,000+</strong> WordPress sites</span>
+        </div>
+        <div class="trust-bar__item">
+          <span><strong>10M+</strong> links built</span>
+        </div>
+        <div class="trust-bar__item">
+          <span class="stars">⭐⭐⭐⭐⭐</span>
+          <span>on WordPress.org</span>
+        </div>
+        <div class="trust-bar__item">
+          <span><strong>4.6/5</strong> on G2</span>
+        </div>
+      </div>
+
+      <!-- Hero screenshot placeholder -->
+      <div class="screenshot-placeholder">
+        <div class="screenshot-placeholder__label">Screenshot Asset Needed</div>
+        <strong>[Screenshot: Dashboard showing site scan in progress with suggestions populated]</strong>
+        <br><small>Boss to supply — see shot list in product video deliverable for reference.</small>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== STATS BAR ===== -->
+  <div class="section--gray">
+    <div class="container">
+      <div class="stats-bar">
+        <div class="stats-bar__item">
+          <div class="stats-bar__number" data-target="50000" data-suffix="+" data-prefix="">50,000+</div>
+          <div class="stats-bar__label">Active WordPress installs</div>
+        </div>
+        <div class="stats-bar__item">
+          <div class="stats-bar__number" data-target="10" data-suffix="M+" data-prefix="">10M+</div>
+          <div class="stats-bar__label">Links built last 30 days</div>
+        </div>
+        <div class="stats-bar__item">
+          <div class="stats-bar__number" data-counter data-target="12" data-suffix="" data-prefix="">12 hrs/week</div>
+          <div class="stats-bar__label">Saved per user on average</div>
+        </div>
+        <div class="stats-bar__item">
+          <div class="stats-bar__number">60 sec</div>
+          <div class="stats-bar__label">To uncover your linking gaps</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- ===== THE PROBLEM ===== -->
+  <section class="section">
+    <div class="container">
+      <div class="text-center">
+        <div class="section-label">Why internal linking matters</div>
+        <h2>Every orphaned page is a ranking<br>you're leaving on the table.</h2>
+        <p style="max-width:560px;margin:16px auto 0;">
+          Google uses internal links to discover, crawl, and rank your content. If a post has no links
+          pointing to it, search engines struggle to find it — no matter how good it is. Most WordPress
+          sites have dozens of orphaned pages. Some have hundreds. They just don't know it.
+        </p>
+      </div>
+
+      <div class="problem-grid">
+        <div class="problem-card">
+          <div class="problem-card__icon">🔍</div>
+          <h3>You don't know which posts are orphaned</h3>
+          <p>Manual audits take hours. Spreadsheets go stale the moment you publish a new post. There's no easy way to see the full picture.</p>
+        </div>
+        <div class="problem-card">
+          <div class="problem-card__icon">🔗</div>
+          <h3>Finding the right links to build is guesswork</h3>
+          <p>You know you should link your older posts together — but which ones? You end up linking the same 5 posts you remember and forgetting the other 200.</p>
+        </div>
+        <div class="problem-card">
+          <div class="problem-card__icon">⏱</div>
+          <h3>Doing it properly takes 12+ hours a week</h3>
+          <p>That's time you could spend writing more content, not auditing what you already wrote. The math doesn't work when it's manual.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== HOW IT WORKS ===== -->
+  <section class="section section--gray" id="how-it-works">
+    <div class="container">
+      <div class="text-center">
+        <div class="section-label">How it works</div>
+        <h2>Three clicks. Done.</h2>
+        <p style="max-width:480px;margin:16px auto 0;">
+          No technical skills needed. If you can install a WordPress plugin, you can use Link Whisper.
+        </p>
+      </div>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step__number">1</div>
+          <h3>Scan your site</h3>
+          <p>Install the plugin, run a scan. Link Whisper crawls your entire site in under 60 seconds and finds every linking gap.</p>
+          <div class="step__screenshot">
+            <div class="screenshot-placeholder" style="padding:40px 16px;">
+              <div class="screenshot-placeholder__label">Screenshot Asset Needed</div>
+              <strong>[Screenshot: Scan running / progress bar]</strong>
+            </div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step__number">2</div>
+          <h3>See what needs fixing</h3>
+          <p>Your orphaned pages, weak posts, and missed link opportunities appear instantly — ranked by priority, ready to act on.</p>
+          <div class="step__screenshot">
+            <div class="screenshot-placeholder" style="padding:40px 16px;">
+              <div class="screenshot-placeholder__label">Screenshot Asset Needed</div>
+              <strong>[Screenshot: Dashboard with orphan page count + priority list]</strong>
+            </div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step__number">3</div>
+          <h3>Accept, reject, or edit</h3>
+          <p>Click to accept a suggestion. Edit the anchor text if you want. Reject ones that don't fit. Your links go live immediately.</p>
+          <div class="step__screenshot">
+            <div class="screenshot-placeholder" style="padding:40px 16px;">
+              <div class="screenshot-placeholder__label">Screenshot Asset Needed</div>
+              <strong>[Screenshot: Suggestion panel with accept/reject UI]</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <p class="text-center" style="margin-top:40px;font-size:1.05rem;color:var(--lw-text);">
+        It really is that simple. No code. No CSV exports. No "I'll come back to this later."
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== FEATURES — ALTERNATING LAYOUT ===== -->
+  <section class="features-section" id="features">
+    <div class="container">
+
+      <div class="features-section__intro">
+        <div class="section-label">What you get</div>
+        <h2>Everything your internal linking<br>strategy needs. Nothing it doesn't.</h2>
+      </div>
+
+      <!-- ROW 1: Orphan Page Finder (visual right) -->
+      <div class="feature-row">
+        <div class="feature-row__copy">
+          <div class="feature-row__tag">🔍 Orphan Page Finder</div>
+          <h3>See every page Google can't find.</h3>
+          <p class="feature-row__desc">
+            Orphaned pages rank for nothing. They're invisible to Google because nothing on your site points to them. Link Whisper surfaces every single one — instantly — so you can fix what's actually costing you traffic.
+          </p>
+          <ul class="feature-row__outcomes">
+            <li>See every zero-link page on your site in one dashboard</li>
+            <li>Filter by post type, category, or link count</li>
+            <li>Jump straight to a fix — no spreadsheet required</li>
+          </ul>
+          <div class="feature-row__quote">
+            <blockquote>"The orphan page report alone saved us hours every month. I had no idea how many pages we'd abandoned."</blockquote>
+            <cite>— Verified Link Whisper user</cite>
+          </div>
+        </div>
+        <div class="feature-row__visual">
+          <div class="feature-visual-placeholder">
+            <div class="feature-visual-placeholder__icon">🔍</div>
+            <div class="feature-visual-placeholder__label">Screenshot Asset Needed</div>
+            <p class="feature-visual-placeholder__caption">[Screenshot: Orphan pages dashboard listing pages with 0 internal links]</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ROW 2: AI-Powered Suggestions (visual left) -->
+      <div class="feature-row feature-row--reverse">
+        <div class="feature-row__copy">
+          <div class="feature-row__tag">🧠 AI-Powered Suggestions</div>
+          <h3>Links that make sense, not just keyword matches.</h3>
+          <p class="feature-row__desc">
+            Most link plugins match keywords. Link Whisper reads your content — what a post is actually <em>about</em> — and suggests links that a human editor would approve. In 30 seconds, you see exactly which links your site is missing.
+          </p>
+          <ul class="feature-row__outcomes">
+            <li>Context-aware AI, not keyword-matching — fewer irrelevant suggestions</li>
+            <li>No OpenAI API key required — no surprise charges, ever</li>
+            <li>Works on your existing content, immediately</li>
+          </ul>
+        </div>
+        <div class="feature-row__visual">
+          <div class="feature-visual-placeholder">
+            <div class="feature-visual-placeholder__icon">🧠</div>
+            <div class="feature-visual-placeholder__label">Screenshot Asset Needed</div>
+            <p class="feature-visual-placeholder__caption">[Screenshot: AI suggestion panel with contextual link recommendations]</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ROW 3: One-Click Accept / Bulk Building (visual right) -->
+      <div class="feature-row">
+        <div class="feature-row__copy">
+          <div class="feature-row__tag">⚡ One-Click Accept &amp; Bulk Building</div>
+          <h3>Fix 50 links in the time it takes to find one manually.</h3>
+          <p class="feature-row__desc">
+            See a suggestion you like? Accept it in one click. Want to fix your whole site at once? Bulk-accept across every post simultaneously. What used to consume your entire week now takes 20 minutes flat.
+          </p>
+          <ul class="feature-row__outcomes">
+            <li>Accept individual suggestions with a single click — no editing required</li>
+            <li>Bulk-accept across all posts simultaneously</li>
+            <li>Users report saving 12+ hours per week on average</li>
+          </ul>
+          <div class="feature-row__quote">
+            <blockquote>"I went from spending hours manually linking to having a fully interlinked site in one afternoon."</blockquote>
+            <cite>— Mark Condon, Shotkit.com</cite>
+          </div>
+        </div>
+        <div class="feature-row__visual">
+          <div class="feature-visual-placeholder">
+            <div class="feature-visual-placeholder__icon">⚡</div>
+            <div class="feature-visual-placeholder__label">Screenshot Asset Needed</div>
+            <p class="feature-visual-placeholder__caption">[Screenshot: Bulk accept interface with multiple suggestions queued]</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ROW 4: Link Reports & Site Health (visual left) -->
+      <div class="feature-row feature-row--reverse">
+        <div class="feature-row__copy">
+          <div class="feature-row__tag">📊 Link Reports &amp; Site Health</div>
+          <h3>Know exactly what's working and what's not.</h3>
+          <p class="feature-row__desc">
+            Domain-wide reports show which pages are over-linked, under-linked, or completely abandoned. Finally, a clear map of your entire site's internal link structure — so you can stop guessing and start fixing.
+          </p>
+          <ul class="feature-row__outcomes">
+            <li>Full site link health dashboard — all posts at a glance</li>
+            <li>Export reports for clients or your own records</li>
+            <li>Track linking improvement over time</li>
+          </ul>
+          <div class="feature-row__quote">
+            <blockquote>"Dashboard views provide quick, timely information. We honestly save thousands of dollars using Link Whisper."</blockquote>
+            <cite>— Jared Bauman, 201Creative.com</cite>
+          </div>
+        </div>
+        <div class="feature-row__visual">
+          <div class="feature-visual-placeholder">
+            <div class="feature-visual-placeholder__icon">📊</div>
+            <div class="feature-visual-placeholder__label">Screenshot Asset Needed</div>
+            <p class="feature-visual-placeholder__caption">[Screenshot: Link report dashboard showing inbound/outbound link counts per post]</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ROW 5: Auto-Linking Rules (visual right) -->
+      <div class="feature-row">
+        <div class="feature-row__copy">
+          <div class="feature-row__tag">🔁 Auto-Linking Rules</div>
+          <h3>Set it once. Link forever.</h3>
+          <p class="feature-row__desc">
+            Define a rule — "always link 'affiliate marketing' to my income report" — and Link Whisper handles it across your entire site, including every new post you publish. Set the rule once, never think about it again.
+          </p>
+          <ul class="feature-row__outcomes">
+            <li>Create keyword-to-URL rules that apply site-wide automatically</li>
+            <li>New content gets linked instantly — no manual review required</li>
+            <li>Set maximum link counts to avoid over-linking penalties</li>
+          </ul>
+        </div>
+        <div class="feature-row__visual">
+          <div class="feature-visual-placeholder">
+            <div class="feature-visual-placeholder__icon">🔁</div>
+            <div class="feature-visual-placeholder__label">Screenshot Asset Needed</div>
+            <p class="feature-visual-placeholder__caption">[Screenshot: Auto-linking rules interface with keyword-to-URL mappings]</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ROW 6: ROI Dashboard — Coming Soon (visual left) -->
+      <div class="feature-row feature-row--reverse feature-row--coming-soon">
+        <div class="feature-row__copy">
+          <div class="feature-row__tag feature-row__tag--coming-soon">🚀 Coming Q2 2026</div>
+          <h3>See the traffic impact of every link you build.</h3>
+          <p class="feature-row__desc">
+            You've been building links for months. Do you know which ones moved the needle? The ROI Dashboard closes the loop — connecting your internal links directly to traffic changes, ranking improvements, and revenue impact. We're building it for you now.
+          </p>
+          <ul class="feature-row__outcomes feature-row__outcomes--coming">
+            <li>Track traffic lift per page before and after linking</li>
+            <li>See which auto-linking rules drive the most impact</li>
+            <li>Justify the ROI of internal linking to clients in one screenshot</li>
+          </ul>
+          <div class="roi-waitlist">
+            <input type="email" class="roi-waitlist__input" placeholder="you@yoursite.com" aria-label="Email for ROI Dashboard early access" />
+            <button class="roi-waitlist__btn" type="button">Notify me when it's live →</button>
+          </div>
+        </div>
+        <div class="feature-row__visual">
+          <div class="feature-visual-placeholder">
+            <div class="feature-visual-placeholder__icon">🚀</div>
+            <div class="feature-visual-placeholder__label">Coming Q2 2026</div>
+            <p class="feature-visual-placeholder__caption">[Mockup: ROI dashboard with traffic lift chart per internal link]</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===== AI NARRATIVE ===== -->
+  <section class="section section--gray">
+    <div class="container">
+      <div class="ai-section">
+        <div class="ai-section__grid">
+          <div>
+            <div class="section-label">The AI story</div>
+            <h2>v2.7.0: Link Whisper got smarter. Here's what that means for your site.</h2>
+            <p style="margin-top:16px;">
+              The old way: plugins scan for keywords. "This post mentions 'affiliate marketing' — link it to
+              other posts that mention 'affiliate marketing.'" Simple. Fast. Often wrong.
+            </p>
+            <p style="margin-top:12px;">
+              <strong>The Link Whisper way:</strong> we read what your post is actually <em>about</em>.
+              Not which words appear in it — what it means. The result: suggestions that make sense when
+              you read them. Not ones you reject 80% of the time.
+            </p>
+            <div class="ai-section__bullets">
+              <div class="ai-section__bullet">
+                <div class="ai-section__bullet-check">✓</div>
+                <span>No OpenAI API key required — no surprise charges, ever</span>
+              </div>
+              <div class="ai-section__bullet">
+                <div class="ai-section__bullet-check">✓</div>
+                <span>No SILO configurations to set up</span>
+              </div>
+              <div class="ai-section__bullet">
+                <div class="ai-section__bullet-check">✓</div>
+                <span>Works on your existing content, immediately</span>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="ai-quote">
+              <blockquote>"The suggestions are context-aware... This goes beyond exact-match keywords."</blockquote>
+              <cite>— Verified Link Whisper user (G2 / WP.org)</cite>
+            </div>
+            <div class="screenshot-placeholder" style="margin-top:24px;padding:60px 16px;">
+              <div class="screenshot-placeholder__label">Screenshot Asset Needed</div>
+              <strong>[Screenshot: AI suggestion panel showing contextual suggestions]</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SOCIAL PROOF ===== -->
+  <section class="section">
+    <div class="container">
+      <div class="text-center">
+        <div class="section-label">What people say</div>
+        <h2>50,000 WordPress sites can't all be wrong.</h2>
+      </div>
+
+      <div style="margin-top:48px;">
+        <!-- Hero testimonial: Jared Bauman -->
+        <div class="hero-testimonial">
+          <p class="hero-testimonial__quote">
+            At our SEO agency, building internal links has long been a trouble spot. We need internal links that are highly relevant, and creating those is very time consuming. Link Whisper has solved that for us. You can completely customize your specific approach to internal linking inside of the tool, and Dashboard views provide quick, timely information. We honestly save thousands of dollars by using Link Whisper.
+          </p>
+          <div class="hero-testimonial__author">
+            <div class="hero-testimonial__avatar">JB</div>
+            <div>
+              <div class="hero-testimonial__name">Jared Bauman</div>
+              <div class="hero-testimonial__title">Co-Founder, 201Creative.com</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3 short testimonials -->
+        <div class="testimonials-grid">
+          <div class="testimonial-card">
+            <p class="testimonial-card__text">Link Whisper is one of those rare tools that become more integral the more you use it. Adding internal links used to be a frustrating and time-consuming process, but now it's intuitive, simple... and actually quite fun!</p>
+            <div class="testimonial-card__author">Mark Condon</div>
+            <div class="testimonial-card__site">Shotkit.com</div>
+          </div>
+          <div class="testimonial-card">
+            <p class="testimonial-card__text">Link Whisper has been a god send plugin to allow my team to improve the website's silo. The plugin gives amazing options to place internal links on old articles and helps in one easy to read place to check orphan pages.</p>
+            <div class="testimonial-card__author">James Dooley</div>
+            <div class="testimonial-card__site">FatRank.com</div>
+          </div>
+          <div class="testimonial-card">
+            <p class="testimonial-card__text">The ease and comfort with which I can quickly create internal links in no time is just so amazing. I honestly think Link Whisper has become a must-have plugin for all those bloggers spending time building internal links manually.</p>
+            <div class="testimonial-card__author">Rinkesh Kukreja</div>
+            <div class="testimonial-card__site">StackTunnel.com</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Trust badges -->
+      <div class="trust-badges">
+        <div class="trust-badge">
+          <span class="stars">⭐⭐⭐⭐⭐</span>
+          <span>WordPress.org</span>
+        </div>
+        <div class="trust-badge">
+          <span>4.6/5 on G2</span>
+        </div>
+        <div class="trust-badge">
+          <span>50,000+ active installs</span>
+        </div>
+        <div class="trust-badge">
+          <span>Featured by Authority Hacker, Diggity Marketing, Matthew Woodward</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PRICING ===== -->
+  <section class="section section--gray" id="pricing">
+    <div class="container text-center">
+      <div class="section-label">Pricing</div>
+      <h2>One site or a hundred. Pick the plan that fits.</h2>
+      <p style="margin-top:12px;">No monthly fees. Pay once, link forever.</p>
+
+      <!-- Monthly/Annual toggle — scaffold for Matt to wire up -->
+      <div class="pricing-toggle">
+        <span class="toggle-label active" id="toggle-monthly">Monthly</span>
+        <label class="toggle-switch">
+          <input type="checkbox" id="billing-toggle" />
+          <span class="toggle-slider"></span>
+        </label>
+        <span class="toggle-label" id="toggle-annual">Annual</span>
+        <span class="toggle-badge">Save 20%</span>
+      </div>
+      <!-- NOTE FOR MATT: When annual is toggled, show annual prices.
+           On toggle to annual, subheadline under price can flash "Paying annually — you're saving $X"
+           Monthly label: "Monthly" / Annual label: "Annual (save 20%)"
+           Wire up JS to swap .pricing-card__amount values between annual/monthly states. -->
+
+      <div class="pricing-grid">
+        <!-- Personal -->
+        <div class="pricing-card">
+          <div class="pricing-card__name">Personal</div>
+          <div class="pricing-card__price">
+            <span class="pricing-card__amount">$77</span>
+            <span class="pricing-card__period">/ year</span>
+          </div>
+          <p class="pricing-card__desc">For one site. Everything you need to get your internal linking sorted.</p>
+          <ul class="pricing-card__features">
+            <li>Full site scan</li>
+            <li>AI-powered suggestions</li>
+            <li>Orphan page finder</li>
+            <li>Link reports</li>
+            <li>1 year of updates &amp; support</li>
+            <li>1 site license</li>
+          </ul>
+          <a href="#" class="btn btn-secondary pricing-cta">Get Personal →</a>
+        </div>
+
+        <!-- Professional (featured) -->
+        <div class="pricing-card pricing-card--featured">
+          <div class="pricing-card__badge">Most Popular</div>
+          <div class="pricing-card__name">Professional</div>
+          <div class="pricing-card__price">
+            <span class="pricing-card__amount">$117</span>
+            <span class="pricing-card__period">/ year</span>
+          </div>
+          <p class="pricing-card__desc">For up to 3 sites. Everything in Personal, plus priority support.</p>
+          <ul class="pricing-card__features">
+            <li>Everything in Personal</li>
+            <li>3 site licenses</li>
+            <li>Priority support</li>
+            <li>Bulk link building</li>
+            <li>Advanced reporting</li>
+            <li>Auto-linking rules</li>
+          </ul>
+          <a href="#" class="btn btn-primary pricing-cta">Get Professional →</a>
+        </div>
+
+        <!-- Agency -->
+        <div class="pricing-card">
+          <div class="pricing-card__name">Agency</div>
+          <div class="pricing-card__price">
+            <span class="pricing-card__amount">$167</span>
+            <span class="pricing-card__period">/ year</span>
+          </div>
+          <p class="pricing-card__desc">Unlimited sites. For agencies and serious multi-site operators.</p>
+          <ul class="pricing-card__features">
+            <li>Everything in Professional</li>
+            <li>Unlimited site licenses</li>
+            <li>Multi-site dashboard</li>
+            <li>White-label reporting</li>
+            <li>Priority + team support</li>
+          </ul>
+          <a href="#" class="btn btn-secondary pricing-cta">Get Agency →</a>
+        </div>
+      </div>
+
+      <!-- NOTE FOR MATT: Prices above are illustrative from Pen's copy doc.
+           Boss to confirm exact pricing/plan structure before deploy. -->
+
+      <div class="guarantee-box">
+        <p>🛡️ <strong>30-day money-back guarantee.</strong> If it doesn't save you time, we'll refund you. No questions, no hoops.<br>
+        <small>All plans include a free version to try before you buy. No credit card required to start.</small></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FAQ ===== -->
+  <section class="section" id="faq">
+    <div class="container">
+      <div class="text-center">
+        <div class="section-label">Common questions</div>
+        <h2>You probably have one of these.</h2>
+      </div>
+
+      <div class="faq-list">
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            Do I need technical skills to use Link Whisper?
+            <span class="faq-arrow">▼</span>
+          </button>
+          <div class="faq-answer">
+            No. If you can install a WordPress plugin, you can use Link Whisper. The scan, the suggestions, the link building — all of it happens inside your WordPress dashboard. Nothing to configure.
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            How is this different from manually finding internal linking opportunities?
+            <span class="faq-arrow">▼</span>
+          </button>
+          <div class="faq-answer">
+            Manual auditing means opening every post, reading it, thinking about what else on your site it could link to, going and finding that post, copying the URL, adding the link... and then doing it again for 200 more posts. Link Whisper does all of that in 60 seconds and presents the options for you to approve or reject in one place.
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            Is there a free version?
+            <span class="faq-arrow">▼</span>
+          </button>
+          <div class="faq-answer">
+            Yes. The free version gives you basic suggestions. The paid version unlocks AI-powered context-aware suggestions, orphan page detection, bulk link building, and full reporting. Most people upgrade within a week.
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            Will this work on my existing content?
+            <span class="faq-arrow">▼</span>
+          </button>
+          <div class="faq-answer">
+            Yes. Link Whisper scans all your published posts — not just new ones. If you have 400 posts from the last 5 years, it'll find the linking gaps in all of them.
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            Will Link Whisper help me rank better?
+            <span class="faq-arrow">▼</span>
+          </button>
+          <div class="faq-answer">
+            Internal links are one of Google's strongest on-page ranking signals — and Link Whisper makes sure you're not leaving any of them on the table. Thousands of users report improved rankings and traffic after getting their internal link structure right.
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            What if I don't like it?
+            <span class="faq-arrow">▼</span>
+          </button>
+          <div class="faq-answer">
+            30-day money-back guarantee. Request a refund, get one. We're not interested in keeping your money if you're not getting value.
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            What WordPress version does it work with?
+            <span class="faq-arrow">▼</span>
+          </button>
+          <div class="faq-answer">
+            [Matt / Boss to confirm current compatibility info — e.g. WordPress 5.0+, PHP 7.4+]
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FINAL CTA ===== -->
+  <section class="final-cta">
+    <div class="container">
+      <h2>Your orphaned pages aren't going to fix themselves.</h2>
+      <p>Join 50,000+ WordPress sites that stopped guessing and started linking.</p>
+      <div style="display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;">
+        <a href="#pricing" class="btn btn-white btn-lg">Get Link Whisper — from $77/yr</a>
+        <a href="#" class="btn btn-lg" style="color:rgba(255,255,255,0.8);border-color:rgba(255,255,255,0.3);">Try free first →</a>
+      </div>
+      <p class="reassurance">30-day guarantee · No technical skills needed · Works on all WordPress sites</p>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__grid">
+        <div>
+          <div class="footer__logo">🔗 Link Whisper</div>
+          <p class="footer__desc">The AI-powered internal link building plugin for WordPress. Trusted by 50,000+ sites.</p>
+          <p style="margin-top:16px;font-size:0.85rem;color:rgba(255,255,255,0.3);">Internal linking: now the boring part of SEO is handled.</p>
+        </div>
+        <div>
+          <div class="footer__col-title">Product</div>
+          <ul class="footer__links">
+            <li><a href="#">Features</a></li>
+            <li><a href="#pricing">Pricing</a></li>
+            <li><a href="#">Changelog</a></li>
+            <li><a href="#">Affiliate Program</a></li>
+          </ul>
+        </div>
+        <div>
+          <div class="footer__col-title">Resources</div>
+          <ul class="footer__links">
+            <li><a href="#">Blog</a></li>
+            <li><a href="#">Support</a></li>
+            <li><a href="#">Documentation</a></li>
+            <li><a href="#">Case Studies</a></li>
+          </ul>
+        </div>
+        <div>
+          <div class="footer__col-title">Legal</div>
+          <ul class="footer__links">
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Terms of Service</a></li>
+            <li><a href="#">Refund Policy</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <span>© 2026 Link Whisper. Built for WordPress bloggers everywhere.</span>
+        <span class="footer__tagline">Internal linking made simple.</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ===== JS ===== -->
+  <script>
+    // FAQ accordion
+    function toggleFaq(btn) {
+      const item = btn.closest('.faq-item');
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item.open').forEach(el => el.classList.remove('open'));
+      if (!isOpen) item.classList.add('open');
+    }
+
+    // Pricing toggle (scaffold for Matt)
+    const toggle = document.getElementById('billing-toggle');
+    const labelMonthly = document.getElementById('toggle-monthly');
+    const labelAnnual = document.getElementById('toggle-annual');
+    if (toggle) {
+      toggle.addEventListener('change', () => {
+        const isAnnual = toggle.checked;
+        labelMonthly.classList.toggle('active', !isAnnual);
+        labelAnnual.classList.toggle('active', isAnnual);
+        // Matt: swap prices here — update .pricing-card__amount values
+        // Annual prices TBD from Boss. Illustrative 20% discount:
+        // Personal: $77/mo → $62/yr-equivalent when annual
+        // Pro: $117/mo → $94/yr-equivalent
+        // Agency: $167/mo → $134/yr-equivalent
+        // Also flash a "Paying annually — you're saving $X" line under pricing header
+      });
+    }
+
+    // IntersectionObserver counter animation for the "12 hrs/week saved" stat
+    // (and other stats bars)
+    const animateCounter = (el) => {
+      const target = parseInt(el.dataset.target, 10);
+      if (isNaN(target)) return;
+      const suffix = el.dataset.suffix || '';
+      const prefix = el.dataset.prefix || '';
+      const duration = 1400;
+      const start = performance.now();
+      const update = (now) => {
+        const elapsed = now - start;
+        const progress = Math.min(elapsed / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3); // ease out cubic
+        const current = Math.round(eased * target);
+        el.textContent = prefix + current.toLocaleString() + suffix;
+        if (progress < 1) requestAnimationFrame(update);
+      };
+      requestAnimationFrame(update);
+    };
+
+    // Only animate when stat section enters viewport
+    const statNumbers = document.querySelectorAll('.stats-bar__number[data-target]');
+    if (statNumbers.length) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            animateCounter(entry.target);
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.3 });
+      statNumbers.forEach(el => observer.observe(el));
+    }
+  </script>
+
+</body>
+</html>
