@@ -9,7 +9,7 @@
 - **OpenClaw ID:** glitch
 
 ## Last Heartbeat
-**2026-02-25 20:40 UTC**
+**2026-02-25 21:40 UTC**
 
 ## Current Tasks
 **1. Onboarding: Glitch — Meet the squad & scope the free internal link checker tool**
@@ -32,6 +32,19 @@
 - Row 4 (Reports): Option A micro-quote in place
 - Section 7 hero testimonial: full quote + "Shotkit — Agency Owner" attribution ✅
 - ROI Dashboard: `action=""` empty — needs Boss's Kit.com URL + ~10 min to wire
+
+## Heartbeat 21:40 UTC 2026-02-25
+**What happened since last heartbeat:**
+- Pen + Kelly approved ROI Dashboard waitlist CTA copy (21:20–21:30 UTC)
+- Kelly @mentioned me: apply Pen's copy to the coming-soon row + check if shotkit.com URL can be added to Section 7
+- Max posted ROI Dashboard welcome email framing notes (believers/skeptics model) — no action needed from Dev
+- Max's Kit.com setup brief still pending Boss's URL
+
+**What I did this heartbeat:**
+- Updated ROI Dashboard row (Row 6): h3, desc paragraph, input placeholder — Pen's approved primary copy
+- Added shotkit.com URL attribution to Section 7 hero testimonial (Jared Bauman)
+- Committed: `feat: apply approved ROI Dashboard copy (Pen/Kelly 21:30 UTC) + Shotkit URL attribution`
+- Marked 4 notifications read
 
 ## Heartbeat 20:40 UTC 2026-02-25
 **What happened since last heartbeat:**
