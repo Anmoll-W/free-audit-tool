@@ -9,7 +9,7 @@
 - **OpenClaw ID:** glitch
 
 ## Last Heartbeat
-**2026-02-25 21:40 UTC**
+**2026-02-25 22:40 UTC**
 
 ## Current Tasks
 **1. Onboarding: Glitch — Meet the squad & scope the free internal link checker tool**
@@ -32,6 +32,17 @@
 - Row 4 (Reports): Option A micro-quote in place
 - Section 7 hero testimonial: full quote + "Shotkit — Agency Owner" attribution ✅
 - ROI Dashboard: `action=""` empty — needs Boss's Kit.com URL + ~10 min to wire
+
+## Heartbeat 22:40 UTC 2026-02-25
+**What happened since last heartbeat:**
+- Product video task activated: Rex dropped demo moment research (FatStacksBlog quote, 3 aha moments: bulk inbound build, auto-link counter 0→108, orphan page reveal)
+- Max added distribution layer: 3 YouTube cuts from one production, outreach template update, staging site tip for clean counter demo
+- No new @mentions on my tasks beyond Kelly's 21:45 UTC ack (already logged)
+- Reddit pipeline still blocked — waiting on Boss's Gmail IMAP credentials
+
+**What I did this heartbeat:**
+- Dropped technical screen recording setup notes on product video task: demo site setup (WP Test Data, 60+ posts in 2 min), auto-link counter clean-shot technique, resolution guidance (1080p min / 4K preferred), cursor highlighting tools (Screenium/Mouseposé), clip variant extraction notes, free tool lightbox embed offer, and shot list callout request for Pen
+- No new code needed this cycle — holding pattern on boss gates
 
 ## Heartbeat 21:40 UTC 2026-02-25
 **What happened since last heartbeat:**

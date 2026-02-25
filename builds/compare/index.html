@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LinkWhisper vs Competitors — Full Comparison Library</title>
+  <meta name="description" content="How does LinkWhisper compare to the alternatives? Honest, research-backed comparisons of LinkWhisper vs LinkBoss, Linksy, Internal Link Juicer, Linkilo, and Yoast SEO." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- FAQPage + BreadcrumbList Schema -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "LinkWhisper",
+            "item": "https://linkwhisper.com"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Comparisons",
+            "item": "https://linkwhisper.com/compare"
+          }
+        ]
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "What is the best internal linking plugin for WordPress?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "The best internal linking plugin depends on your workflow. LinkWhisper is best for WordPress users who want AI-powered suggestions they can review and approve before any link goes live — no automation without oversight. It works across your entire archive, not just new posts."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How does LinkWhisper compare to its competitors?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "LinkWhisper's main differentiators across all competitors: manual review workflow (you approve every link), flat-rate pricing with no credits or per-site fees, context-aware AI suggestions (not keyword matching), and built specifically for WordPress. Competitors like ILJ auto-insert without review, LinkBoss uses a credit system, and Yoast's internal linking only works while you're writing new content — not on your existing archive."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Is LinkWhisper better than Internal Link Juicer?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "LinkWhisper and Internal Link Juicer take opposite approaches. ILJ inserts links automatically ('set and forget') — no human review. LinkWhisper suggests links and lets you approve them before anything changes on your site. For anyone who cares about link quality, that distinction matters significantly. ILJ's unlimited plan also costs $1,299/yr vs LinkWhisper's $199/yr."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Do I need LinkWhisper if I already have Yoast SEO?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes — Yoast's internal linking feature only works as a sidebar widget while you're writing new posts. It cannot audit your existing archive, detect orphaned pages, or process links in bulk. LinkWhisper does all of that. Most LinkWhisper users also use Yoast — they're complementary tools, not competitors."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What are the alternatives to LinkWhisper?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "The main LinkWhisper alternatives are: LinkBoss (credit-based AI, cloud account required), Internal Link Juicer (fully automated, no review), Linkilo (cheaper, automation-only), Linksy (AppSumo-origin, stability concerns on large sites), and Yoast SEO (editor-only sidebar tool, not a dedicated internal linking plugin). Honest comparisons of each are available at linkwhisper.com/compare."
+            }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+
+  <!-- Retargeting pixel placeholder — activate when Boss confirms ad platform -->
+  <!--
+    For Google Ads: paste Google tag here + event: gtag('event', 'compare_hub_view', {});
+    For Meta: paste Meta Pixel base code + fbq('trackCustom', 'CompareHubView', {});
+  -->
+
+  <style>
+    /* ===== RESET & BASE ===== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --lw-green: #3BB273;
+      --lw-green-dark: #2D9A5F;
+      --lw-blue: #1A6FB5;
+      --lw-blue-light: #EBF4FF;
+      --lw-dark: #1A1F2E;
+      --lw-gray: #64748B;
+      --lw-gray-light: #F8FAFC;
+      --lw-border: #E2E8F0;
+      --lw-text: #334155;
+      --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --radius: 12px;
+      --shadow: 0 4px 24px rgba(0,0,0,0.08);
+      --shadow-lg: 0 12px 40px rgba(0,0,0,0.12);
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font);
+      color: var(--lw-text);
+      line-height: 1.6;
+      background: #fff;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+
+    /* ===== TYPOGRAPHY ===== */
+    h1 { font-size: clamp(2rem, 5vw, 3rem); font-weight: 800; line-height: 1.15; color: var(--lw-dark); }
+    h2 { font-size: clamp(1.4rem, 3vw, 2rem); font-weight: 700; line-height: 1.25; color: var(--lw-dark); }
+    h3 { font-size: 1.1rem; font-weight: 700; color: var(--lw-dark); }
+    p { color: var(--lw-gray); line-height: 1.7; }
+
+    /* ===== LAYOUT ===== */
+    .container { max-width: 1040px; margin: 0 auto; padding: 0 24px; }
+    .section { padding: 72px 0; }
+    .section--gray { background: var(--lw-gray-light); }
+    .section--dark { background: var(--lw-dark); color: #fff; }
+
+    /* ===== NAV ===== */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--lw-border);
+    }
+    .nav-inner {
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: 0 24px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .nav-logo {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--lw-dark);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .nav-logo span { color: var(--lw-green); }
+    .nav-cta {
+      background: var(--lw-green);
+      color: #fff;
+      padding: 8px 20px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.875rem;
+      transition: background 0.2s;
+    }
+    .nav-cta:hover { background: var(--lw-green-dark); }
+
+    /* ===== BREADCRUMB ===== */
+    .breadcrumb {
+      padding: 12px 0;
+      font-size: 0.8rem;
+      color: var(--lw-gray);
+    }
+    .breadcrumb a { color: var(--lw-blue); }
+    .breadcrumb a:hover { text-decoration: underline; }
+    .breadcrumb span { margin: 0 6px; }
+
+    /* ===== HERO ===== */
+    .hero {
+      padding: 64px 0 56px;
+      text-align: center;
+    }
+    .section-label {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--lw-green);
+      background: rgba(59,178,115,0.1);
+      border-radius: 100px;
+      padding: 4px 12px;
+      margin-bottom: 20px;
+    }
+    .hero h1 { margin-bottom: 20px; }
+    .hero p {
+      font-size: 1.15rem;
+      max-width: 600px;
+      margin: 0 auto 36px;
+      color: var(--lw-gray);
+    }
+    .hero-note {
+      font-size: 0.8rem;
+      color: var(--lw-gray);
+      margin-top: 12px;
+    }
+
+    /* ===== COMPARISON CARDS ===== */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 24px;
+      padding: 48px 0;
+    }
+    .card {
+      border: 1px solid var(--lw-border);
+      border-radius: var(--radius);
+      padding: 28px;
+      background: #fff;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      transition: transform 0.2s, box-shadow 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+    .card-tag {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 100px;
+      align-self: flex-start;
+    }
+    .card-tag--threat  { background: #FFF0F0; color: #C53030; }
+    .card-tag--price   { background: #FFF7E6; color: #9C6D20; }
+    .card-tag--auto    { background: #EBF8FF; color: #2B6CB0; }
+    .card-tag--additive { background: rgba(59,178,115,0.1); color: var(--lw-green-dark); }
+    .card-tag--stability { background: #FAF5FF; color: #6B46C1; }
+
+    .card h3 {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--lw-dark);
+      margin-bottom: 2px;
+    }
+    .card-vs {
+      font-size: 0.78rem;
+      color: var(--lw-gray);
+      font-weight: 500;
+      margin-top: -8px;
+    }
+    .card-hook {
+      font-size: 0.95rem;
+      color: var(--lw-text);
+      font-style: italic;
+      line-height: 1.5;
+      border-left: 3px solid var(--lw-green);
+      padding-left: 12px;
+      margin: 4px 0;
+    }
+    .card-bullets {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .card-bullets li {
+      font-size: 0.85rem;
+      color: var(--lw-text);
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      line-height: 1.45;
+    }
+    .card-bullets li::before {
+      content: '✓';
+      color: var(--lw-green);
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .card-cta {
+      margin-top: auto;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--lw-blue);
+      padding-top: 8px;
+      border-top: 1px solid var(--lw-border);
+    }
+    .card-cta:hover { text-decoration: underline; }
+    .card-cta svg { flex-shrink: 0; }
+
+    /* ===== LW ADVANTAGE STRIP ===== */
+    .advantage-strip {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2px;
+      background: var(--lw-border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      margin: 0 0 16px;
+    }
+    .adv-item {
+      background: #fff;
+      padding: 20px 24px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    .adv-icon {
+      font-size: 1.5rem;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .adv-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--lw-gray);
+      margin-bottom: 4px;
+    }
+    .adv-desc {
+      font-size: 0.85rem;
+      color: var(--lw-text);
+      line-height: 1.4;
+    }
+
+    /* ===== PRICING TABLE ===== */
+    .pricing-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+    .pricing-table th {
+      background: var(--lw-dark);
+      color: #fff;
+      padding: 14px 20px;
+      text-align: left;
+      font-weight: 600;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .pricing-table td {
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--lw-border);
+      color: var(--lw-text);
+    }
+    .pricing-table tr:last-child td { border-bottom: none; }
+    .pricing-table tr:nth-child(even) td { background: var(--lw-gray-light); }
+    .pricing-table .lw-row td {
+      background: rgba(59,178,115,0.07);
+      font-weight: 600;
+      color: var(--lw-dark);
+    }
+    .pricing-table .lw-row td:first-child {
+      border-left: 3px solid var(--lw-green);
+    }
+    .price-note {
+      font-size: 0.75rem;
+      color: var(--lw-gray);
+      font-weight: 400;
+    }
+
+    /* ===== CTA SECTION ===== */
+    .cta-section {
+      text-align: center;
+      padding: 72px 0;
+      background: linear-gradient(135deg, #1A1F2E 0%, #1A6FB5 100%);
+      color: #fff;
+    }
+    .cta-section h2 { color: #fff; margin-bottom: 16px; }
+    .cta-section p { color: rgba(255,255,255,0.75); max-width: 520px; margin: 0 auto 36px; font-size: 1.05rem; }
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--lw-green);
+      color: #fff;
+      padding: 14px 32px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 1rem;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .btn-primary:hover { background: var(--lw-green-dark); transform: translateY(-1px); }
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: transparent;
+      color: #fff;
+      padding: 14px 28px;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 1rem;
+      border: 2px solid rgba(255,255,255,0.3);
+      cursor: pointer;
+      transition: border-color 0.2s;
+    }
+    .btn-secondary:hover { border-color: rgba(255,255,255,0.7); }
+    .cta-buttons { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .trust-line {
+      margin-top: 20px;
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.55);
+    }
+
+    /* ===== FOOTER ===== */
+    footer {
+      background: var(--lw-dark);
+      color: rgba(255,255,255,0.5);
+      padding: 32px 0;
+      font-size: 0.82rem;
+      text-align: center;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+    footer a { color: rgba(255,255,255,0.65); }
+    footer a:hover { color: #fff; }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 640px) {
+      .cards-grid { grid-template-columns: 1fr; }
+      .advantage-strip { grid-template-columns: 1fr; }
+      .pricing-table { font-size: 0.78rem; }
+      .pricing-table td, .pricing-table th { padding: 10px 12px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a href="https://linkwhisper.com" class="nav-logo">
+      Link<span>Whisper</span>
+    </a>
+    <a href="https://linkwhisper.com/pricing?utm_source=compare-hub&utm_medium=nav&utm_campaign=vs-pages" class="nav-cta">
+      Get LinkWhisper
+    </a>
+  </div>
+</nav>
+
+<!-- BREADCRUMB -->
+<div class="container">
+  <nav class="breadcrumb" aria-label="breadcrumb">
+    <a href="https://linkwhisper.com">LinkWhisper</a>
+    <span>›</span>
+    <span aria-current="page">Comparisons</span>
+  </nav>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="section-label">Comparison Library</div>
+    <h1>LinkWhisper vs. Every Major Alternative</h1>
+    <p>Five honest, research-backed comparisons. Real pricing, real weaknesses — ours and theirs. Pick the right tool for your WordPress site.</p>
+    <a href="https://linkwhisper.com/pricing?utm_source=compare-hub&utm_medium=hero-cta&utm_campaign=vs-pages" class="btn-primary" style="display:inline-flex;">
+      Try LinkWhisper Free
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+    </a>
+    <p class="hero-note">From $77/year — no credit card required to start</p>
+  </div>
+</section>
+
+<!-- COMPARISON CARDS -->
+<section class="section section--gray">
+  <div class="container">
+    <h2 style="text-align:center; margin-bottom: 8px;">Every comparison, in one place</h2>
+    <p style="text-align:center; max-width:580px; margin: 0 auto 0px;">Each page covers real pricing (verified), documented limitations from competitor docs and public reviews, and honest recommendations.</p>
+
+    <div class="cards-grid">
+
+      <!-- Card 1: LW vs LinkBoss -->
+      <article class="card">
+        <span class="card-tag card-tag--threat">🔥 Top Threat</span>
+        <div>
+          <h3>LinkWhisper vs LinkBoss</h3>
+          <p class="card-vs">LinkBoss · from $50/yr (credit-based)</p>
+        </div>
+        <p class="card-hook">"AI without a credit meter. Flat price, unlimited links."</p>
+        <ul class="card-bullets">
+          <li>LinkBoss resets 500 credits monthly — LW has no usage limits</li>
+          <li>LW works entirely inside WordPress — no cloud account required</li>
+          <li>Flat annual license vs. confusing credit economy</li>
+        </ul>
+        <a href="https://linkwhisper.com/linkwhisper-vs-linkboss?utm_source=compare-hub&utm_medium=card&utm_campaign=vs-pages" class="card-cta">
+          Full comparison
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </a>
+      </article>
+
+      <!-- Card 2: LW vs Internal Link Juicer -->
+      <article class="card">
+        <span class="card-tag card-tag--auto">⚙️ Auto vs. Review</span>
+        <div>
+          <h3>LinkWhisper vs Internal Link Juicer</h3>
+          <p class="card-vs">Internal Link Juicer · $69.99–$1,299/yr</p>
+        </div>
+        <p class="card-hook">"You review every link. ILJ auto-inserts them. One of those drifts."</p>
+        <ul class="card-bullets">
+          <li>ILJ's "set and forget" = links inserted without any review</li>
+          <li>LW suggests first — you approve before anything changes</li>
+          <li>ILJ unlimited: $1,299/yr. LW unlimited: $199/yr</li>
+        </ul>
+        <a href="https://linkwhisper.com/linkwhisper-vs-internal-link-juicer?utm_source=compare-hub&utm_medium=card&utm_campaign=vs-pages" class="card-cta">
+          Full comparison
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </a>
+      </article>
+
+      <!-- Card 3: LW vs Yoast SEO -->
+      <article class="card">
+        <span class="card-tag card-tag--additive">✚ Use Both</span>
+        <div>
+          <h3>LinkWhisper vs Yoast SEO</h3>
+          <p class="card-vs">Yoast SEO Premium · $118.80/yr per site</p>
+        </div>
+        <p class="card-hook">"Yoast helps you link tomorrow's posts. LW fixes yesterday's 500."</p>
+        <ul class="card-bullets">
+          <li>Yoast's internal linking only works while writing new posts</li>
+          <li>LW audits your entire existing archive for orphans and gaps</li>
+          <li>Most LW users keep Yoast — they're designed to work together</li>
+        </ul>
+        <a href="https://linkwhisper.com/linkwhisper-vs-yoast?utm_source=compare-hub&utm_medium=card&utm_campaign=vs-pages" class="card-cta">
+          Full comparison
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </a>
+      </article>
+
+      <!-- Card 4: LW vs Linkilo -->
+      <article class="card">
+        <span class="card-tag card-tag--price">💰 Price vs. Value</span>
+        <div>
+          <h3>LinkWhisper vs Linkilo</h3>
+          <p class="card-vs">Linkilo · from $59/yr (always-on "sale")</p>
+        </div>
+        <p class="card-hook">"More than a price match — LW has the track record."</p>
+        <ul class="card-bullets">
+          <li>Linkilo's pricing is a permanent fake-urgency sale (trust signal)</li>
+          <li>No manual review workflow — automation only</li>
+          <li>Solo dev project vs. 50K+ install production plugin</li>
+        </ul>
+        <a href="https://linkwhisper.com/linkwhisper-vs-linkilo?utm_source=compare-hub&utm_medium=card&utm_campaign=vs-pages" class="card-cta">
+          Full comparison
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </a>
+      </article>
+
+      <!-- Card 5: LW vs Linksy -->
+      <article class="card">
+        <span class="card-tag card-tag--stability">🛡️ Stability</span>
+        <div>
+          <h3>LinkWhisper vs Linksy</h3>
+          <p class="card-vs">Linksy · ~$59/yr (AppSumo-origin)</p>
+        </div>
+        <p class="card-hook">"Built for production sites, not beta testers."</p>
+        <ul class="card-bullets">
+          <li>Verified users reported Linksy creating DB-overloading cron requests on live sites</li>
+          <li>LW has been in production since 2020 with 50K+ active installs</li>
+          <li>AppSumo-origin vs. mature WordPress.org plugin</li>
+        </ul>
+        <a href="https://linkwhisper.com/linkwhisper-vs-linksy?utm_source=compare-hub&utm_medium=card&utm_campaign=vs-pages" class="card-cta">
+          Full comparison
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </a>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- LW ADVANTAGE STRIP -->
+<section class="section">
+  <div class="container">
+    <div style="text-align:center; margin-bottom: 40px;">
+      <div class="section-label">What makes LW different</div>
+      <h2>The four things every competitor gets wrong</h2>
+    </div>
+    <div class="advantage-strip">
+      <div class="adv-item">
+        <div class="adv-icon">✅</div>
+        <div>
+          <p class="adv-label">Manual review</p>
+          <p class="adv-desc">LW suggests. You approve. Nothing goes live without your sign-off. ILJ and Linkilo don't offer this.</p>
+        </div>
+      </div>
+      <div class="adv-item">
+        <div class="adv-icon">💳</div>
+        <div>
+          <p class="adv-label">No credits</p>
+          <p class="adv-desc">Flat annual license. No usage meter, no monthly resets, no credit surprises. Unlike LinkBoss and Linksy.</p>
+        </div>
+      </div>
+      <div class="adv-item">
+        <div class="adv-icon">🧠</div>
+        <div>
+          <p class="adv-label">Context-aware AI</p>
+          <p class="adv-desc">The v2.7.0 update (Aug 2025) moved to embedding-based analysis — reads what content is about, not just keyword overlap.</p>
+        </div>
+      </div>
+      <div class="adv-item">
+        <div class="adv-icon">🔍</div>
+        <div>
+          <p class="adv-label">Archive-first</p>
+          <p class="adv-desc">Audits every post you've already written. Finds orphans. Surfaces gaps. Yoast's feature only works on new posts.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING TABLE -->
+<section class="section section--gray">
+  <div class="container">
+    <div style="text-align:center; margin-bottom: 40px;">
+      <div class="section-label">Pricing at a glance</div>
