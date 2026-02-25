@@ -9,7 +9,7 @@
 - **OpenClaw ID:** glitch
 
 ## Last Heartbeat
-**2026-02-25 13:40 UTC**
+**2026-02-25 20:40 UTC**
 
 ## Current Tasks
 **1. Onboarding: Glitch — Meet the squad & scope the free internal link checker tool**
@@ -23,6 +23,59 @@
 - File: `/home/sprite/agents/glitch/builds/homepage/index.html`
 - H1: "Stop losing rankings. Fix your internal link building in 60 seconds."
 - Kelly confirmed all 12 sections, responsive, IntersectionObserver animations, testimonials from Rex, pricing toggle scaffolded for Matt
+
+**3. Redesign homepage features section — alternating layout, benefit-driven**
+- Task ID: `kh7ff4dbamtndgk59ssmm75y7581vbtc`
+- Status: `review` ✅ — Section 7 Jared Bauman quote + "Shotkit — Agency Owner" attribution applied
+- File: `/home/sprite/agents/glitch/builds/homepage/index.html`
+- 6 rows: Orphan Finder / AI Suggestions / Bulk Accept / Reports / Auto-Linking / ROI Dashboard (coming soon)
+- Row 4 (Reports): Option A micro-quote in place
+- Section 7 hero testimonial: full quote + "Shotkit — Agency Owner" attribution ✅
+- ROI Dashboard: `action=""` empty — needs Boss's Kit.com URL + ~10 min to wire
+
+## Heartbeat 20:40 UTC 2026-02-25
+**What happened since last heartbeat:**
+- Kelly @mentioned me: fill Shopify launch year (2020) into lw-vs-linkboss.html — confirmed via Shopify App Store listing
+- Pen @mentioned me + Rex: Section 7 hero testimonial — use full Jared Bauman quote + "Shotkit — Agency Owner" attribution
+- Max @mentioned me: ROI Dashboard waitlist form — Kit.com setup brief for Boss; confirmed the HTML `action=""` is empty, waiting on Boss's Kit.com URL
+- All 5 comparison pages + hub page moved to review ✅ (Kelly confirmed, Pen submitted)
+- Shopify review task (2.9 avg) fully actioned: Pen's 4 response copies written, Kelly approved, Rex confirmed root cause of "Insufficient Permissions" bug, Max added re-engagement campaign layer
+
+**What I did this heartbeat:**
+- Filled Shopify year placeholders in `lw-vs-linkboss.html`: `since 2020` in FAQ JSON-LD + prose paragraph comment updated
+- Updated Section 7 hero testimonial in `index.html`: full quote ("thousands of dollars... don't have to pay someone") + "Shotkit — Agency Owner" attribution
+- Committed: `fix: fill Shopify 2020 year in lw-vs-linkboss.html; update Section 7 Jared Bauman attribution + quote per Pen`
+- Commented on comparison page task + features section task with actioned confirmations
+- Flagged to Boss (via features task comment): Kit.com `action=` URL needed for ROI Dashboard waitlist; offered GA4 event tracking add-on (~3 lines) at same time
+
+## Heartbeat 19:40 UTC 2026-02-25
+**What happened since last heartbeat:**
+- Pen @mentioned me on homepage features task: Row 4 Jared Bauman micro-quote needs trimming — use Option A (agency efficiency angle, no "thousands of dollars" dilution)
+- New task created: "Shopify App Store — Fix Review Health (2.9 avg, 12 reviews)" — Rex's full diagnostic, Pen drafted 4 response copies, Kelly approved, now in review for Boss
+- Max added distribution email play: re-engage 90-day Shopify users for review prompt, direct link to `/reviews/new`
+- Kelly's synthesis flagged Dev (me) as potential builder for Shopify in-app review prompt (pending Boss's Shopify priority confirmation)
+- All 5 comparison page HTML files previously built and committed
+- Reddit pipeline still blocked on Gmail IMAP credentials (Boss queue)
+
+**What I did this heartbeat:**
+- Applied Pen's Option A micro-quote fix to Row 4 (Jared Bauman): `"We don't have to pay someone to go in and manually add internal links on all of our client sites."` — "thousands of dollars" line preserved for Section 7 hero testimonials
+- Committed: `fix: apply Pen's Option A micro-quote for Jared Bauman row (agency efficiency angle)`
+- Dropped Shopify in-app review prompt build spec on Shopify task: Matt handles backend + App Bridge hook, I handle UI component (~30 min), waiting on Boss greenlight
+
+## Heartbeat 14:40 UTC 2026-02-25
+**What happened since last heartbeat:**
+- New task assigned: "Redesign homepage features section — alternating layout, benefit-driven" (task ID: `kh7ff4dbamtndgk59ssmm75y7581vbtc`)
+- Kelly confirmed Boss approved both uncertain features: Auto-Linking Rules (full row) + ROI Dashboard (coming-soon treatment)
+- Max @mentioned me with conversion note: keep Boss's feature order but write AI Suggestions copy as speed-of-insight, not what-the-AI-does
+- Pen started LW vs Top 5 Competitors comparison series; Rex dropped intel brief for pages 2-5
+
+**What I did this heartbeat:**
+- Built full alternating features section in `/home/sprite/agents/glitch/builds/homepage/index.html`
+- 6 feature rows: Orphan Finder, AI Suggestions, Bulk Accept, Reports, Auto-Linking, ROI Dashboard
+- Each row: colour tag, benefit headline, desc, 3 outcomes, screenshot placeholder; micro-quotes on rows 1/3/4
+- ROI Dashboard: blue "Coming Q2 2026" badge, muted row, inline email waitlist input
+- Applied Max's copy guidance for AI Suggestions (speed-of-insight angle)
+- Committed to git, moved task to review
 
 ## Heartbeat 13:40 UTC 2026-02-25
 **What happened since last heartbeat:**
@@ -89,9 +142,11 @@
 1. Boss/Kelly: Confirm Netlify + vanilla JS stack for free tool
 2. @Pen: "Orphaned pages" — SEO language or friendlier term?
 3. Boss: ROI Estimator tab — MVP or Phase 2?
-4. Boss: Homepage H1 choice, pricing confirmation, screenshots
+4. Boss: Homepage pricing confirmation, screenshots
 5. Boss: Review and approve homepage before Matt can deploy
 6. Boss: NPS widget — green light to build when ready
+7. Boss: Kit.com ROI Dashboard waitlist form URL → wire into homepage `action=` attr (~10 min)
+8. Boss: lw-vs-linkboss.html pricing ($77/$99/$199?) + install count (50K+?) before Matt pushes
 
 ## Key Decisions Made
 - Dead-end pages metric added (Quackers' suggestion)
