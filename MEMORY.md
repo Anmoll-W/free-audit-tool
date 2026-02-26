@@ -9,7 +9,7 @@
 - **OpenClaw ID:** glitch
 
 ## Last Heartbeat
-**2026-02-26 06:40 UTC**
+**2026-02-26 22:40 UTC**
 
 ## Current Tasks
 **1. Onboarding: Glitch — Meet the squad & scope the free internal link checker tool**
@@ -32,6 +32,165 @@
 - Row 4 (Reports): Option A micro-quote in place
 - Section 7 hero testimonial: full quote + "Shotkit — Agency Owner" attribution ✅
 - ROI Dashboard: `action=""` empty — needs Boss's Kit.com URL + ~10 min to wire
+
+## Heartbeat 22:40 UTC 2026-02-26
+**What happened since last heartbeat:**
+- Affiliate task: Rex dropped competitive affiliate program intel (22:10 UTC) — LinkBoss "30% recurring" is actually 15% after first invoice (bait-and-switch confirmed via FirstPromoter), GotchSEO affiliate review redirecting to Rankability signup page (live SERP bleed), AffPaying listing 0 reviews + unknown cookie duration
+- Pen delivered Email 3 v2 with Rex's commission intel baked in (22:20 UTC) — Kelly approved as final
+- Pen also recommended `/become-an-affiliate/` page refresh to win GotchSEO SERP — Kelly approved as a task, waiting Boss signal + cookie duration confirmation
+- Max confirmed Email 3 v2 (22:31 UTC), suggested 24hr gap after Email 2 for top-50 personal send, added commission calculator idea for affiliate page
+
+**What I did this heartbeat:**
+- Read full affiliate task comments — absorbed Rex's competitive intel, Pen's v2 Email 3, Max's suggestions
+- Dropped commission calculator build spec on affiliate task: 2-3 slider inputs (readers, CTR, lifetime), instant earnings output (monthly + year 1 + year 2+ renewals), ~50 lines vanilla JS, ~45 min build time
+- Key insight: The 2-year earnings math is a visual differentiator vs. LinkBoss — their 15% drop shows directly in the "Year 2+ renewals" line without naming them
+- Sequencing: Pen writes page copy → Dev adds calculator → Matt deploys. One-heartbeat add-on.
+- No code changes this cycle — all builds remain deploy-ready
+
+## Heartbeat 21:40 UTC 2026-02-26
+**What happened since last heartbeat:**
+- Squad activity was entirely in outreach task: Max, Pen, Rex iterating on Email 3 P.S. routing and 60-day lock
+- Pen delivered Email 3 P.S. variants (21:20 UTC): Option A for Backlinko + Kinsta, none for aijourn
+- Max confirmed routing + updated outreach doc to v8 (21:30 UTC)
+- Rex flagged Marketer Milk article URL correction: `/best-seo-tools/` 404s → correct is `/blog/best-seo-tools` (21:10 UTC)
+- Kelly synthesis at 21:30 UTC closed all open threads — 60-day language locked everywhere
+- Anam Hassan window: ~14.5 hrs remaining at 21:30 UTC (closes ~12:00 UTC Feb 27) — Boss's action, still open
+
+**What I did this heartbeat:**
+- Audited UTM URL doc (m97fdjvyfx64y7zca368g31pks81whmn) — found stale entries
+- Removed blogtyrant.com from Tier A table (was dropped from Sequence A two heartbeats ago, hadn't been cleaned up from doc)
+- Added aijourn.com to Tier A table (the actual Sequence A replacement, was missing entirely)
+- Corrected marketermilk.com notes: article URL is `/blog/best-seo-tools` not `/best-seo-tools/` (404), noted Omid Ghiam as contact
+- Commented on outreach task @Max @Rex with full change log
+- No code changes needed this cycle — all builds remain deploy-ready
+
+**Status:** UTM doc now current with v8 outreach strategy. Features section still in review. All builds waiting Boss deploy decision.
+
+## Heartbeat 20:40 UTC 2026-02-26
+**What happened since last heartbeat:**
+- Max @mentioned Dev (20:30 UTC): flagged stale "30 Days" in free tool landing page bridge CTA button — needed update to "60 Days" to match body copy + JSON-LD schema (Pen had fixed schema at 20:20 UTC)
+- Pen also updated free tool bridge section and all 5 comparison pages with 60-day MBG language (20:20 UTC)
+- Rex: "no free trial" gap identified as root cause of piracy behavior — LW has no try-before-buy option, which is WHY people look for nulled versions (20:10 UTC)
+- Kelly synthesis: 60-day MBG is the answer to "no free trial" objection — should be surfaced more prominently as risk-reversal
+
+**What I did this heartbeat:**
+- Audited `internal-link-checker/index.html` for stale "30" day references
+- Found exactly one: bridge CTA button at line 892
+- Fixed: `"Try LinkWhisper — 30 Days Risk-Free →"` → `"Try LinkWhisper — 60 Days Risk-Free →"`
+- Confirmed all other guarantee references already clean (bridge note, FAQ body x2, JSON-LD schema)
+- Committed: `fix: bridge CTA 30→60 days risk-free (Max's guarantee consistency audit)`
+- Commented on landing page task @Max with full audit results
+
+**Status:** Free tool landing page fully consistent — zero "30-day" references remain. All guarantee language = 60 days. Deploy-ready.
+
+## Heartbeat 19:40 UTC 2026-02-26
+**What happened since last heartbeat:**
+- Rex expanded DMCA piracy scope: 6+ active sites, 8 URLs total (was 2)
+- Max @mentioned Dev (19:30 UTC): flagged that piracy-displaced searchers will search "link whisper free version" post-DMCA — free tool landing page should capture that intent
+- Pen added WP.org verified-install one-liner to comparison pages — Kelly approved
+- Kelly synthesis confirmed my DMCA technical note was the most actionable squad path
+
+**What I did this heartbeat:**
+- Audited free tool landing page (`internal-link-checker/index.html`) for "link whisper free" search intent
+- Gap found: no FAQ entry for "Is there a free version of LinkWhisper?" — exactly the query piracy-displaced searchers use
+- Added FAQ entry #7 to both visible accordion + FAQPage JSON-LD structured data — eligible for Google rich snippet
+- Copy answers the intent cleanly: free tool = yes, free plugin = no, 30-day MBG bridge
+- Committed: `feat: add 'free version of LinkWhisper?' FAQ entry (Max's DMCA piracy search intent flag)`
+- Commented on outreach task @Max with full change log
+
+**Status:** All builds deploy-ready. Free tool landing page now captures piracy displacement intent. Waiting Boss deploy decision.
+
+## Heartbeat 18:40 UTC 2026-02-26
+**What happened since last heartbeat:**
+- Pen added two items to `lw-vs-linkboss.html`: skeptic recovery opener (Section 4) + social proof line (Section 7) — Kelly confirmed, both deployed ✅
+- Rex confirmed Anam Hassan Twitter = `@anamhasssan` (triple S) — Boss action today, window ~12hrs
+- Rex found piracy sites distributing nulled LW Pro: weadown.com + up4vn.com — Kelly routed DMCA action to Boss
+- Rex confirmed LinkBoss social proof gap: 19 Trustpilot reviews vs LW's 400+ WP.org reviews — Pen's social proof line already in page
+- Max confirmed auto-link rules angle baked into Instantly sequence Email 1 + Email 3 P.S.
+
+**What I did this heartbeat:**
+- Verified `lw-vs-linkboss.html` current state — all additions confirmed in file (skeptic opener line 266, auto-link counter line 271, social proof line 331)
+- Dropped technical DMCA + nulled plugin piracy note on outreach task: Freemius GPL monitoring, Google DMCA removal path, host-level takedown faster than domain registrar, backdoor injection pattern explanation for Boss + Matt
+- No code changes needed this cycle — page is current and deploy-ready
+
+**Status:** All 6 comparison pages deploy-ready. Features section still in review. Homepage in review. All waiting Boss deploy decision.
+
+## Heartbeat 17:40 UTC 2026-02-26
+**What happened since last heartbeat:**
+- Pen flagged `lw-vs-linkboss.html` counter-paragraph at line 270 missing explicit auto-link rules mention (17:20 UTC)
+- Kelly approved the addition + @mentioned Dev to implement (17:30 UTC)
+- Max confirmed right call, flagged "No credits" wording ambiguity → recommended "No per-link cost" (17:31 UTC)
+
+**What I did this heartbeat:**
+- Added Pen's 3-sentence auto-link rules block to `lw-vs-linkboss.html` at line 270 — surgical, no restructuring
+- Used Max's wording suggestion: "No per-link cost" instead of "No credits" (correct distinction: credits = optional AI upgrade, not auto-link workflow)
+- Committed: `feat: add auto-link rules counter-paragraph to lw-vs-linkboss.html`
+- Commented on comparison task @Kelly @Pen @Max — confirmed done, all 6 pages still deploy-ready pending Boss
+- Marked 8 notifications read
+
+**Status:** lw-vs-linkboss.html fully deploy-ready. All 6 comparison pages waiting on Boss deploy call.
+
+## Heartbeat 16:40 UTC 2026-02-26
+**What happened since last heartbeat:**
+- Max @mentioned Dev (16:30 UTC): requested pre-built UTM URL list as a doc for all Instantly outreach targets — no manual construction = no typos
+- Features section task still sitting at `review`, no new action needed
+
+**What I did this heartbeat:**
+- Built UTM URL list doc (m97fdjvyfx64y7zca368g31pks81whmn) — all 11 targets from Rex's v2 list, markdown table + plain-text CSV block, two notes flagged (tool URL placeholder + kinsta.com verify)
+- Commented on outreach task tagging @Max with doc link + 3 pre-send notes
+- Checked in on features section task — confirmed build complete, waiting Kelly/Boss deploy sign-off
+
+---
+
+## Heartbeat 15:40 UTC 2026-02-26
+**What happened since last heartbeat:**
+- Outreach task fully loaded: Pen delivered 3 pitches (backlinko.com, aijourn.com, wordpress.com/blog) at 15:20 UTC; Max ack'd at 15:31 UTC updating outreach doc to v6
+- Max replacing blogtyrant.com target with Rex's Sequence A replacement; Anam Hassan contact path identified by Rex
+- Comparison pages: all 6 deploy-ready, Kelly synthesis at 13:35 UTC — deploy distribution plan in place
+- Affiliate resource page: Kelly green-lit build spec (12:40 UTC) BUT sequencing says wait — blocked on (a) comparison page URLs post-deploy and (b) free tool URL. Not urgent, Email 2 sends Mar 10-11.
+- All squad tasks holding pattern on Boss gates (CSV export, deploy confirmation)
+
+**What I did this heartbeat:**
+- Dropped UTM tracking spec on outreach task: recommended per-contact `utm_content` variable substitution in Instantly for per-source attribution on free tool + comparison page links. 15-min addition before sends go out.
+- Confirmed affiliate resource page build is correctly on hold (waiting on Kelly green-light post-deploy)
+- No code changes needed this cycle
+
+## Heartbeat 12:40 UTC 2026-02-26
+**What happened since last heartbeat:**
+- Pen ack'd homepage H1 + stats bar implementation (12:20 UTC) — confirmed both correct ✅
+- Pen flagged "Save 12 hours/week" label for Boss sign-off before deploy (survey-backed, just needs greenlight)
+- New task created: Affiliate Re-engagement Project (3,500 dormant affiliates) — assigned to Rex/Max
+- Rex delivered segmentation framework (4 tiers: Ghost/Tried-Stopped/1-2 Sales/Active); all blocked on Boss's Freemius CSV export
+- Max delivered full 3-email sequence drafts + Pen delivered affiliate swipe copy kit
+- Kelly queued Dev (me) to build affiliate resource landing page — after free tool ships
+- Max's Email 2 references `[Full resource page with banners: URL — Dev builds this]` — that's mine to build
+- Comparison pages: Kelly confirmed final Boss answer = LW Shopify is poll/manual ✅ — Pen making final lw-vs-linkboss.html edit, then all 5 deploy-ready
+- Roundup outreach task in progress: Rex target list v1 delivered, Pen wrote correction email for wppool.dev, Kelly/Max debating timing (send now vs wait for Mar 5-6 tool launch)
+
+**What I did this heartbeat:**
+- Dropped technical spec for affiliate resource page on affiliate task: single-page HTML, one-click copy buttons for swipe files, banner download placeholders, no-login public URL, ~2-3hr build time
+- Ack'd Pen's homepage comment: confirmed stat label location for Boss edit if needed
+- Marked 7 notifications read
+
+## Heartbeat 07:40 UTC 2026-02-26
+**What happened since last heartbeat:**
+- Boss confirmed LW Shopify = poll/manual (no webhook-based real-time sync) — via Kelly at 07:30 UTC
+- Kelly green-lit lw-vs-linkboss.html for deploy pending Boss's publish sequence confirmation for all 5 pages
+- Rex already built the Shopify feature matrix (beat me to it) — content type parity confirmed, webhook gap confirmed
+- Pen shipped Draft v3 with updated Shopify framing (maturity angle, no beta claims) — approved by Kelly
+- WP.org listing: Boss decision = remove free tool cross-references for now; Pen to revise
+- Max created Shopify SEO outreach task (blocked on Boss webhook answer — now answered: no)
+
+**What I did this heartbeat:**
+- Found lw-vs-linkboss.html still had old Shopify framing (beta/copy-paste/Any CMS claims) — 5 instances
+- Updated all 5 to match Pen's Draft v3: maturity angle ("since 2020 vs. 2025"), no superiority claims, added HTML comment flagging poll/manual confirmation
+- Committed: `fix: update lw-vs-linkboss Shopify framing to Draft v3 (Pen) — maturity angle, remove beta/copy-paste claims`
+- Commented on comparison page task with full change log
+- Marked 4 notifications read
+
+**Deploy status as of 07:40 UTC:**
+- lw-vs-linkboss.html: ✅ fully deploy-ready
+- Waiting: Boss publish sequence confirmation for all 5 pages
 
 ## Heartbeat 06:40 UTC 2026-02-26
 **What happened since last heartbeat:**

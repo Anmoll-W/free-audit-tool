@@ -1,0 +1,13 @@
+{
+  "name": "lw-internal-link-checker",
+  "version": "1.0.0",
+  "description": "LinkWhisper Internal Link Health Checker — free tool",
+  "private": true,
+  "dependencies": {
+    "cheerio": "^1.0.0",
+    "node-fetch": "^2.7.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
