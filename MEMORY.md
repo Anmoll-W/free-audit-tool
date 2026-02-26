@@ -9,7 +9,7 @@
 - **OpenClaw ID:** glitch
 
 ## Last Heartbeat
-**2026-02-26 04:40 UTC**
+**2026-02-26 06:40 UTC**
 
 ## Current Tasks
 **1. Onboarding: Glitch — Meet the squad & scope the free internal link checker tool**
@@ -32,6 +32,35 @@
 - Row 4 (Reports): Option A micro-quote in place
 - Section 7 hero testimonial: full quote + "Shotkit — Agency Owner" attribution ✅
 - ROI Dashboard: `action=""` empty — needs Boss's Kit.com URL + ~10 min to wire
+
+## Heartbeat 06:40 UTC 2026-02-26
+**What happened since last heartbeat:**
+- Kelly posted new standing protocol on homepage task: all future HTML builds must be sent to Boss via Telegram + path noted in task comments
+- Rex dropped LinkBoss Shopify v2.0 competitive intel on Shopify review task — LW comparison page Shopify claim is now a potential liability (LinkBoss has full Shopify since May 2025)
+- Kelly + Rex @mentioned me on FB/Google Ads task: confirmed they want `data_freshness` field in CSV parser, first field printed
+- Max confirmed Shopify re-engagement email can run independently of comparison page hold (honest feedback ask, no feature-parity claims)
+- Kelly held comparison page deploy pending Boss's one-question answer: LW Shopify feature parity vs. LinkBoss v2.0?
+
+**What I did this heartbeat:**
+- Dropped full CSV parser spec on FB/Google Ads task: `data_freshness` field confirmed (first-field, staleness warning banner), four analysis questions baked as named extraction fields
+- Offered to fetch LW Shopify App Store data for feature parity matrix on Shopify task — waiting for Kelly's go or Matt's direct answer
+- Attempted to send HTML files to Boss via Telegram (new protocol) — need Boss's Telegram target ID to route; flagged to Kelly
+- Marked 19 notifications read
+
+## Heartbeat 05:40 UTC 2026-02-26
+**What happened since last heartbeat:**
+- Kelly approved the internal link checker landing page HTML at 05:00 UTC ✅
+- Rex flagged 50K vs 40K install count discrepancy + three options for [X] links built stat
+- Pen endorsed 40K (converts better, "active" signal), and suggested Kyle Roof as 2nd testimonial (outcome story > uncertain aggregate stats)
+- Kelly synthesised Boss decision brief — two paths ready to ship
+
+**What I did this heartbeat:**
+- Fixed all 3 `50,000+` instances → `40,000+` in landing page HTML (Rex/Pen research confirmed this)
+- Baked in Kyle Roof second testimonial as commented-out Path B block in HTML — one uncomment from live
+- Committed: `fix: 50K→40K active sites (Rex/Pen research); add Kyle Roof Path B in HTML comment (Boss decision)`
+- Commented on landing page task: explained exactly what changed + clear PATH A / PATH B instructions for Matt
+- Dropped CSV parser offer on FB/Google Ads task: Node.js normaliser for when Boss's data exports land
+- Marked 2 notifications read
 
 ## Heartbeat 04:40 UTC 2026-02-26
 **What happened since last heartbeat:**
@@ -229,7 +258,8 @@
 5. Boss: Review and approve homepage before Matt can deploy
 6. Boss: NPS widget — green light to build when ready
 7. Boss: Kit.com ROI Dashboard waitlist form URL → wire into homepage `action=` attr (~10 min)
-8. Boss: lw-vs-linkboss.html pricing ($77/$99/$199?) + install count (50K+?) before Matt pushes
+8. Boss: LW Shopify feature parity vs LinkBoss v2.0? (collections sync, webhooks, real-time sync) — unlocks comparison page Shopify claim
+9. Kelly: Boss's Telegram target ID needed for direct HTML file delivery (new standing protocol)
 
 ## Key Decisions Made
 - Dead-end pages metric added (Quackers' suggestion)
