@@ -60,6 +60,14 @@
           "@type": "Answer",
           "text": "No — it's focused specifically on internal linking. For a full technical SEO audit, you'd want a tool like Screaming Frog or Ahrefs site audit. This goes deeper on internal links than either of those tools."
         }
+      },
+      {
+        "@type": "Question",
+        "name": "Is there a free version of LinkWhisper?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "This tool — the Internal Link Checker — is completely free, no account required. It's built by the LinkWhisper team and shows you exactly where your internal linking is broken. The full LinkWhisper plugin starts at $77/year and comes with a 30-day money-back guarantee. There's no free tier of the plugin itself, but if you want to see what it does before paying, this checker is the fastest way to find the problems it fixes."
+        }
       }
     ]
   }
@@ -652,23 +660,134 @@
         <h1>Your internal links are either building authority — or leaking it.</h1>
         <p class="hero__sub">Find out which one is true for your site. Free. No plugin required. Takes 60 seconds.</p>
 
-        <!-- URL Input Form — action="" pending Matt/Boss wiring -->
-        <form class="url-form" action="" method="GET" aria-label="Site URL checker">
-          <input
-            class="url-form__input"
-            type="url"
-            name="url"
-            placeholder="Enter your WordPress site URL"
-            required
-            aria-label="Your WordPress site URL"
-          />
-          <button type="submit" class="url-form__btn">Check My Internal Links →</button>
-        </form>
+        <!-- ===== TOOL: URL INPUT STATE ===== -->
+        <div id="tool-input" class="tool-state">
+          <form class="url-form" id="url-form" aria-label="Site URL checker">
+            <input
+              class="url-form__input"
+              id="url-input"
+              type="text"
+              name="url"
+              placeholder="Enter your WordPress site URL"
+              required
+              aria-label="Your WordPress site URL"
+              autocomplete="url"
+              spellcheck="false"
+            />
+            <button type="submit" class="url-form__btn" id="url-submit-btn">Check My Internal Links →</button>
+          </form>
+          <div class="trust-signals">
+            <span><span class="check">✓</span> No login required</span>
+            <span><span class="check">✓</span> No plugin to install</span>
+            <span><span class="check">✓</span> Works on any WordPress site</span>
+          </div>
+        </div>
 
-        <div class="trust-signals">
-          <span><span class="check">✓</span> No login required</span>
-          <span><span class="check">✓</span> No plugin to install</span>
-          <span><span class="check">✓</span> Works on any WordPress site</span>
+        <!-- ===== TOOL: SCANNING STATE ===== -->
+        <div id="tool-scanning" class="tool-state" style="display:none;">
+          <div class="scanning-box">
+            <div class="scanning-spinner" aria-hidden="true"></div>
+            <p class="scanning-url" id="scanning-url-label">Scanning <strong></strong>…</p>
+            <p class="scanning-status" id="scanning-status">Starting crawl…</p>
+            <div class="scanning-bar">
+              <div class="scanning-bar__fill" id="scanning-progress"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== TOOL: ERROR STATE ===== -->
+        <div id="tool-error" class="tool-state" style="display:none;">
+          <div class="error-box">
+            <p class="error-icon" aria-hidden="true">⚠️</p>
+            <p id="error-message">Something went wrong. Please try again.</p>
+            <button class="url-form__btn" id="error-retry-btn" style="margin-top:20px;">Try Again</button>
+          </div>
+        </div>
+
+        <!-- ===== TOOL: RESULTS STATE ===== -->
+        <div id="tool-results" class="tool-state" style="display:none;">
+          <!-- Score display -->
+          <div class="results-score-block">
+            <div class="results-score-ring" id="score-ring" aria-live="polite">
+              <svg viewBox="0 0 120 120" width="120" height="120" aria-hidden="true">
+                <circle cx="60" cy="60" r="52" fill="none" stroke="#e2e8f0" stroke-width="10"/>
+                <circle cx="60" cy="60" r="52" fill="none" stroke-width="10"
+                  stroke-linecap="round"
+                  stroke-dasharray="326.7"
+                  stroke-dashoffset="326.7"
+                  id="score-arc"
+                  transform="rotate(-90 60 60)"
+                />
+              </svg>
+              <div class="score-ring-value">
+                <span id="score-number">—</span>
+                <small>/100</small>
+              </div>
+            </div>
+            <div class="results-score-label">
+              <span id="score-bucket-badge" class="score-bucket-badge">—</span>
+              <p id="score-bucket-message" class="score-bucket-message">—</p>
+            </div>
+          </div>
+
+          <!-- Top 3 findings (free) -->
+          <div class="results-findings" id="results-findings">
+            <h3 class="results-findings__title">Top issues found</h3>
+            <ul class="findings-list" id="findings-list"></ul>
+          </div>
+
+          <!-- Stats row -->
+          <div class="results-stats-row" id="results-stats-row"></div>
+
+          <!-- Soft gate: full report -->
+          <div class="results-gate" id="results-gate">
+            <div class="results-gate__inner">
+              <p class="results-gate__headline">Get the full page-by-page breakdown — free.</p>
+              <p class="results-gate__sub">Your report shows every affected URL, ranked by impact, with what to fix first.</p>
+              <form class="email-form results-gate__form" id="results-gate-form" aria-label="Email for full report">
+                <input
+                  class="email-form__input"
+                  id="gate-email"
+                  type="email"
+                  name="email"
+                  placeholder="Your email address"
+                  required
+                  aria-label="Your email address"
+                />
+                <button type="submit" class="email-form__btn">Send My Full Report →</button>
+              </form>
+              <p class="email-gate__note" style="margin-top:12px;">No spam. One email with your report. Unsubscribe any time.</p>
+            </div>
+          </div>
+
+          <!-- Full report table (unlocked post-email) -->
+          <div class="full-report-block" id="full-report-block" style="display:none;">
+            <div class="full-report-cta">
+              <p>✅ Report unlocked. See every issue below.</p>
+              <a href="https://linkwhisper.com/?utm_source=free-tool&utm_medium=report&utm_campaign=internal-link-checker" class="btn-primary btn full-report-cta__btn" target="_blank" rel="noopener">
+                Fix These Issues with LinkWhisper →
+              </a>
+            </div>
+            <div class="table-scroll">
+              <table class="full-report-table" id="full-report-table">
+                <thead>
+                  <tr>
+                    <th>URL</th>
+                    <th>Links In</th>
+                    <th>Links Out</th>
+                    <th>Depth</th>
+                    <th>Issues</th>
+                  </tr>
+                </thead>
+                <tbody id="full-report-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Check another site -->
+          <div class="results-restart">
+            <button class="restart-btn" id="restart-btn">← Check Another Site</button>
+          </div>
         </div>
       </div>
     </div>
@@ -934,6 +1053,16 @@
           </div>
         </div>
 
+        <div class="faq__item" role="listitem">
+          <button class="faq__question" aria-expanded="false" aria-controls="faq-7">
+            Is there a free version of LinkWhisper?
+            <span class="faq__icon" aria-hidden="true">+</span>
+          </button>
+          <div class="faq__answer" id="faq-7" role="region">
+            <p>This tool — the Internal Link Checker — is completely free, no account required. It's built by the LinkWhisper team and shows you exactly where your internal linking is broken. The full LinkWhisper plugin starts at $77/year and comes with a 30-day money-back guarantee. There's no free tier of the plugin itself, but if you want to see what it does before paying, this checker is the fastest way to find the problems it fixes.</p>
+          </div>
+        </div>
+
       </div>
     </div>
   </section>
@@ -1023,6 +1152,304 @@
     document.querySelectorAll('.stat').forEach((el, i) => {
       el.style.transitionDelay = `${i * 0.1}s`;
     });
+
+    // ===== TOOL CORE — URL FORM → CRAWL → RESULTS =====
+    (function () {
+      const CRAWL_ENDPOINT = '/.netlify/functions/crawl';
+
+      // DOM refs — matched to actual HTML IDs
+      const urlForm        = document.getElementById('url-form');
+      const urlInput       = document.getElementById('url-input');
+      const stateInput     = document.getElementById('tool-input');
+      const stateScanning  = document.getElementById('tool-scanning');
+      const stateError     = document.getElementById('tool-error');
+      const stateResults   = document.getElementById('tool-results');
+      const scanningLabel  = document.getElementById('scanning-url-label');
+      const scanningStatus = document.getElementById('scanning-status');
+      const scanProgress   = document.getElementById('scanning-progress');
+      const errorRetryBtn  = document.getElementById('error-retry-btn');
+      const errorMsg       = document.getElementById('error-message');
+
+      // Results DOM refs
+      const scoreArc       = document.getElementById('score-arc');
+      const scoreNumber    = document.getElementById('score-number');
+      const scoreBadge     = document.getElementById('score-bucket-badge');
+      const scoreMessage   = document.getElementById('score-bucket-message');
+      const findingsList   = document.getElementById('findings-list');
+      const statsRow       = document.getElementById('results-stats-row');
+      const resultsGate    = document.getElementById('results-gate');
+      const gateForm       = document.getElementById('results-gate-form');
+      const fullBlock      = document.getElementById('full-report-block');
+      const fullTbody      = document.getElementById('full-report-tbody');
+      const restartBtn     = document.getElementById('restart-btn');
+
+      // State
+      let currentFull = null;
+
+      // ── Helpers ─────────────────────────────────────────────────────────
+
+      const ALL_STATES = ['tool-input', 'tool-scanning', 'tool-error', 'tool-results'];
+
+      function showState(id) {
+        ALL_STATES.forEach(sid => {
+          const el = document.getElementById(sid);
+          if (el) el.style.display = sid === id ? '' : 'none';
+        });
+      }
+
+      function scoreColor(score) {
+        if (score >= 85) return '#3BB273';
+        if (score >= 65) return '#F59E0B';
+        return '#EF4444';
+      }
+
+      /** Animate SVG arc from 0 → score (r=52, circumference≈326.7) */
+      function animateRing(score) {
+        if (!scoreArc) return;
+        const circ = 326.7;
+        const color = scoreColor(score);
+        scoreArc.style.stroke = color;
+        scoreArc.style.strokeDasharray = circ;
+
+        let start = null;
+        const duration = 900;
+        function step(ts) {
+          if (!start) start = ts;
+          const pct = Math.min((ts - start) / duration, 1);
+          const eased = 1 - Math.pow(1 - pct, 3);
+          const val = eased * score;
+          scoreArc.style.strokeDashoffset = circ - (val / 100) * circ;
+          if (scoreNumber) scoreNumber.textContent = Math.round(val);
+          if (pct < 1) requestAnimationFrame(step);
+          else if (scoreNumber) scoreNumber.textContent = score;
+        }
+        scoreArc.style.strokeDashoffset = circ;
+        if (scoreNumber) scoreNumber.textContent = 0;
+        requestAnimationFrame(step);
+      }
+
+      /** Fake progress bar animation while crawl runs */
+      function startProgressSim() {
+        if (!scanProgress) return null;
+        scanProgress.style.width = '0%';
+        scanProgress.style.transition = 'width 1.6s ease';
+        const waypoints = [
+          [8,   'Starting crawl…'],
+          [20,  'Fetching pages…'],
+          [35,  'Following internal links…'],
+          [50,  'Mapping link graph…'],
+          [65,  'Checking for orphaned pages…'],
+          [80,  'Calculating your score…'],
+          [92,  'Almost done…'],
+        ];
+        let idx = 0;
+        const iv = setInterval(() => {
+          if (idx < waypoints.length) {
+            const [pct, msg] = waypoints[idx++];
+            scanProgress.style.width = pct + '%';
+            if (scanningStatus) scanningStatus.textContent = msg;
+          } else {
+            clearInterval(iv);
+          }
+        }, 1800);
+        return iv;
+      }
+
+      const ISSUE_META = {
+        'orphan':       { icon: '🔴', label: 'Orphaned page',    color: '#EF4444' },
+        'dead-end':     { icon: '🟠', label: 'Dead-end page',    color: '#F59E0B' },
+        'low-density':  { icon: '🟡', label: 'Thin linking',     color: '#EAB308' },
+        'deep':         { icon: '🔵', label: 'Hard to reach',    color: '#3B82F6' },
+        'anchor':       { icon: '⚪', label: 'Generic anchor',   color: '#6B7280' },
+      };
+
+      function renderFindings(findings) {
+        if (!findingsList) return;
+        findingsList.innerHTML = '';
+        if (!findings || findings.length === 0) {
+          findingsList.innerHTML = '<li style="color:var(--lw-green);font-weight:600;list-style:none;padding:12px 0;">✅ No major issues found — great link structure!</li>';
+          return;
+        }
+        findings.slice(0, 3).forEach(f => {
+          const meta = ISSUE_META[f.type] || { icon: '⚠️', color: '#6B7280' };
+          const li = document.createElement('li');
+          li.className = 'finding-item';
+          li.innerHTML = `
+            <span class="finding-icon" style="color:${meta.color}" aria-hidden="true">${meta.icon}</span>
+            <div class="finding-body">
+              <strong class="finding-label">${f.label}</strong>
+              <p class="finding-detail">${f.detail}</p>
+            </div>`;
+          findingsList.appendChild(li);
+        });
+        if (findings.length > 3) {
+          const li = document.createElement('li');
+          li.className = 'findings-more';
+          li.innerHTML = `<em>+ ${findings.length - 3} more issue${findings.length - 3 !== 1 ? 's' : ''} revealed in your full report</em>`;
+          findingsList.appendChild(li);
+        }
+      }
+
+      function renderStats(metrics) {
+        if (!statsRow || !metrics) return;
+        statsRow.innerHTML = [
+          { label: 'Pages crawled',  val: metrics.pagesCrawled  ?? '—' },
+          { label: 'Orphaned pages', val: metrics.orphanPages   ?? '—' },
+          { label: 'Dead-end pages', val: metrics.deadEndPages  ?? '—' },
+          { label: 'Avg links/page', val: metrics.avgLinksPerPage ?? '—' },
+        ].map(({ label, val }) => `
+          <div class="results-stat">
+            <span class="results-stat__val">${val}</span>
+            <span class="results-stat__lbl">${label}</span>
+          </div>`).join('');
+      }
+
+      function renderResults(preview, full) {
+        currentFull = full;
+
+        animateRing(preview.score);
+
+        if (scoreBadge) {
+          scoreBadge.textContent = preview.bucketLabel || '';
+          scoreBadge.style.color = scoreColor(preview.score);
+        }
+        if (scoreMessage) scoreMessage.textContent = preview.bucketMessage || '';
+
+        renderFindings(preview.topFindings);
+        renderStats(preview.metrics);
+
+        // Reset gate state
+        if (resultsGate) resultsGate.style.display = '';
+        if (gateForm)    gateForm.style.display = '';
+        if (fullBlock)   fullBlock.style.display = 'none';
+
+        showState('tool-results');
+
+        setTimeout(() => {
+          document.getElementById('tool-results')?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }, 100);
+
+        trackEvent('tool_scan_complete', { score: preview.score, bucket: preview.bucket });
+      }
+
+      // ── Main scan ────────────────────────────────────────────────────────
+
+      async function runScan(rawUrl) {
+        if (scanningLabel) {
+          const displayUrl = rawUrl.replace(/^https?:\/\//, '').replace(/\/$/, '');
+          scanningLabel.innerHTML = `Scanning <strong>${displayUrl}</strong>…`;
+        }
+        showState('tool-scanning');
+
+        const progressTimer = startProgressSim();
+
+        try {
+          const res = await fetch(CRAWL_ENDPOINT, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ url: rawUrl }),
+          });
+
+          if (progressTimer) clearInterval(progressTimer);
+          if (scanProgress) {
+            scanProgress.style.transition = 'width 0.3s ease';
+            scanProgress.style.width = '100%';
+          }
+
+          if (!res.ok) throw new Error(`Server error ${res.status}`);
+
+          const data = await res.json();
+          if (data.error) throw new Error(data.error);
+          if (!data.preview) throw new Error('No data returned from scan.');
+
+          await new Promise(r => setTimeout(r, 350));
+          renderResults(data.preview, data.fullReport);
+
+        } catch (err) {
+          if (progressTimer) clearInterval(progressTimer);
+          console.error('Scan error:', err);
+          const msg = (err.message || '').toLowerCase();
+          if (errorMsg) {
+            if (msg.includes('crawl') || msg.includes('block') || msg.includes('javascript')) {
+              errorMsg.textContent = err.message;
+            } else {
+              errorMsg.textContent = "We couldn't reach that site. Make sure it's publicly accessible and try again.";
+            }
+          }
+          showState('tool-error');
+          trackEvent('tool_scan_error', { message: err.message });
+        }
+      }
+
+      // ── Event wiring ─────────────────────────────────────────────────────
+
+      if (urlForm) {
+        urlForm.addEventListener('submit', (e) => {
+          e.preventDefault();
+          const raw = (urlInput?.value || '').trim();
+          if (!raw) return;
+          trackEvent('tool_scan_start', { url: raw });
+          runScan(raw);
+        });
+      }
+
+      if (errorRetryBtn) {
+        errorRetryBtn.addEventListener('click', () => {
+          showState('tool-input');
+          urlInput?.focus();
+        });
+      }
+
+      if (restartBtn) {
+        restartBtn.addEventListener('click', () => {
+          currentFull = null;
+          if (fullBlock)  fullBlock.style.display = 'none';
+          if (fullTbody)  fullTbody.innerHTML = '';
+          showState('tool-input');
+          urlInput?.value && (urlInput.value = '');
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+      }
+
+      // ── Email gate ───────────────────────────────────────────────────────
+
+      async function handleGateSubmit(form) {
+        const emailInput = form.querySelector('input[type="email"]');
+        const email = emailInput?.value?.trim();
+        if (!email) return;
+
+        const btn = form.querySelector('button[type="submit"]');
+        if (btn) { btn.disabled = true; btn.textContent = 'Sending…'; }
+
+        // Submit to Kit.com if action is wired
+        const formAction = form.getAttribute('action');
+        if (formAction) {
+          try {
+            const fd = new FormData();
+            fd.append('email_address', email);
+            await fetch(formAction, { method: 'POST', body: fd, mode: 'no-cors' });
+          } catch { /* Kit.com CORS is expected — submission still registers */ }
+        }
+
+        trackEvent('tool_email_gate_submit', { has_scan: !!currentFull });
+
+        // Reveal full report if we have data
+        if (currentFull) {
+          revealFullReport();
+        } else {
+          if (btn) btn.textContent = '✓ Check your email';
+        }
+      }
+
+      if (gateForm) {
+        gateForm.addEventListener('submit', (e) => {
+          e.preventDefault();
+          handleGateSubmit(gateForm);
+        });
+      }
+
+      // Standalone below-fold email form
+      const standaloneF
   </script>
 
 </body>
