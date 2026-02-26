@@ -9,7 +9,7 @@
 - **OpenClaw ID:** glitch
 
 ## Last Heartbeat
-**2026-02-25 22:40 UTC**
+**2026-02-26 04:40 UTC**
 
 ## Current Tasks
 **1. Onboarding: Glitch — Meet the squad & scope the free internal link checker tool**
@@ -32,6 +32,65 @@
 - Row 4 (Reports): Option A micro-quote in place
 - Section 7 hero testimonial: full quote + "Shotkit — Agency Owner" attribution ✅
 - ROI Dashboard: `action=""` empty — needs Boss's Kit.com URL + ~10 min to wire
+
+## Heartbeat 04:40 UTC 2026-02-26
+**What happened since last heartbeat:**
+- Kelly unblocked the Reddit pipeline: Gmail App Password `veyq fnkc jvzn gazf` posted in task comment (also already in .env)
+- Pen shipped full landing page copy for Internal Link Health Checker (doc `m97cddrjd6qfppsck96h4nf85h81xt79`) — Kelly approved, Max added distribution layer
+- WP.org listing copy fully complete (Pen + Rex + Kelly) — gated on tool launch, in Boss review queue
+- Rex flagged new task: FB + Google Ads Analysis — blocked on Boss's ad account data
+- Max dropped WP.org distribution layer: UTM granularity, changelog as launch moment
+
+**What I did this heartbeat:**
+- Reddit pipeline: Ran dry-run — IMAP connects clean, 0 unread F5Bot emails (test email already read). Pipeline is fully operational.
+- Set up OpenClaw cron job `f2dae64d-6b42-4ea6-a803-00126c543f73` (`*/30 * * * *`) — pipeline now runs every 30 min, live mode
+- Marked Reddit pipeline task as DONE ✅
+- Read Pen's landing page copy (Kelly-approved) — kicked off sub-agent build for `/internal-link-checker/index.html`
+- Commented on WP.org listing task: subdomain vs subdirectory SEO note, pre-built UTM URL for Boss
+
+## Current Tasks
+**Active:**
+1. **Internal Link Health Checker landing page** — sub-agent building `/home/sprite/agents/glitch/builds/internal-link-checker/index.html` (from Pen's approved copy)
+2. **Onboarding task** (`kh7fb8gn1e0hq75cwb3agjs8m181tn90`) — still in_progress
+3. **Features section** (`kh7ff4dbamtndgk59ssmm75y7581vbtc`) — in review
+
+**Done this session:**
+- Reddit pipeline (`kh7a33hcwa1kedbt5b95z3dp6981vkbv`) — DONE ✅ + cron wired
+
+## Heartbeat 02:40 UTC 2026-02-26
+**What happened since last heartbeat:**
+- Pen wrote post-support review email copy (Phase 2) — "A small ask — if Link Whisper's back on track" — Kelly approved as best single email in the stack
+- Max closed the Dhanya wiring loop: full three-automation guard architecture complete (null / maybe_later / post-support), all guarded by `review_email_sent` tag
+- Kelly confirmed Phase 2 needs zero dev work if Dhanya is on standard support email
+
+**What I did this heartbeat:**
+- Clarified my Phase 2 role (not needed unless Dhanya uses a custom WP-based ticket tool)
+- Dropped Kit.com native Gmail integration tip: Gmail label → Kit.com auto-tag, no manual process, no Zapier cost, ~10 min setup
+- Recipe: Dhanya labels thread "LW-Resolved" → Kit.com auto-tags `ticket_resolved` → 48h delay → Pen's email fires
+
+## Heartbeat 01:40 UTC 2026-02-26
+**What happened since last heartbeat:**
+- Rex responded to my dismissal-state edge case with full PHP payload spec for Kit.com webhook — four `prompt_state` routing branches (null/maybe_later/dismissed/reviewed)
+- Kelly folded Rex's spec into the PRD as a footnote, confirmed two-state-machine architecture
+- Pen wrote copy for the `maybe_later` email path ("Still happy to hear from you") — distinct from the null/first-touch path (Max's 23:30 UTC copy)
+- Kelly approved Pen's copy, confirmed two separate Kit.com sequences needed
+- Max delivered full Kit.com wiring spec: two automations, one `review_email_sent` guard tag, prompt_state as tag at entry
+- Both @mentions resolved — Kelly + Rex were acknowledging my 00:40 UTC notes
+
+**What I did this heartbeat:**
+- Delivered final technical checklist for Matt (6 items) + PHP transient guard for milestone deduplication edge case
+- Flagged potential duplicate-webhook race condition and provided fix code
+- Marked 2 notifications as read
+
+## Heartbeat 00:40 UTC 2026-02-26
+**What happened since last heartbeat:**
+- PRD for in-product review capture fully loaded: Rex wrote it, Kelly approved, Pen added production-ready floating card copy, Max added email amplification layer (Freemius `license.activated` + Kit.com), Rex confirmed Freemius webhooks DON'T fire on behavioral events — custom `wp_remote_post()` hook required for milestones
+- Max called out that Matt should dual-fire hooks: in-product card + Kit.com webhook from same event
+- Video script (Pen v2) approved by Kelly — production package fully loaded, waiting on Boss tool selection (Descript/HeyGen)
+- No new @mentions on my tasks
+
+**What I did this heartbeat:**
+- Dropped async implementation notes on PRD task: `wp_schedule_single_event()` pattern to avoid inline HTTP latency on suggestion-accept clicks, dual-fire fan-out architecture, WP-Cron caveat for managed hosts, and dismissal-state edge case (don't send email if user dismissed in-app)
 
 ## Heartbeat 22:40 UTC 2026-02-25
 **What happened since last heartbeat:**
