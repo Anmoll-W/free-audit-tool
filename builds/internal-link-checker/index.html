@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Free Internal Link Checker for WordPress — Audit Your Site in 60 Seconds</title>
+  <meta name="description" content="Check your WordPress site's internal link health for free. See your score, find orphaned pages, and identify link gaps — no plugin install required. Takes 60 seconds." />
+  <link rel="canonical" href="https://linkwhisper.com/internal-link-checker" />
+
+  <!-- FAQPage JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Does this work on any WordPress site?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. As long as the site is publicly accessible, the checker can scan it. You don't need to install anything."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What's the difference between the free results and the full report?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The free results show your score and top 3 issues. The full report shows every issue we found — all orphaned pages, all broken links, all pages with link gaps — ranked by impact. Enter your email to get it."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is this tool connected to LinkWhisper the plugin?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. We built it because we kept hearing the same thing from WordPress site owners: 'I know internal linking matters, but I don't know where to start.' This tool answers that question. LinkWhisper answers the next one — how to fix it efficiently."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "My score is low. Is that bad?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "It means there's an opportunity. Most WordPress sites have internal link issues they don't know about — orphaned pages that Google can't find, high-value posts that nobody's linking to, old content that's lost its links over time. Low score = untapped SEO value."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How often should I check my internal link health?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Every time you publish 10+ new posts, or after a major site restructure. Internal link health degrades over time as you add content and things drift. A quarterly check is a good habit."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does this replace a full SEO audit?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No — it's focused specifically on internal linking. For a full technical SEO audit, you'd want a tool like Screaming Frog or Ahrefs site audit. This goes deeper on internal links than either of those tools."
+        }
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    /* ===== RESET & BASE ===== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --lw-green: #3BB273;
+      --lw-green-dark: #2D9A5F;
+      --lw-blue: #1A6FB5;
+      --lw-blue-light: #EBF4FF;
+      --lw-dark: #1A1F2E;
+      --lw-gray: #64748B;
+      --lw-gray-light: #F8FAFC;
+      --lw-border: #E2E8F0;
+      --lw-text: #334155;
+      --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --radius: 12px;
+      --shadow: 0 4px 24px rgba(0,0,0,0.08);
+      --shadow-lg: 0 12px 40px rgba(0,0,0,0.12);
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font);
+      color: var(--lw-text);
+      line-height: 1.6;
+      background: #fff;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+
+    /* ===== TYPOGRAPHY ===== */
+    h1 { font-size: clamp(2rem, 5vw, 3.25rem); font-weight: 800; line-height: 1.15; color: var(--lw-dark); }
+    h2 { font-size: clamp(1.5rem, 3vw, 2.25rem); font-weight: 700; line-height: 1.25; color: var(--lw-dark); }
+    h3 { font-size: 1.2rem; font-weight: 600; color: var(--lw-dark); }
+    p { color: var(--lw-gray); line-height: 1.7; }
+
+    /* ===== LAYOUT ===== */
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+    .section { padding: 80px 0; }
+    .section--gray { background: var(--lw-gray-light); }
+    .section--dark { background: var(--lw-dark); color: #fff; }
+    .section-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--lw-green);
+      margin-bottom: 12px;
+    }
+    .text-center { text-align: center; }
+
+    /* ===== BUTTONS ===== */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 28px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: 2px solid transparent;
+      white-space: nowrap;
+    }
+    .btn-primary {
+      background: var(--lw-green);
+      color: #fff;
+    }
+    .btn-primary:hover { background: var(--lw-green-dark); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(59,178,115,0.35); }
+    .btn-secondary {
+      background: transparent;
+      color: var(--lw-dark);
+      border-color: var(--lw-border);
+    }
+    .btn-secondary:hover { border-color: var(--lw-green); color: var(--lw-green); }
+    .btn-lg { padding: 18px 36px; font-size: 1.05rem; }
+
+    /* ===== NAV ===== */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--lw-border);
+    }
+    .nav__inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 68px;
+    }
+    .nav__logo {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--lw-dark);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .nav__logo-icon {
+      width: 32px;
+      height: 32px;
+      background: var(--lw-green);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 1rem;
+    }
+    .nav__actions { display: flex; align-items: center; gap: 12px; }
+    .nav__link {
+      font-weight: 500;
+      font-size: 0.9rem;
+      color: var(--lw-gray);
+      padding: 6px 12px;
+      border-radius: 6px;
+      transition: color 0.2s;
+    }
+    .nav__link:hover { color: var(--lw-dark); }
+
+    /* ===== HERO ===== */
+    .hero {
+      padding: 72px 0 80px;
+      background: linear-gradient(160deg, #f0fdf4 0%, #fff 60%);
+    }
+    .hero__inner {
+      max-width: 760px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .hero__badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #d1fae5;
+      color: #065f46;
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 100px;
+      margin-bottom: 24px;
+    }
+    .hero h1 { margin-bottom: 20px; }
+    .hero__sub {
+      font-size: clamp(1.05rem, 2.5vw, 1.25rem);
+      color: var(--lw-gray);
+      margin-bottom: 40px;
+      max-width: 580px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* ===== URL FORM ===== */
+    .url-form {
+      display: flex;
+      gap: 0;
+      max-width: 580px;
+      margin: 0 auto 20px;
+      box-shadow: var(--shadow-lg);
+      border-radius: 12px;
+      overflow: hidden;
+      border: 2px solid var(--lw-border);
+      background: #fff;
+      transition: border-color 0.2s;
+    }
+    .url-form:focus-within { border-color: var(--lw-green); }
+    .url-form__input {
+      flex: 1;
+      border: none;
+      outline: none;
+      padding: 16px 20px;
+      font-size: 1rem;
+      font-family: var(--font);
+      color: var(--lw-dark);
+      background: transparent;
+    }
+    .url-form__input::placeholder { color: #94a3b8; }
+    .url-form__btn {
+      background: var(--lw-green);
+      color: #fff;
+      border: none;
+      padding: 16px 24px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      font-family: var(--font);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.2s;
+    }
+    .url-form__btn:hover { background: var(--lw-green-dark); }
+
+    .trust-signals {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      font-size: 0.85rem;
+      color: var(--lw-gray);
+    }
+    .trust-signals span {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .trust-signals .check { color: var(--lw-green); font-weight: 700; }
+
+    @media (max-width: 540px) {
+      .url-form { flex-direction: column; border-radius: 12px; }
+      .url-form__btn { border-radius: 0 0 10px 10px; padding: 16px; }
+    }
+
+    /* ===== HOW IT WORKS ===== */
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 32px;
+      margin-top: 48px;
+    }
+    .step {
+      background: #fff;
+      border: 1px solid var(--lw-border);
+      border-radius: var(--radius);
+      padding: 32px;
+      position: relative;
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .step.visible { opacity: 1; transform: translateY(0); }
+    .step__num {
+      width: 40px;
+      height: 40px;
+      background: var(--lw-green);
+      color: #fff;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 1.1rem;
+      margin-bottom: 16px;
+    }
+    .step h3 { margin-bottom: 10px; }
+
+    /* ===== SCORE TIERS ===== */
+    .score-tiers {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+      margin-top: 48px;
+    }
+    .score-card {
+      border-radius: var(--radius);
+      padding: 28px;
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .score-card.visible { opacity: 1; transform: translateY(0); }
+    .score-card--green { background: #f0fdf4; border: 2px solid #bbf7d0; }
+    .score-card--yellow { background: #fefce8; border: 2px solid #fde68a; }
+    .score-card--red { background: #fef2f2; border: 2px solid #fecaca; }
+    .score-card__emoji { font-size: 2rem; margin-bottom: 12px; }
+    .score-card__range {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .score-card--green .score-card__range { color: #065f46; }
+    .score-card--yellow .score-card__range { color: #92400e; }
+    .score-card--red .score-card__range { color: #991b1b; }
+    .score-card h3 { margin-bottom: 10px; }
+    .score-card p { font-size: 0.95rem; }
+
+    /* ===== EMAIL GATE ===== */
+    .email-gate {
+      background: var(--lw-dark);
+      color: #fff;
+      padding: 80px 0;
+    }
+    .email-gate__inner {
+      max-width: 640px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .email-gate h2 { color: #fff; margin-bottom: 16px; }
+    .email-gate__sub { color: #94a3b8; margin-bottom: 40px; font-size: 1.05rem; }
+    .email-form {
+      display: flex;
+      gap: 0;
+      max-width: 480px;
+      margin: 0 auto 16px;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 2px solid #334155;
+      background: #0f172a;
+      transition: border-color 0.2s;
+    }
+    .email-form:focus-within { border-color: var(--lw-green); }
+    .email-form__input {
+      flex: 1;
+      border: none;
+      outline: none;
+      padding: 15px 18px;
+      font-size: 1rem;
+      font-family: var(--font);
+      color: #fff;
+      background: transparent;
+    }
+    .email-form__input::placeholder { color: #64748b; }
+    .email-form__btn {
+      background: var(--lw-green);
+      color: #fff;
+      border: none;
+      padding: 15px 22px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      font-family: var(--font);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.2s;
+    }
+    .email-form__btn:hover { background: var(--lw-green-dark); }
+    .email-gate__note { color: #64748b; font-size: 0.85rem; }
+
+    @media (max-width: 480px) {
+      .email-form { flex-direction: column; }
+      .email-form__btn { padding: 15px; }
+    }
+
+    /* ===== BRIDGE / HOW TO FIX ===== */
+    .bridge { padding: 80px 0; }
+    .bridge__inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: center;
+    }
+    @media (max-width: 768px) {
+      .bridge__inner { grid-template-columns: 1fr; gap: 40px; }
+    }
+    .bridge__copy h2 { margin-bottom: 24px; }
+    .bridge__copy p { margin-bottom: 16px; }
+    .bridge__copy p strong { color: var(--lw-dark); font-weight: 700; }
+    .bridge__copy .bridge__cta { margin-top: 32px; }
+    .bridge__cta-note { font-size: 0.85rem; color: var(--lw-gray); margin-top: 10px; }
+    .bridge__visual {
+      background: var(--lw-gray-light);
+      border: 1px solid var(--lw-border);
+      border-radius: var(--radius);
+      padding: 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .bridge__visual-label { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--lw-green); margin-bottom: 4px; }
+    .bridge__step-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+    }
+    .bridge__step-icon {
+      width: 36px;
+      height: 36px;
+      background: #fff;
+      border: 1px solid var(--lw-border);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+    .bridge__step-text { font-size: 0.9rem; }
+    .bridge__step-text strong { display: block; color: var(--lw-dark); font-weight: 600; margin-bottom: 2px; }
+    .bridge__step-text span { color: var(--lw-gray); }
+    .bridge__vs {
+      text-align: center;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--lw-gray);
+      padding: 8px 0;
+    }
+
+    /* ===== SOCIAL PROOF ===== */
+    .social-proof { padding: 80px 0; background: var(--lw-gray-light); }
+    .social-proof__inner { text-align: center; }
+    .social-proof h2 { margin-bottom: 48px; }
+    .testimonial {
+      background: #fff;
+      border: 1px solid var(--lw-border);
+      border-radius: var(--radius);
+      padding: 36px;
+      max-width: 680px;
+      margin: 0 auto 48px;
+      box-shadow: var(--shadow);
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .testimonial.visible { opacity: 1; transform: translateY(0); }
+    .testimonial__quote {
+      font-size: 1.15rem;
+      font-style: italic;
+      color: var(--lw-dark);
+      line-height: 1.7;
+      margin-bottom: 20px;
+    }
+    .testimonial__quote::before { content: '\201C'; }
+    .testimonial__quote::after { content: '\201D'; }
+    .testimonial__author {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--lw-gray);
+    }
+    .testimonial__author a { color: var(--lw-blue); }
+    .stats-row {
+      display: flex;
+      justify-content: center;
+      gap: 48px;
+      flex-wrap: wrap;
+    }
+    .stat {
+      text-align: center;
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .stat.visible { opacity: 1; transform: translateY(0); }
+    .stat__num {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--lw-dark);
+      display: block;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .stat__label { font-size: 0.85rem; color: var(--lw-gray); }
+
+    /* ===== FAQ ===== */
+    .faq { padding: 80px 0; }
+    .faq h2 { text-align: center; margin-bottom: 48px; }
+    .faq__list { max-width: 720px; margin: 0 auto; }
+    .faq__item {
+      border-bottom: 1px solid var(--lw-border);
+    }
+    .faq__item:first-child { border-top: 1px solid var(--lw-border); }
+    .faq__question {
+      width: 100%;
+      background: none;
+      border: none;
+      text-align: left;
+      padding: 22px 0;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--lw-dark);
+      font-family: var(--font);
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+    }
+    .faq__question:hover { color: var(--lw-green); }
+    .faq__icon {
+      width: 24px;
+      height: 24px;
+      border: 2px solid var(--lw-border);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: transform 0.25s, border-color 0.25s;
+      font-size: 0.75rem;
+      color: var(--lw-gray);
+    }
+    .faq__item[open] .faq__icon,
+    .faq__question[aria-expanded="true"] .faq__icon {
+      transform: rotate(45deg);
+      border-color: var(--lw-green);
+      color: var(--lw-green);
+    }
+    .faq__answer {
+      overflow: hidden;
+      max-height: 0;
+      transition: max-height 0.35s ease, padding 0.25s;
+      padding: 0;
+    }
+    .faq__answer.open {
+      max-height: 400px;
+      padding-bottom: 22px;
+    }
+    .faq__answer p { font-size: 0.97rem; }
+
+    /* ===== FINAL CTA ===== */
+    .final-cta {
+      background: linear-gradient(135deg, #1a1f2e 0%, #0d3b24 100%);
+      padding: 100px 0;
+      text-align: center;
+      color: #fff;
+    }
+    .final-cta h2 { color: #fff; margin-bottom: 16px; }
+    .final-cta__sub { color: #94a3b8; font-size: 1.1rem; margin-bottom: 40px; }
+    .final-cta__actions {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+    .final-cta__note { color: #64748b; font-size: 0.85rem; }
+    .final-cta__secondary {
+      font-size: 0.9rem;
+      color: #64748b;
+    }
+    .final-cta__secondary a {
+      color: #94a3b8;
+      text-decoration: underline;
+      text-decoration-color: #334155;
+    }
+    .final-cta__secondary a:hover { color: #fff; }
+
+    /* ===== FOOTER ===== */
+    .footer {
+      background: var(--lw-dark);
+      border-top: 1px solid #1e293b;
+      padding: 32px 0;
+    }
+    .footer__inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .footer__copy { font-size: 0.85rem; color: #475569; }
+    .footer__links {
+      display: flex;
+      gap: 20px;
+      font-size: 0.85rem;
+    }
+    .footer__links a { color: #475569; transition: color 0.2s; }
+    .footer__links a:hover { color: #94a3b8; }
+
+    /* ===== ANIMATIONS ===== */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .hero__inner { animation: fadeUp 0.6s ease both; }
+  </style>
+</head>
+
+<body>
+
+  <!-- NAV -->
+  <nav class="nav" role="navigation" aria-label="Main">
+    <div class="container">
+      <div class="nav__inner">
+        <a href="https://linkwhisper.com" class="nav__logo">
+          <div class="nav__logo-icon">⚡</div>
+          Link Whisper
+        </a>
+        <div class="nav__actions">
+          <a href="#hero" class="nav__link">Check My Site</a>
+          <a href="https://linkwhisper.com/pricing" class="btn btn-primary" style="padding: 10px 20px; font-size: 0.9rem;">Start Free Trial →</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" id="hero">
+    <div class="container">
+      <div class="hero__inner">
+        <div class="hero__badge">
+          🔗 Free Tool — No Install Required
+        </div>
+        <h1>Your internal links are either building authority — or leaking it.</h1>
+        <p class="hero__sub">Find out which one is true for your site. Free. No plugin required. Takes 60 seconds.</p>
+
+        <!-- URL Input Form — action="" pending Matt/Boss wiring -->
+        <form class="url-form" action="" method="GET" aria-label="Site URL checker">
+          <input
+            class="url-form__input"
+            type="url"
+            name="url"
+            placeholder="Enter your WordPress site URL"
+            required
+            aria-label="Your WordPress site URL"
+          />
+          <button type="submit" class="url-form__btn">Check My Internal Links →</button>
+        </form>
+
+        <div class="trust-signals">
+          <span><span class="check">✓</span> No login required</span>
+          <span><span class="check">✓</span> No plugin to install</span>
+          <span><span class="check">✓</span> Works on any WordPress site</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="section section--gray">
+    <div class="container">
+      <div class="text-center">
+        <div class="section-label">The Process</div>
+        <h2>Three steps. No friction.</h2>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="step__num">1</div>
+          <h3>Enter your URL</h3>
+          <p>Type in any WordPress site URL — your homepage, a category page, or the whole domain. We scan what you point us at.</p>
+        </div>
+        <div class="step">
+          <div class="step__num">2</div>
+          <h3>We audit your internal link health</h3>
+          <p>Our crawler checks for orphaned pages (no internal links pointing to them), broken internal links, pages with too many or too few links, and pages that could rank better with smarter linking.</p>
+        </div>
+        <div class="step">
+          <div class="step__num">3</div>
+          <h3>You get your score + top issues</h3>
+          <p>We show you a score out of 100, your most critical issues, and what to do about each one. The top 3 issues are free. The full report requires an email — and it's still free.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHAT YOUR SCORE MEANS -->
+  <!-- [PENDING DEV] Score tiers — update once tool output format confirmed. Ranges (80-100 / 50-79 / 0-49) are placeholder — adjust to match actual scoring logic. -->
+  <section class="section">
+    <div class="container">
+      <div class="text-center">
+        <div class="section-label">Score Breakdown</div>
+        <h2>What your score means</h2>
+      </div>
+      <div class="score-tiers">
+        <div class="score-card score-card--green">
+          <div class="score-card__emoji">🟢</div>
+          <div class="score-card__range">Score 80–100</div>
+          <h3>Healthy</h3>
+          <p>Your internal link structure is working. A few optimizations could still move rankings — check the full report for specific opportunities.</p>
+        </div>
+        <div class="score-card score-card--yellow">
+          <div class="score-card__emoji">🟡</div>
+          <div class="score-card__range">Score 50–79</div>
+          <h3>Needs Work</h3>
+          <p>There are gaps that are likely costing you traffic. Orphaned pages, weak hub pages, or unlinked high-value content. Fixable — but worth prioritizing.</p>
+        </div>
+        <div class="score-card score-card--red">
+          <div class="score-card__emoji">🔴</div>
+          <div class="score-card__range">Score 0–49</div>
+          <h3>Critical Issues</h3>
+          <p>Your internal link structure is actively hurting your rankings. Search engines can't find important pages. Fix these first before anything else.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EMAIL GATE -->
+  <section class="email-gate" id="full-report">
+    <div class="container">
+      <div class="email-gate__inner">
+        <div class="section-label" style="color: #34d399;">Full Report</div>
+        <h2>Get your full report — free.</h2>
+        <p class="email-gate__sub">The top 3 issues are visible above. Your full report shows every problem we found, ranked by impact, with specific URLs and fix recommendations.</p>
+
+        <!-- Email gate form — action="" pending Kit.com URL from Boss (tag: free-tool-checker-user) -->
+        <form class="email-form" action="" method="POST" aria-label="Email gate for full report">
+          <input
+            class="email-form__input"
+            type="email"
+            name="email"
+            placeholder="Enter your email to get the full report"
+            required
+            aria-label="Your email address"
+          />
+          <button type="submit" class="email-form__btn">Send My Full Report →</button>
+        </form>
+        <p class="email-gate__note">We'll email you the full report instantly. You'll also get occasional internal linking tips — unsubscribe any time. No spam, obviously.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW TO FIX BRIDGE SECTION -->
+  <section class="bridge">
+    <div class="container">
+      <div class="bridge__inner">
+        <div class="bridge__copy">
+          <div class="section-label">The Fix</div>
+          <h2>Now you know what's broken. Here's how to fix it — fast.</h2>
+          <p>Finding internal link problems is the easy part. Most WordPress SEOs spend hours manually adding links, one post at a time. They open each post in the editor, remember what other posts are relevant, type out the anchor text, paste the URL, repeat.</p>
+          <p>For a 50-post site, that's an afternoon. For a 200-post site, it's a week of work you'll need to redo every few months.</p>
+          <p><strong>There's a different way.</strong></p>
+          <p>LinkWhisper scans your site, finds where you should be linking, and suggests the right link in context — the actual sentence, the actual anchor text, already written. You review and click Accept. That's it.</p>
+          <p>Most users cut their internal linking time from hours to minutes. The AI doesn't just match keywords — it reads context. "Best running shoes" and "how to break in new running shoes" are related. LinkWhisper figures that out.</p>
+          <div class="bridge__cta">
+            <a href="https://linkwhisper.com/pricing" class="btn btn-primary btn-lg">Try LinkWhisper Free →</a>
+            <p class="bridge__cta-note">7-day free trial. No card required.</p>
+          </div>
+        </div>
+
+        <div class="bridge__visual" aria-hidden="true">
+          <div class="bridge__visual-label">Without LinkWhisper</div>
+          <div class="bridge__step-row">
+            <div class="bridge__step-icon">📝</div>
+            <div class="bridge__step-text">
+              <strong>Open each post manually</strong>
+              <span>One by one. In the WordPress editor.</span>
+            </div>
+          </div>
+          <div class="bridge__step-row">
+            <div class="bridge__step-icon">🧠</div>
+            <div class="bridge__step-text">
+              <strong>Try to remember relevant posts</strong>
+              <span>Hope you know your own content well enough.</span>
+            </div>
+          </div>
+          <div class="bridge__step-row">
+            <div class="bridge__step-icon">⌨️</div>
+            <div class="bridge__step-text">
+              <strong>Manually type anchor text + URL</strong>
+              <span>Repeat for every post. Forever.</span>
+            </div>
+          </div>
+          <div class="bridge__vs">vs.</div>
+          <div class="bridge__visual-label">With LinkWhisper</div>
+          <div class="bridge__step-row">
+            <div class="bridge__step-icon">🔍</div>
+            <div class="bridge__step-text">
+              <strong>Run a scan</strong>
+              <span>LW reads your entire site automatically.</span>
+            </div>
+          </div>
+          <div class="bridge__step-row">
+            <div class="bridge__step-icon">💡</div>
+            <div class="bridge__step-text">
+              <strong>Review smart suggestions</strong>
+              <span>Right sentence. Right anchor. Already written.</span>
+            </div>
+          </div>
+          <div class="bridge__step-row">
+            <div class="bridge__step-icon">✅</div>
+            <div class="bridge__step-text">
+              <strong>Click Accept</strong>
+              <span>That's it. Link added. Move on.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SOCIAL PROOF -->
+  <section class="social-proof">
+    <div class="container">
+      <div class="social-proof__inner">
+        <h2>Used by 50,000+ WordPress sites</h2>
+
+        <div class="testimonial">
+          <p class="testimonial__quote">Link Whisper has saved me thousands of dollars in SEO consulting fees. It makes internal linking so simple.</p>
+          <p class="testimonial__author">— Jared Bauman, <a href="https://shotkit.com" target="_blank" rel="noopener">Shotkit</a> — Agency Owner</p>
+        </div>
+
+        <div class="stats-row">
+          <div class="stat">
+            <span class="stat__num">50,000+</span>
+            <span class="stat__label">Active sites</span>
+          </div>
+          <div class="stat">
+            <span class="stat__num">[X]</span>
+            <span class="stat__label">Links built</span>
+          </div>
+          <div class="stat">
+            <span class="stat__num">[X]</span>
+            <span class="stat__label">Minutes saved per site</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="faq">
+    <div class="container">
+      <h2>Frequently asked questions</h2>
+      <div class="faq__list" role="list">
+
+        <div class="faq__item" role="listitem">
+          <button class="faq__question" aria-expanded="false" aria-controls="faq-1">
+            Does this work on any WordPress site?
+            <span class="faq__icon" aria-hidden="true">+</span>
+          </button>
+          <div class="faq__answer" id="faq-1" role="region">
+            <p>Yes. As long as the site is publicly accessible, the checker can scan it. You don't need to install anything.</p>
+          </div>
+        </div>
+
+        <div class="faq__item" role="listitem">
+          <button class="faq__question" aria-expanded="false" aria-controls="faq-2">
+            What's the difference between the free results and the full report?
+            <span class="faq__icon" aria-hidden="true">+</span>
+          </button>
+          <div class="faq__answer" id="faq-2" role="region">
+            <p>The free results show your score and top 3 issues. The full report shows every issue we found — all orphaned pages, all broken links, all pages with link gaps — ranked by impact. Enter your email to get it.</p>
+          </div>
+        </div>
+
+        <div class="faq__item" role="listitem">
+          <button class="faq__question" aria-expanded="false" aria-controls="faq-3">
+            Is this tool connected to LinkWhisper the plugin?
+            <span class="faq__icon" aria-hidden="true">+</span>
+          </button>
+          <div class="faq__answer" id="faq-3" role="region">
+            <p>Yes. We built it because we kept hearing the same thing from WordPress site owners: "I know internal linking matters, but I don't know where to start." This tool answers that question. LinkWhisper answers the next one — how to fix it efficiently.</p>
+          </div>
+        </div>
+
+        <div class="faq__item" role="listitem">
+          <button class="faq__question" aria-expanded="false" aria-controls="faq-4">
+            My score is low. Is that bad?
+            <span class="faq__icon" aria-hidden="true">+</span>
+          </button>
+          <div class="faq__answer" id="faq-4" role="region">
+            <p>It means there's an opportunity. Most WordPress sites have internal link issues they don't know about — orphaned pages that Google can't find, high-value posts that nobody's linking to, old content that's lost its links over time. Low score = untapped SEO value.</p>
+          </div>
+        </div>
+
+        <div class="faq__item" role="listitem">
+          <button class="faq__question" aria-expanded="false" aria-controls="faq-5">
+            How often should I check my internal link health?
+            <span class="faq__icon" aria-hidden="true">+</span>
+          </button>
+          <div class="faq__answer" id="faq-5" role="region">
+            <p>Every time you publish 10+ new posts, or after a major site restructure. Internal link health degrades over time as you add content and things drift. A quarterly check is a good habit.</p>
+          </div>
+        </div>
+
+        <div class="faq__item" role="listitem">
+          <button class="faq__question" aria-expanded="false" aria-controls="faq-6">
+            Does this replace a full SEO audit?
+            <span class="faq__icon" aria-hidden="true">+</span>
+          </button>
+          <div class="faq__answer" id="faq-6" role="region">
+            <p>No — it's focused specifically on internal linking. For a full technical SEO audit, you'd want a tool like Screaming Frog or Ahrefs site audit. This goes deeper on internal links than either of those tools.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL CTA -->
+  <section class="final-cta">
+    <div class="container">
+      <h2>Your internal links could be doing more work.</h2>
+      <p class="final-cta__sub">50,000+ WordPress sites use LinkWhisper to fix what this tool finds — in minutes, not hours.</p>
+      <div class="final-cta__actions">
+        <a href="https://linkwhisper.com/pricing" class="btn btn-primary btn-lg">Start Free Trial →</a>
+        <p class="final-cta__note">7 days free. Cancel any time. No card required.</p>
+        <p class="final-cta__secondary">Just here for the checker? <a href="#hero">Run another scan →</a></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__inner">
+        <span class="footer__copy">© 2025 Link Whisper LLC. All rights reserved.</span>
+        <div class="footer__links">
+          <a href="https://linkwhisper.com">linkwhisper.com</a>
+          <a href="https://linkwhisper.com/pricing">Pricing</a>
+          <a href="https://linkwhisper.com/blog">Blog</a>
+          <a href="https://linkwhisper.com/support">Support</a>
+          <a href="https://linkwhisper.com/privacy">Privacy</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // ===== FAQ ACCORDION =====
+    document.querySelectorAll('.faq__question').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const expanded = btn.getAttribute('aria-expanded') === 'true';
+        const answerId = btn.getAttribute('aria-controls');
+        const answer = document.getElementById(answerId);
+
+        // Close all others
+        document.querySelectorAll('.faq__question').forEach(b => {
+          b.setAttribute('aria-expanded', 'false');
+          const id = b.getAttribute('aria-controls');
+          document.getElementById(id)?.classList.remove('open');
+        });
+
+        // Toggle current
+        if (!expanded) {
+          btn.setAttribute('aria-expanded', 'true');
+          answer.classList.add('open');
+        }
+      });
+
+      // Keyboard support
+      btn.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          btn.click();
+        }
+      });
+    });
+
+    // ===== INTERSECTION OBSERVER ANIMATIONS =====
+    const observerOpts = { threshold: 0.15 };
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, observerOpts);
+
+    document.querySelectorAll('.step, .score-card, .testimonial, .stat').forEach(el => {
+      observer.observe(el);
+    });
+
+    // Stagger steps / score cards
+    document.querySelectorAll('.step').forEach((el, i) => {
+      el.style.transitionDelay = `${i * 0.1}s`;
+    });
+    document.querySelectorAll('.score-card').forEach((el, i) => {
+      el.style.transitionDelay = `${i * 0.1}s`;
+    });
+    document.querySelectorAll('.stat').forEach((el, i) => {
+      el.style.transitionDelay = `${i * 0.1}s`;
+    });
+  </script>
+
+</body>
+</html>
