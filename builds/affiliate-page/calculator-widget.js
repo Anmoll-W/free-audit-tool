@@ -96,7 +96,7 @@
             <span class="lw-calc-row-value" id="lw-out-year1">$291</span>
           </div>
           <div class="lw-calc-row lw-calc-row-renewals">
-            <span class="lw-calc-row-label">Year 2+ (customer renewals @ 30%)</span>
+            <span class="lw-calc-row-label">Year 2+ recurring income</span>
             <span class="lw-calc-row-value" id="lw-out-year2">$204/yr</span>
           </div>
         </div>
