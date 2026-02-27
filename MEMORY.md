@@ -9,7 +9,7 @@
 - **OpenClaw ID:** glitch
 
 ## Last Heartbeat
-**2026-02-26 22:40 UTC**
+**2026-02-27 00:40 UTC**
 
 ## Current Tasks
 **1. Onboarding: Glitch — Meet the squad & scope the free internal link checker tool**
@@ -32,6 +32,52 @@
 - Row 4 (Reports): Option A micro-quote in place
 - Section 7 hero testimonial: full quote + "Shotkit — Agency Owner" attribution ✅
 - ROI Dashboard: `action=""` empty — needs Boss's Kit.com URL + ~10 min to wire
+
+## Heartbeat 00:40 UTC 2026-02-27
+
+**What happened since last heartbeat (23:40 UTC → 00:40 UTC):**
+- Rex (00:10 UTC): Cookie duration CONFIRMED 30 days — live fetch of linkwhisper.com/become-an-affiliate/ page. Not a default guess. Closes the cookie speculation.
+- Rex: Added affiliate quote framing for Boss — longevity angle ("wrote a review in 2022, still earning in 2026") is the key differentiator vs. LinkBoss
+- Kelly synthesis (00:15 UTC): Cookie confirmed. Boss decision still needed to bump to 60 days. Pen's page one find/replace away from deploy.
+- Pen (00:20 UTC): $97 price fix applied in doc — v2 is source of truth. Commission math updated ($29.10/sale).
+- Max (00:30 UTC): Acked all drops. Flagged: old live `/become-an-affiliate/` page must be REPLACED not supplemented — duplicate URL with conflicting cookie = support tickets + PageRank split.
+- Kelly greenlighted my calculator build at 23:45 UTC — I was waiting for that. Built it.
+
+**What I did this heartbeat:**
+- Built commission calculator widget: `builds/affiliate-page/calculator-widget.js`
+- Built preview test harness: `builds/affiliate-page/calculator-preview.html`
+- Math: $97 × 30% = $29.10/sale, 0.5% CTR, 1% CR conservative / 2% optimistic toggle
+- Year 2+ renewals row (70% retention) = silent LinkBoss differentiator in the UI
+- Caught and fixed a division-by-12 bug in initial draft before committing
+- Clarified Max's 301 redirect concern: issue is PageRank split (not de-indexing), also flagged to check for hardcoded `/affiliate/` or `/affiliates/` shortlinks in plugin/emails
+- Committed to git: `feat: affiliate commission calculator widget build`
+- Dropped full build comment on affiliate task @Pen @Kelly @Max
+
+**Calculator math at 10k readers:**
+- Conservative (1% CR): $15/mo, $175/yr, $122/yr renewals
+- Optimistic (2% CR): $29/mo, $349/yr, $244/yr renewals
+
+**Status:**
+- Calculator widget: ✅ DONE — ready for Pen to review copy framing, Matt to deploy with page
+- `/become-an-affiliate/` page build: waiting on Boss cookie confirmation → Pen fills placeholders → I build the full HTML (~2hrs)
+- Features section: `review` — still waiting Boss sign-off
+- Anam Hassan window: ~11 hours remaining (closes 12:00 UTC Feb 27) — Boss action only
+
+## Heartbeat 23:40 UTC 2026-02-26
+**What happened since last heartbeat:**
+- Pen delivered full `/become-an-affiliate/` page copy draft (23:20 UTC) — doc m9771dwj8d7pr60037fs58d6as81wn60, tagged me to build against it
+- Kelly synthesis (23:30 UTC): page structurally complete, two gates before deploy — (1) Boss confirm cookie duration, (2) $97 price patch ($77 appears 3× in Pen's doc, stale)
+- Max (23:31 UTC): flagged calculator math needs updating — $97 base lifts conservative output from ~$23/mo to ~$29/mo per closing customer, Year 1 total lifts ~$564 → ~$699
+- ⚠️ Max flagged: Anam Hassan (wordpress.com/blog) outreach window closes ~12:00 UTC Feb 27 — Boss action only
+- Rex + Kelly: approved conservative/optimistic dual-scenario for calculator (1% CR default, 2% toggle)
+
+**What I did this heartbeat:**
+- Read Pen's affiliate page copy doc in full — confirmed structure, implementation notes, placeholder positions
+- Updated calculator spec in my head: $97 base price, conservative 1% CR default (Rex's call), optimistic 2% toggle
+- Dropped detailed build status comment on affiliate task @Pen @Kelly @Max — confirmed calculator can build now (no new gates), offered to start widget this cycle
+- Key insight: calculator JS can use `[COOKIE DURATION]` as a JS variable — I don't need Boss's cookie confirmation to start the widget build
+
+**Status:** Waiting on Kelly green-light to start commission calculator widget build (~45 min). All other builds deploy-ready pending Boss gates.
 
 ## Heartbeat 22:40 UTC 2026-02-26
 **What happened since last heartbeat:**
