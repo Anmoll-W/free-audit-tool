@@ -9,7 +9,7 @@
 - **OpenClaw ID:** glitch
 
 ## Last Heartbeat
-**2026-02-27 03:40 UTC**
+**2026-02-27 18:40 UTC**
 
 ## Current Tasks
 **1. Onboarding: Glitch — Meet the squad & scope the free internal link checker tool**
@@ -32,6 +32,299 @@
 - Row 4 (Reports): Option A micro-quote in place
 - Section 7 hero testimonial: full quote + "Shotkit — Agency Owner" attribution ✅
 - ROI Dashboard: `action=""` empty — needs Boss's Kit.com URL + ~10 min to wire
+
+## Heartbeat 18:40 UTC 2026-02-27
+
+**What happened since last heartbeat (17:40 → 18:40 UTC):**
+- Rex (18:10 UTC): seoshouts.com SERP intel confirmed — their article "7 Best Internal Link Checker Tools (2026)" frames LW as a secondary mention alongside ILJ ("suggest links as you write"). Their own tool ranks #1. This frame is now propagating to roundup authors doing research.
+- Pen (18:20 UTC): Flagged the seoshouts framing gap → proposed one-line fix to How It Works Step 2 on free tool landing page: "entire published library — not just what you're writing right now."
+- Kelly (18:30 UTC): Approved Pen's fix, @Dev green-light to ship.
+- Max (18:30 UTC): Acked Kelly approval, noted the "entire published library" phrase should also appear in outreach Email 1 subject line candidates + flagged hero sub-headline review.
+
+**What I did this heartbeat:**
+- Shipped Pen's How It Works Step 2 copy fix to free tool landing page HTML (commit `d291587`)
+- Checked hero H1/sub — confirmed already proactive-framed, adding "not just while you're writing" to hero would front-load competitor context too early. How It Works is the right placement. Shared rationale in task comment.
+- Commented on free tool landing page task with ship confirmation.
+
+**Status:**
+- Free tool landing page: deploy-ready, single gate = Boss's free tool URL ✅
+- lw-vs-linksy.html: deploy-ready ✅
+- Both assigned tasks (homepage features + automated review monitoring): `review`, waiting on Boss
+
+## Heartbeat 17:40 UTC 2026-02-27
+
+**What happened since last heartbeat (16:40 → 17:40 UTC):**
+- Rex (17:10 UTC): Linksy post-LTD pricing confirmed (techoclock Feb 2025 data): 1 site $59/yr, 3 sites $118/yr, 10 sites $219/yr. CRITICAL: `linksyai.com/pricing` is a live 404 — confirmed at 17:10 UTC. LW is cheaper at 3+ sites.
+- Kelly (17:15 UTC): Three actions: (1) Dev update lw-vs-linksy.html pricing cell with Rex's data + 404 caveat, (2) Max RSA "Linksy went recurring" variant still clean + 3-site surprise angle, (3) Pen add 404 credibility sentence to comparison narrative.
+- Pen (17:20 UTC): @Dev with exact copy for both edits — 404 sentence placement + hardened anchor text cells (LW generates / Linksy analyzes).
+- Max (17:30 UTC): RSA Tier 1 variant `3 Sites? LW Costs Less Than Linksy.` (30 chars) confirmed. Linksy 404 pricing page = outreach pitch angle for roundup authors featuring Linksy. v14 outreach doc complete.
+
+**What I did this heartbeat:**
+- Shipped all edits to lw-vs-linksy.html:
+  - Pricing table rebuilt: correct LW tiers ($97/$147/$197), Linksy tilde-caveated pricing, "LW is cheaper here" callouts at 3+/10-site tiers, LTD expiry row, 404 pricing page row
+  - Bonus catch: old table had wrong LW prices ($197/$297/$497) — fixed
+  - Anchor text row hardened: LW "generates AI-diverse anchor text" / Linksy "analyzes existing only"
+  - 404 credibility sentence added after LTD note in pricing narrative
+  - TL;DR + FAQ inline text + JSON-LD schema all updated with scale pricing angle + 404 signal
+- Commented on ads task with full diff summary + bonus note for Max re: RSA variant now fully supported by comparison table
+
+**Status:**
+- lw-vs-linksy.html: fully updated, deploy-ready ✅
+- Both assigned tasks: `review`, waiting on Boss
+
+## Heartbeat 16:40 UTC 2026-02-27
+
+**What happened since last heartbeat (15:40 → 16:40 UTC):**
+- Rex (16:10 UTC): NEW competitive intel — Linksy's lifetime deal has EXPIRED (techoclock confirmed Feb 21, 2026). Also flagged anchor text analysis as techoclock's one LW criticism via Linksy review. Techoclock now covering Linksy, Linkbot, AND LW — most deeply embedded independent reviewer in the space.
+- Kelly (16:15 UTC): Three actions from Rex's Linksy intel: (1) add LTD-ended note to lw-vs-linksy.html pricing section, (2) audit LW anchor text reporting claim in comparison page, (3) Techoclock outreach pitch enhancement with Linksy LTD angle.
+- Pen (16:20 UTC): Both Kelly's edits done in lw-vs-linksy.html — LTD note added + anchor text row added with ⚠️ hedge pending Rex confirmation.
+- Kelly (16:30 UTC): Asked Rex to confirm LW Premium anchor text data depth vs Linksy's.
+- Max (16:30 UTC): Linksy LTD expiry = timing unlock for outreach — ex-Linksy LTD buyers are shopping, roundup authors with LTD recommendations are now outdated. Proposes RSA variant: "Linksy went recurring. LW is still $97/yr."
+
+**What I did this heartbeat:**
+- Researched LW's anchor text capabilities: techoclock's OWN LW review calls out "Anchor texts diversification from the Link suggestions function" as LW differentiator vs ILJ. LW homepage confirms AI-generated diverse anchor text. Distinction: LW GENERATES diverse anchors, Linksy ANALYZES existing ones — different features, not comparable.
+- Confirmed Pen can harden the LW anchor text cell without overclaiming.
+- Commented on ads task (kh77h8bbpk57mfbd8g15qbj83x81wd7h) with anchor text research + Linksy distribution ack.
+- Flagged: if Rex confirms Linksy's post-LTD pricing, can update lw-vs-linksy.html pricing table in 5 min.
+
+**Status:**
+- Two assigned tasks: both `review`, waiting on Boss
+- lw-vs-linkbot.html: fully pre-staged, 90 min from live on Boss's greenlight
+- lw-vs-linksy.html: deploy-ready + new LTD note + anchor text row added ✅
+- Meta Pixel: needs Boss's 15-digit Pixel ID + Matt confirmation on base pixel
+
+## Heartbeat 15:40 UTC 2026-02-27
+
+**What happened since last heartbeat (14:40 → 15:40 UTC):**
+- Rex (15:10 UTC): Independently confirmed survivezeal.com liability — editorial overlay promoting Linksy #1, actively redirecting visitors toward Linkbot. Also found 2 clean replacement citations: bloggingjoy.com (blockquote source, first-person ROI quote) + techoclock.com (credibility cite, "Still #1" Feb 2026 title). WP.org scan clean ✅.
+- Kelly (15:15 UTC): Survivezeal drop confirmed. Brief is clean. Single gate unchanged: Boss approval + Meta Pixel ID. "Not a blocker for Dev's build — can update HTML post-deploy."
+- Max (15:30 UTC): v13 agency P.S. variant delivered. Routes Kinsta + Backlinko + ILJ Seq D targets to agency liability framing. Fire gate: comparison page live first. Outreach doc updating to v13.
+
+**What I did this heartbeat:**
+- Acked Kelly/Rex/Max @mentions on ads task (15:40 UTC)
+- Clarified Meta Pixel technical requirements for Boss: Pixel ID (15-digit) + whether Matt has base pixel site-wide already (determines if I add full base code or just ViewContent event)
+- Added `[COMPARISON_URL]` token reminder to mental build spec — will embed in lw-vs-linkbot.html at deploy time so Max's agency P.S. doesn't need a separate swap step
+- Flagged citation handling: will deploy with `[CITATION_PENDING]` placeholder if Boss greenlight lands before Pen has final copy text — 5-min swap post-deploy, no hold needed
+
+**Status:**
+- Both assigned tasks: `review`, holding steady, waiting on Boss
+- lw-vs-linkbot.html: fully pre-staged, 90 min from live on Boss's go signal
+- Meta Pixel: needs Boss's 15-digit Pixel ID + Matt confirmation on whether base pixel is site-wide
+
+## Heartbeat 14:40 UTC 2026-02-27
+
+**What happened since last heartbeat (13:40 → 14:40 UTC):**
+- Rex (14:10 UTC): Live pull from Linkbot's own comparison page (`library.linkbot.com/link-whisper-vs-linkbot/`). Key findings: they never disclose link persistence on cancel, no pricing comparison, frame LW as "manual review required." Also confirmed Linkbot has 6-article coordinated content blitz (LW Review, LW vs Linkbot, LW Alternatives, etc.) all indexing now. Third-party coverage: survivezeal.com (July 2025) called LW "best overall" but site now has editorial update promoting Linksy AI as #1.
+- Pen (14:20 UTC): Upgraded copy brief to target 4 queries (vs linkbot / linkbot alternatives / lw review 2026 / lw alternatives 2026). Added subheadline: "If you're seeing Linkbot recommended as a Link Whisper alternative, here's the comparison Linkbot's review left out."
+- Kelly (14:30 UTC): Confirmed everything pre-staged, single gate = Boss greenlight. Dev needs ~90 min.
+- Max (14:30 UTC): Agency liability angle — Linkbot's target audience (SEO agencies, multi-site operators) gets hit hardest by "links disappear on cancel." Proposed stronger P.S. frame for outreach. Also flagged: add LW remarketing pixel to lw-vs-linkbot.html build spec.
+
+**What I did this heartbeat:**
+- Live-checked survivezeal.com (14:35 UTC): Page now has editorial update at top promoting Linksy AI as #1, explicitly recommends Linkbot for non-WP users. Original "best overall" LW framing is diluted — citing this as third-party validation would be a liability. Recommended Pen drop survivezeal from the brief.
+- Added remarketing pixel to build spec: Meta Pixel `ViewContent` + Google Ads remarketing tag on lw-vs-linkbot.html page load. Both fire on DOMContentLoaded. Creates Max's "new retargeting audience" from day one.
+- Confirmed updated build spec: H1 ✅, subheadline ✅, multi-keyword H2 structure ✅, pricing table ✅, cancellation claim ✅, cross-link ring ✅, remarketing pixel ✅, survivezeal citation DROPPED.
+- Still waiting: Boss greenlight + Meta Pixel ID.
+
+## Heartbeat 13:40 UTC 2026-02-27
+
+**What happened since last heartbeat (12:40 → 13:40 UTC):**
+- Rex (13:10 UTC): Pulled Linkbot live pricing — $19/mo Pro ($228/yr) vs LW $97/yr. 2.4x more expensive. Also confirmed 14,000 Linkbot sites vs LW's 50K+. WP.org clean.
+- Pen (13:20 UTC): Full copy brief delivered for lw-vs-linkbot.html — H1, lede, all sections, pricing table. Flagged "links disappear on cancel" claim as medium-confidence needing verification before publishing.
+- Max (13:30 UTC): @Dev mention — distribution pre-load for Linkbot page: cross-link from existing 5 comparison pages, outreach P.S. for roundup authors, Audience 3 (current LW users spooked by review). Wants v13 P.S. locked pending URL. Recommends Feb 28–Mar 2 publish window (5-6 days to index before Mar 5-6 launch).
+- Kelly (13:15 UTC): Kelly confirmed all build items are ready, single gate = Boss greenlight + URL.
+
+**What I did this heartbeat:**
+- Verified "links disappear on cancel" claim technically: Linkbot is client-side JS injection, NOT stored in WordPress database. Confirmed: cancel Linkbot → links vanish. LW writes to DB — links persist after cancel. ✅ Claim is publishable.
+- Suggested copy refinement: "Or $228 a year — and when you cancel, the links go with it." (more accurate than "can never uninstall")
+- Confirmed cross-linking architecture: existing 5 comparison pages have a hub nav block — adding lw-vs-linkbot to the ring is one `<li>` per file, runs simultaneously with the new page deploy.
+- Acked Max's v13 P.S. as pending-URL addition.
+- Full build readiness: Rex pricing ✅, Pen copy ✅, cancellation claim ✅, cross-link prep ✅. Single gate = Boss greenlight.
+
+**Status:**
+- Two assigned tasks: both `review`, waiting on Boss
+- lw-vs-linkbot.html: pre-staged, fully ready, 90-min build on Boss's go signal
+- Recommended publish: Feb 28–Mar 2 (indexes before Mar 5-6 launch)
+- Free tool: URL still pending from Boss
+
+## Heartbeat 12:40 UTC 2026-02-27
+
+**What happened since last heartbeat (11:40 → 12:40 UTC):**
+- Rex (12:10 UTC): ⚠️ NEW competitive threat — Linkbot published "Link Whisper Review 2026" (~1 week ago, live now), calling LW an "AI suggestion tier" tool that "does not automate placement autonomously." Factually incorrect — ignores auto-link rules. Also published "Best LW Alternatives" page simultaneously. Both ranking for "link whisper review 2026."
+- Pen (12:20 UTC): RSA headline "Auto-links, not just suggestions" (29 chars) confirmed for Tier 1 bank. Proposed LW vs Linkbot comparison page (6th in series, not in current Top 5). Fixed 🧦 emoji in LinkedIn draft → 🔗.
+- Kelly (12:30 UTC): Free tool URL + Linkbot comparison page greenlight = the two Boss decisions that unblock everything.
+- Max (12:30 UTC): Email 1 counter-framing needed — proposed adding "No approval queue, no manual clicks, no external servers" to defeat Linkbot's "manual-approval-only" framing. Wants Sequences A/B/C firing within 24hrs of tool URL landing.
+- Rex (12:10 UTC): Anam Hassan window CLOSED at 12:00 UTC. 50K corroboration still at 1 source (WP.org only), third-party reviews all still say 40K.
+
+**What I did this heartbeat:**
+- Posted technical build spec for LW vs Linkbot comparison page on ads task
+  - Template: lw-vs-linkboss.html (same SaaS-vs-plugin framing, 90-min adaptation)
+  - File path: `/home/sprite/agents/glitch/builds/comparison-pages/lw-vs-linkbot.html`
+  - Flagged: Linkbot's current pricing needs verification before comparison table
+  - Timeline: Boss says go → Pen writes copy → Dev wires HTML → same-day deploy
+
+**Status:**
+- Two assigned tasks: both `review`, waiting on Boss
+- Linkbot comparison page: pre-staged, waiting Boss greenlight
+- Free tool: URL still pending from Boss (unblocks H1 wiring, social posts, social posts, Pixel integration)
+- Anam Hassan: CLOSED
+
+## Heartbeat 11:40 UTC 2026-02-27
+
+**What happened since last heartbeat (10:40 → 11:40 UTC):**
+- Pen (11:20 UTC): 50K milestone social post drafts delivered (LinkedIn + Twitter/X) — waiting on free tool URL to swap into `[free tool link]` placeholder.
+- Max (11:30 UTC): Flagged corroboration gap — WP.org listing ✅ but existing reviews still show 40K. Recommended social posts + WP.org changelog this week (not launch day) for 7-10 days of indexing before Mar 5-6.
+- Rex (11:10 UTC): Live WP.org scan confirmed 50K+ live. Noted most third-party reviews still say 40K.
+- Kelly (11:30 UTC): Approved 50K social drafts + confirmed single gate is free tool URL.
+- Affiliate task: Pen delivered affiliate page v3 (audience-fit FAQ + 50K sweep). Max delivered email sequence v2 (50K + audience-fit objection handler for Email 3). All waiting on Boss: cookie duration + WP Affiliate CSV.
+- Ads task: `waiting_on_human` for Boss's Google Ads + Meta data export. All architecture locked (B1/B2/E descriptions, question-frame H1, Option A free tool CTA for Tier 3).
+
+**What I did this heartbeat:**
+- Contributed technical note on ads task (50K corroboration rollout):
+  - Exact `readme.txt` changelog format for Matt (WP.org changelog snippet, version pattern, why two indexed WP.org pages beat one)
+  - Clarified the free tool URL pattern (Netlify, `/internal-link-checker/`) for Pen's social post placeholder
+  - Flagged 🧦 emoji at end of Pen's LinkedIn draft — might read as copy-paste artifact if Boss posts from personal LinkedIn
+
+**Status:**
+- Two assigned tasks: both in `review`, no new actions needed from me
+- Review monitor: `review` — waiting Boss (Shopify Partner API decision)
+- Affiliate page commission calculator: v1.1 built and deployed, waiting Boss cookie duration confirm
+- Homepage + comparison pages: all 50K-clean ✅
+- Anam Hassan window: **NOW CLOSED** (12:00 UTC Feb 27 — past as of this heartbeat)
+
+## Heartbeat 10:40 UTC 2026-02-27
+
+**What happened since last heartbeat (09:40 → 10:40 UTC):**
+- Rex (10:10 UTC): Live WP.org scan confirms install count is now **50,000+** (live WP.org page). Flagged for RSA copy + ad descriptions update.
+- Max (10:30 UTC): Acked Rex's 50K data — syncing RSA bank and outreach doc to 50K sweep. Both updated to v11.
+- Pen (10:20 UTC): cmsminds.com Sequence D variant delivered + 40K→50K sweep in outreach doc.
+- Kelly (10:30 UTC): Sequence D + 50K sweep green-lit. All outreach docs now on 50K+ numbers.
+- PRD task (kh7egg2hssf10kf32vr6r4mr8s81v7kg): Deprioritized by Boss (late March / April). BUT — banner interim fix (dismissible + Pen's copy) is a pre-launch dependency. Kelly calling for Matt to ship it this week. Rex confirmed 75% of recent 1-stars are banner-related. Kelly awaiting Boss greenlight.
+
+**What I did this heartbeat:**
+- Found and fixed 2 stale 40K→50K references in builds:
+  - `/home/sprite/agents/glitch/builds/homepage/index.html` line 284: `40,000+` → `50,000+`
+  - `/home/sprite/agents/glitch/builds/comparison-pages/lw-vs-linkboss.html` line 360: `40,000+` → `50,000+`
+- Commented on PRD task with `get_current_screen()` implementation note for Matt's banner context restriction — saves him debugging time
+- Commented on review monitor task acking Kelly's Shopify question + confirming both API paths ready
+
+**Status:**
+- Review monitor: `review` ✅ — WP.org live, Shopify pending Boss decision on Partner API token
+- Features section: `review` — still waiting Boss sign-off
+- Comparison pages: 6 files deploy-ready, all now showing 50K+ installs ✅
+- Homepage: all 50K+ references consistent ✅
+- Anam Hassan window: **CLOSED** (12:00 UTC Feb 27 — past)
+
+## Heartbeat 09:40 UTC 2026-02-27
+
+**What happened since last heartbeat (07:40 → 09:40 UTC):**
+- Kelly (08:50 UTC): Boss greenlit the review monitoring build. Assigned to Dev (@me). Spec: daily cron, WP.org RSS + Shopify scrape, Telegram alert to Boss with draft response.
+- Kelly spec update: polling frequency → once daily (Boss confirmed checking daily is sufficient).
+- Rex (09:10 UTC): Dropped research notes @Dev — Shopify JS-rendered (no RSS), Partner API is cleaner path than headless scrape. Reviewer username + date = best unique key for Shopify. Draft tone should sound like Sreenath personally, not a template.
+- Shopify app task completed (separate task) — Boss had manually responded to existing reviews.
+- New task created: "Paid Ads Full Audit" (waiting for Boss to brief Kelly).
+- ILJ Tier 2 outreach template delivered by Pen, Kelly green-lit. Max: distribute alongside Tier 3 ads.
+- Anam Hassan window: CLOSED (12:00 UTC Feb 27). No further action possible.
+
+**What I did this heartbeat:**
+- Read full task spec + all comments
+- Verified existing build at `/home/sprite/agents/dev/review-monitor/` — already complete
+- Test run passed: WP.org 30 reviews fetched, 11 negatives all correctly deduped, fake 2-star draft generated and formatted correctly
+- Shopify parser: HTML fallback built (JSON-LD + aria-label patterns), returns 0 on JS-rendered page as expected
+- Updated daily cron `review-monitor-daily` from `sessionTarget: main / systemEvent` → `isolated / agentTurn` (more reliable execution)
+- Moved task to `review`, commented with full status + Shopify Partner API recommendation for Boss
+
+**Status:**
+- Review monitor: `review` ✅ — WP.org live, Shopify pending Boss decision on Partner API token
+- Features section: `review` — still waiting Boss sign-off
+- Comparison pages: 6 files deploy-ready, Boss needs to send to Matt this week (crawl time)
+- Cron: `0 9 * * * UTC` — daily, isolated agentTurn, runs automatically from tomorrow
+
+## Heartbeat 07:40 UTC 2026-02-27
+
+**What happened since last heartbeat (06:40 → 07:40 UTC):**
+- Rex (07:10 UTC): Identified actual Tier 3 competitor is Internal Link Juicer (ILJ), not LinkBoss. ILJ = free, keyword-rule automation, no AI, no orphan audit. This reframes the Tier 3 RSA descriptions entirely.
+- Pen (07:20 UTC): Rewrote Tier 3 RSA descriptions vs ILJ (Option D: intelligence differentiation, Option E: audit-first — ILJ has no equivalent audit tool). Also delivered free tool H1 options. Recommendation: `Are your WordPress internal links building themselves?` — question frame, works default + UTM-aware without rewriting.
+- Kelly (07:30 UTC): Called it — ship question-frame H1 now (default), UTM variant is Phase 2. Option E into Tier 3 non-branded group. No Boss gate.
+- Max (07:30 UTC): Confirmed Option E in Tier 3 non-branded group. Added distribution note: audit-first frame belongs in outreach Email 1 subject lines for roundup authors targeting ILJ's installed base.
+- New task created: WP.org + Shopify Reviews — Ongoing Monitoring (24hr Response SLA) — Kelly's operational task. Boss posted responses to existing reviews manually. Shopify review task completed.
+
+**What I did this heartbeat:**
+- Acked @Dev mentions from Pen + Kelly on ads task
+- Confirmed Option A default H1 = question frame. Wrote the exact HTML snippet.
+- Provided UTM-aware H1 swap implementation for Option B (Phase 2): single UTM param check + 2 DOM swaps, 15 min to wire when Tier 3 campaign goes live
+- Technical note on Max's four-touchpoint funnel: tool page is touchpoint 3 — confirms problem the ad created, doesn't re-sell. Architecture already built for this flow.
+- Dropped technical automation option on new reviews monitoring task: WP.org RSS feed already public, can build hourly cron → Telegram ping for new negatives (1-2hrs). Flagged Shopify API token dependency.
+
+**Status:**
+- Features section: `review` — still waiting Boss sign-off
+- Comparison pages: 6 files deploy-ready, Boss needs to send to Matt this week (crawl time)
+- Free tool H1: confirmed = `Are your WordPress internal links building themselves?` — ships as default when Boss gives URL
+- Free tool Pixel integration: ready on launch day, needs Meta Pixel ID from Boss
+- UTM-aware H1 swap (Option B): 15 min to wire when Tier 3 campaign + UTM params confirmed
+- Reviews monitoring automation: can build, needs Boss greenlight + Shopify API token (read:reviews scope)
+- Anam Hassan window: ~4h20min remaining (closes 12:00 UTC Feb 27) — Boss action only
+
+## Heartbeat 06:40 UTC 2026-02-27
+
+**What happened since last heartbeat (05:40 → 06:40 UTC):**
+- Pen (06:20 UTC): Tier 3 behavioral headline cluster surfaced — "automate internal linking wordpress," "automatic internal links wordpress" — problem-aware searchers who describe the *behavior*, not the brand. 5 clean 30-char headlines written. Slots into non-branded ad group alongside Tier 2.
+- Max (06:30 UTC): Acked Tier 3 + flagged the flywheel: Tier 3 ads + roundup placements create a two-surface hit on the same behavioral query cluster. Also flagged: free tool is the perfect lower-funnel CTA for Tier 3 intent — "See how it works / Free audit tool" beats "Buy now" for problem-aware searchers.
+- Anam Hassan window: ~5h20min remaining (closes 12:00 UTC Feb 27). Boss action only.
+- Rex (06:10 UTC): Final window check on Anam Hassan — article still live, handle @anamhasssan (triple S) confirmed valid.
+
+**What I did this heartbeat:**
+- Responded to @Dev mentions from Pen + Max on the ads task
+- Dropped technical CTA architecture comment: three options for Tier 3 landing page (A=URL swap 15min, B=UTM-aware page 2hrs, C=Kit.com tag+branch 4hrs). Recommended Option A to launch, Option C Phase 2.
+- Connected free tool as the Tier 3 bridge: behavioral searcher → tool → score showing problems → Fix with LW CTA. Tool does the selling the homepage can't.
+- Flagged mirror headline strategy: Pen's `WordPress Auto Internal Linking` reflected in tool page H1 would match query vocabulary exactly.
+
+**Status:**
+- Features section: `review` — still waiting Boss sign-off
+- Comparison pages: 6 files deploy-ready, Boss needs to send to Matt this week (crawl time)
+- Ads CSV parser: ready 45min after Boss drops files
+- Free tool Pixel integration + Tier 3 landing page: ready to build, needs Boss green-light + permanent URL
+- Tier 3 Option A (URL swap): can deploy in 15 min, no dev needed — just Boss telling Alex to point the ad at tool URL
+
+## Heartbeat 05:40 UTC 2026-02-27
+
+**What happened since last heartbeat (04:40 → 05:40 UTC):**
+- Rex (05:10 UTC): Vocabulary map expanded — "autopilot" appears in 3+ reviewer sources (survivezeal, digitalproductcheck, monetizebetter), stronger signal than "set it and forget it" (1 source, Techoclock). Same mental model: passive effort.
+- Kelly synthesis (05:15 UTC): RSA architecture confirmed — load B1 ("set it and forget it") AND B2 ("autopilot") into non-branded segment, let Google weight. No boss decision needed.
+- Pen (05:20 UTC): Swapped outreach Email 1 from "set it and forget it" to "autopilot" — reviewer vocabulary reinforced in outreach channel.
+- Max (05:30 UTC): Acked. Flagged vocabulary flywheel: outreach email plants "autopilot" → future reviewers write it → organic search users search it → RSA "autopilot" description catches those queries. Email + ads are feeding the same cycle.
+- Anam Hassan window: ~6h20min remaining (closes 12:00 UTC Feb 27). Boss action only.
+
+**What I did this heartbeat:**
+- Read full mentions (Rex + Kelly + Max @Dev)
+- Confirmed RSA build architecture: B1 + B2 both load into non-branded segment, ready when Boss drops CSV
+- Added technical note: CSV parser can flag full passive-framing vocabulary cluster (autopilot + automatic + hands-free + fire-and-forget), not just "autopilot" — same 45-min build, broader signal coverage
+- No code changes needed this cycle
+
+**Status:**
+- Features section: `review` — still waiting Boss sign-off
+- Comparison pages: 6 files deploy-ready, Boss needs to send to Matt this week (crawl time)
+- Ads CSV parser: ready 45min after Boss drops files (passive-framing cluster scan included)
+- Free tool Pixel integration: ready on launch day, needs Meta Pixel ID + optional API token from Boss
+
+## Heartbeat 04:40 UTC 2026-02-27
+
+**What happened since last heartbeat (03:40 → 04:40 UTC):**
+- Ads task: Rex dropped roundup language audit (04:10 UTC) — Techoclock "Link Whisper Review 2026" shows reviewers say "set it and forget it" but NOT "no external servers / no credits." Ownership framing is new vocabulary that needs planting.
+- Rex flagged Techoclock describing LW as "WordPress & Shopify" — confirmed factual error (LW is WordPress-only, no Shopify integration)
+- Pen's 04:20 micro-suggestion: lead description with reviewer vocabulary ("Set it. Forget it.") before ownership framing — bridging what reviewers already say to what we want to plant
+- Max's 04:30 synthesis: reviewer vocabulary gap is a paid ads hypothesis — "set it and forget it" may convert better on non-branded queries; ownership language may win on branded. Test hypothesis once Boss shares Ads data.
+- Kelly synthesis (04:15 UTC): positioning gap is an opportunity — ads + outreach are the planting mechanism for new reviewer vocabulary. 6–12 week flywheel.
+- Anam Hassan window: ~7h20min remaining (closes 12:00 UTC Feb 27). Still Boss action only.
+
+**What I did this heartbeat:**
+- Read full ads task thread (all comments from 03:40→04:40 window)
+- Dropped technical comment on ads task: RSA description A/B test architecture (split by query intent tier, not combined RSA rotation), Techoclock Shopify error confirmed as factual mistake (easy outreach correction note), 15-min setup for intent-segmented test vs. Google's own RSA rotation
+
+**Status:**
+- Features section: `review` — still waiting Boss sign-off
+- Comparison pages: 6 files deploy-ready, Boss needs to send to Matt this week (pre-launch crawl time)
+- Ads CSV parser: ready 45min after Boss drops files
+- Free tool Pixel integration: ready on launch day, needs Meta Pixel ID + optional Marketing API token from Boss
 
 ## Heartbeat 03:40 UTC 2026-02-27
 
