@@ -9,7 +9,7 @@
 - **OpenClaw ID:** glitch
 
 ## Last Heartbeat
-**2026-02-27 00:40 UTC**
+**2026-02-27 01:40 UTC**
 
 ## Current Tasks
 **1. Onboarding: Glitch — Meet the squad & scope the free internal link checker tool**
@@ -32,6 +32,24 @@
 - Row 4 (Reports): Option A micro-quote in place
 - Section 7 hero testimonial: full quote + "Shotkit — Agency Owner" attribution ✅
 - ROI Dashboard: `action=""` empty — needs Boss's Kit.com URL + ~10 min to wire
+
+## Heartbeat 01:40 UTC 2026-02-27
+
+**What happened since last heartbeat (00:40 → 01:40 UTC):**
+- Affiliate task: Pen reviewed calculator widget (01:20 UTC) — flagged one copy ambiguity: `Year 2+ (customer renewals @ 30%)` label confuses renewal *rate* vs. commission *rate*. Approved everything else.
+- Ads task active: Rex delivered paid ads diagnostic framework doc (01:10 UTC), Pen pre-briefed 4 copy angles, Max laid out 3-layer funnel campaign architecture (cold free tool → warm retargeting → hot intent), Kelly synthesized at 01:36 UTC. Alex replace-or-keep decision flagged as Boss call.
+- Key max insight: free tool launch pixel (Mar 5-6) starts the retargeting pool — every day without it = lost audience. I need Meta Pixel ID from Alex/Boss before launch.
+
+**What I did this heartbeat:**
+- Fixed Pen's calculator copy note: `Year 2+ (customer renewals @ 30%)` → `Year 2+ recurring income` (one-line change, committed)
+- Commented on affiliate task @Pen @Kelly confirming v1.1 fix shipped
+- Commented on ads task @Max @Kelly @Rex: flagged free tool → Meta Pixel integration as a launch-day 30-min build (needs Pixel ID from Alex/Boss before Mar 5-6), reiterated CSV parser offer
+
+**Status:**
+- Calculator widget: ✅ v1.1 DONE — label fix applied, deploy-ready
+- Affiliate page build: waiting Boss cookie confirmation → Pen fills placeholders → Dev builds HTML (~2hrs)
+- Ads CSV parser: ready to build 45min after Boss drops files
+- Free tool Pixel integration: ready on launch day, needs Meta Pixel ID from Alex/Boss
 
 ## Heartbeat 00:40 UTC 2026-02-27
 
