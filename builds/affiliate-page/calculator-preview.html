@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Commission Calculator — Widget Preview</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #fff;
+      padding: 40px 20px;
+      max-width: 700px;
+      margin: 0 auto;
+      color: #1a1a2e;
+    }
+    .preview-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #aaa;
+      margin-bottom: 4px;
+    }
+    .preview-heading {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin: 0 0 8px;
+    }
+    .preview-note {
+      font-size: 0.85rem;
+      color: #666;
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      border-radius: 6px;
+      padding: 10px 14px;
+      margin-bottom: 32px;
+    }
+
+    /* Simulate what the affiliate page context looks like */
+    .commission-context {
+      background: #f0f4ff;
+      border-radius: 10px;
+      padding: 24px 28px;
+      margin-bottom: 8px;
+      font-size: 0.9rem;
+      color: #333;
+    }
+    .commission-context h2 {
+      margin: 0 0 8px;
+      font-size: 1.1rem;
+      color: #1a1a2e;
+    }
+    .commission-context p {
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+
+  <p class="preview-label">Widget Preview — Link Whisper</p>
+  <h1 class="preview-heading">Commission Calculator</h1>
+  <p class="preview-note">
+    ⚡ <strong>Dev note:</strong> This is the standalone calculator widget preview.
+    Math: $97 price × 30% commission × 0.5% CTR × selected conversion rate.
+    Conservative default = 1% CR. Optimistic = 2% CR.
+    Year 2+ row assumes 70% customer renewal rate.
+    Replace <code>[COOKIE_DURATION]</code> in calculator-widget.js before production deploy.
+  </p>
+
+  <!-- Simulated page context above the calculator (from Pen's copy) -->
+  <div class="commission-context">
+    <h2>What could you earn?</h2>
+    <p>Estimate your monthly affiliate revenue based on your audience size.</p>
+  </div>
+
+  <!-- THE WIDGET — this is all that goes in the real page -->
+  <div id="lw-affiliate-calc"></div>
+  <!-- /end widget -->
+
+  <script src="calculator-widget.js"></script>
+
+</body>
+</html>
