@@ -9,7 +9,7 @@
 - **OpenClaw ID:** glitch
 
 ## Last Heartbeat
-**2026-02-27 01:40 UTC**
+**2026-02-27 03:40 UTC**
 
 ## Current Tasks
 **1. Onboarding: Glitch — Meet the squad & scope the free internal link checker tool**
@@ -32,6 +32,55 @@
 - Row 4 (Reports): Option A micro-quote in place
 - Section 7 hero testimonial: full quote + "Shotkit — Agency Owner" attribution ✅
 - ROI Dashboard: `action=""` empty — needs Boss's Kit.com URL + ~10 min to wire
+
+## Heartbeat 03:40 UTC 2026-02-27
+
+**What happened since last heartbeat (02:40 → 03:40 UTC):**
+- Ads task: Rex dropped competitor ad positioning intel (03:10 UTC) — LinkBoss hero copy "40X faster / 6,500 SEOs," Linkilo competitor trap review (Jan 2026), LinkStorm lists LW as #3. Key insight: 40,000 vs 6,500 install gap is real credibility shorthand
+- Pen refined RSA headlines based on Rex's intel: "40K WordPress Sites Trust It" (trust > installs), "Join 40,000 Sites — Not 6,500" (direct comparison), "Auto-Links. No Credits. Ever." (counters LinkBoss credits model)
+- Kelly confirmed RSA bank — approved "Runs on your WordPress. No external servers, no credits, no monthly fees. 40,000 sites." as priority description (no competitor naming, can't be countered)
+- Max acked RSA bank + flagged RSA→outreach flywheel: "runs on your WordPress, not their servers" angle should go into outreach Email 1 as framing for roundup authors writing LW comparisons
+- Outreach task: Pen confirmed lw-vs-linkilo.html skeptic recovery line is in (line 244: "If you tried Link Whisper before August 2025 and the suggestions felt off..."). Kelly confirmed all 5 comparison pages deploy-ready, no remaining gates
+- Max raised key distribution timing point: comparison pages should deploy 7-10 days BEFORE Mar 5-6 free tool launch for crawl indexing. Zero dependency on free tool URL. Boss action needed: send to Matt this week
+- Anam Hassan window: ~8h50min remaining (closes 12:00 UTC Feb 27). Rex confirmed article still live (03:10 UTC), handle @anamhasssan (triple S) confirmed valid. Still Boss action only.
+
+**What I did this heartbeat:**
+- Confirmed lw-vs-linkilo.html exists and skeptic recovery line is at line 244 (grep verified)
+- Confirmed all 6 comparison page files exist: lw-vs-linkboss, lw-vs-linkilo, lw-vs-linksy, lw-vs-yoast, lw-vs-ilj, compare-hub
+- Dropped technical deploy clarity comment on outreach task: what "one deploy command" means for Matt, exact file list, why deploying NOW vs Mar 5-6 matters (crawl time), Boss action item to send to Matt this week
+- No code changes needed this cycle — all builds remain deploy-ready
+
+**Status:**
+- Features section: `review` — still waiting Boss sign-off
+- Comparison pages: 6 files deploy-ready, Boss needs to send to Matt this week (pre-launch crawl time)
+- Ads CSV parser: ready 45min after Boss drops files
+- Free tool Pixel integration: ready on launch day, needs Meta Pixel ID + optional Marketing API token from Boss
+
+## Heartbeat 02:40 UTC 2026-02-27
+
+**What happened since last heartbeat (01:40 → 02:40 UTC):**
+- Ads task active: Pen delivered full RSA copy mapped to Rex's Tier 1/Tier 2 query list (02:20 UTC) — Google Ads-ready headlines + descriptions for bottom-of-funnel and problem-aware queries, 60-day MBG in headline rotation, free tool landing in Tier 2 copy
+- Max (02:30 UTC): Sequencing architecture — organic-first launch Mar 5-6, DON'T launch paid retargeting until Mar 19-21 (need 500+ seed audience first). Mar 12 = checkpoint. Also flagged: Boss can pause FB cold → homepage *today*, 5-minute action, stops budget bleed without needing the CSV export
+- Kelly consolidated Boss action queue to 6 items (was 5, Max added: "Are we running FB cold traffic to homepage? Y/N")
+- Rex flagged Meta June 2025 targeting consolidation: "WordPress" interest category deprecated, Advantage+ is the right cold approach — but ONLY works with pixel data. Another pixel urgency signal.
+
+**What I did this heartbeat:**
+- Read full ads task thread (all 20+ comments)
+- Added technical note on pixel audience build: `ViewContent` should fire BOTH on page load AND scan completion (double event = richer Advantage+ signal, ~5 extra lines)
+- Did the math: at conservative 2,000 visitors × 40% completion = 800 events in 7 days → 500-user floor hit by Mar 10-11, possibly faster than Max's Mar 12 estimate
+- Proposed automating the Mar 12 audience-size check: Meta Marketing API call → cron → Telegram ping to Boss with green/red go/no-go (removes human "remember to check" dependency)
+- Identified new Boss ask: Meta Marketing API token (optional, needed for the auto-check; different from Pixel ID)
+
+**Key insights this heartbeat:**
+- Pixel audience math: Mar 5-6 launch + organic push → 500-user threshold likely hit Mar 10-11 (not 12)
+- Two-event pixel spec: `ViewContent` on page load AND on scan completion → richer Meta signal
+- Meta API auto-check: I can build it, but needs Marketing API token from Alex/Boss
+
+**Status:**
+- Calculator widget: ✅ DONE, deployed
+- Features section: `review` — waiting Boss sign-off
+- Free tool: ready to wire pixel on launch day (needs Pixel ID + optional API token)
+- Ads CSV parser: ready 45min after Boss drops files
 
 ## Heartbeat 01:40 UTC 2026-02-27
 
