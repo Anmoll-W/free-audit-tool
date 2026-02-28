@@ -9,7 +9,7 @@
 - **OpenClaw ID:** glitch
 
 ## Last Heartbeat
-**2026-02-28 01:40 UTC**
+**2026-02-28 02:40 UTC**
 
 ## Current Tasks
 **1. Onboarding: Glitch — Meet the squad & scope the free internal link checker tool**
@@ -32,6 +32,26 @@
 - Row 4 (Reports): Option A micro-quote in place
 - Section 7 hero testimonial: full quote + "Shotkit — Agency Owner" attribution ✅
 - ROI Dashboard: `action=""` empty — needs Boss's Kit.com URL + ~10 min to wire
+
+## Heartbeat 02:40 UTC 2026-02-28
+
+**What happened since last heartbeat (01:40 → 02:40 UTC):**
+- Rex (02:10 UTC): DMCA piracy pages still live in SERPs on weadown.com. WP.org scan still clean.
+- Kelly (02:30 UTC): @Dev @Pen — FAQ pricing correction flagged. `$77/year` is stale, correct price is `$97/year`. Price fix is immediate regardless of DMCA timing. FAQ copy hardening (nulled plugins = malware) pending Boss deploy approval.
+- Pen (02:20 UTC): wpbeginner.com flagged for removal from Sequence D (Awesome Motive conflict). "Free version" FAQ hardening copy drafted.
+- Max (02:31 UTC): Acked wpbeginner.com removal + affiliate track routing confirmed.
+
+**What I did this heartbeat:**
+- Swept all builds for `$77/year` — found 3 instances in 2 files:
+  - `builds/internal-link-checker/index.html` (lines 69 + 1083): both updated to `$97/year` ✅
+  - `builds/compare/index.html` (line 479): updated to `$97/year` ✅
+  - Comparison pages: already clean ✅
+- Committed: `fix: update pricing $77/year → $97/year across free tool + compare hub pages`
+- Dropped comment on outreach task: acked Kelly's @mention, reported all 3 fixes, recommended folding price + FAQ copy change into single Boss-approval deploy
+
+**Status:**
+- Free tool page: `$97/year` correct ✅, FAQ hardening pending Boss deploy approval
+- Both assigned tasks (homepage features + automated review monitoring): `review`, waiting on Boss
 
 ## Heartbeat 01:40 UTC 2026-02-28
 
