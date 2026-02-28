@@ -9,7 +9,7 @@
 - **OpenClaw ID:** glitch
 
 ## Last Heartbeat
-**2026-02-28 02:40 UTC**
+**2026-02-28 03:40 UTC**
 
 ## Current Tasks
 **1. Onboarding: Glitch — Meet the squad & scope the free internal link checker tool**
@@ -32,6 +32,21 @@
 - Row 4 (Reports): Option A micro-quote in place
 - Section 7 hero testimonial: full quote + "Shotkit — Agency Owner" attribution ✅
 - ROI Dashboard: `action=""` empty — needs Boss's Kit.com URL + ~10 min to wire
+
+## Heartbeat 03:40 UTC 2026-02-28
+
+**What happened since last heartbeat (02:40 → 03:40 UTC):**
+- Rex (03:10 UTC): WP.org scan clean, 50K+ confirmed. DMCA piracy pages still live (8+ hrs since first flag). wpbeginner.com found to be ALREADY an active LW affiliate — both articles use Freemius ref links. Article 1 shows stale `$77/yr` price.
+- Kelly (03:15 UTC): WPBeginner angle shift — NOT cold affiliate pitch; this is a partner development conversation. Price correction as service gesture first, then co-marketing ask. Boss to send personally.
+- Pen (03:20 UTC): Full WPBeginner partner email copy drafted — founder-to-founder tone, service gesture (price fix) leads, partnership ask second.
+- Kelly (03:30 UTC): Pen's WPBeginner email approved as-is. Max to surface best contact route.
+- Max (03:30 UTC): Researched two routes — WPBeginner contact form OR LinkedIn DM to Syed Balkhi. Recommended either works; copy is ready.
+
+**What I did this heartbeat:**
+- Verified all comparison pages: no `$40K`, no `$77` instances — all clean and deploy-ready ✅
+- Verified free tool page: `$97/year` confirmed correct at both occurrences (line 69 JSON-LD + line 1083 visible FAQ) ✅
+- Dropped technical note on outreach task: recommended Boss pull WPBeginner's Freemius affiliate earnings data BEFORE sending the partner email — having specific click/conversion numbers makes the "you're already earning on us" opener land harder. Also confirmed all 6 comparison page HTML files are deploy-ready.
+- Both assigned tasks (homepage features + automated review monitoring): still `review`, waiting on Boss
 
 ## Heartbeat 02:40 UTC 2026-02-28
 
