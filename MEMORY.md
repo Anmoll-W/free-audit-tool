@@ -9,7 +9,7 @@
 - **OpenClaw ID:** glitch
 
 ## Last Heartbeat
-**2026-02-27 18:40 UTC**
+**2026-02-28 00:40 UTC**
 
 ## Current Tasks
 **1. Onboarding: Glitch — Meet the squad & scope the free internal link checker tool**
@@ -32,6 +32,112 @@
 - Row 4 (Reports): Option A micro-quote in place
 - Section 7 hero testimonial: full quote + "Shotkit — Agency Owner" attribution ✅
 - ROI Dashboard: `action=""` empty — needs Boss's Kit.com URL + ~10 min to wire
+
+## Heartbeat 00:40 UTC 2026-02-28
+
+**What happened since last heartbeat (23:40 → 00:40 UTC):**
+- Rex (00:10 UTC): Additional research angle for 1+ year dormant affiliates — long-dormant cohort needs social proof FIRST before accountability opener, per Freemius benchmark. Structural recommendation for Email 1A sub-variant.
+- Pen (00:20 UTC): Actually wrote the 1+ year sub-variant copy for Email 1A — social proof lead (`50,000+ sites, 20-25% of sales`) → accountability pivot → resource kit. Two subject line options.
+- Kelly (00:30 UTC): Approved the Email 1A segmentation (0-90d vs 1yr+) as two sub-variants in same email slot. Confirmed both benchmark numbers (50K sites ✅, 20-25% of sales ✅).
+- Max (00:31 UTC): v4 doc live — 1A sub-variant now fully documented as two sub-sections under Email 1A. Both benchmark numbers confirmed. Email 3 send timing updated (24hrs after Email 2, not 5 days). Doc is fully prep-ready pending Boss CSV.
+
+**What I did this heartbeat:**
+- Built `builds/affiliate-page/csv-cohort-splitter.js` — the actual Node.js script (131 lines) that splits Boss's Freemius CSV into 3 clean cohort files (recent/medium/longdorm) by signup date, directly uploadable to Instantly. Zero dependencies. Warns on wrong column name.
+- Dropped implementation comment on affiliate task with usage, output example, and important note: Segment A/B/C filter (by clicks/earnings) is a separate axis from signup-date cohort — both need to be applied before Instantly upload.
+- Committed: `feat: Freemius affiliate CSV cohort splitter — splits by signup date into 3 Instantly-ready CSVs`
+
+**Status:**
+- Both assigned tasks (homepage features + automated review monitoring): still `review`, waiting on Boss.
+- Affiliate page calculator: built (v1.1, `builds/affiliate-page/`), ready to deploy — single gate: Boss cookie duration.
+- CSV splitter: built, ready to run the moment Boss drops the Freemius export.
+
+## Heartbeat 23:40 UTC 2026-02-27
+
+**What happened since last heartbeat (22:40 → 23:40 UTC):**
+- Kelly (23:15 UTC): @Dev @Max — flagged Rex's webhook NULL issue: `lw_purchased = NULL` subscribers must be excluded from Email 3 hard close, not just Email 4. Matt needs to define full webhook payload spec.
+- Rex (23:10 UTC): WP.org scan clean, 50K+ confirmed. Dropped benchmark research on affiliate re-engagement — dormant affiliates rarely activate if no first sale within 30 days (onboarding failure, not motivation). Time-since-signup segmentation recommended (0-90d / 3-12mo / 1+ yr).
+- Pen (23:20 UTC): Rex's activation-failure research → Email 1 copy implication: Segment A (ghost affiliates) needs accountability opener framing + double-duty (new story + kit), not just product news.
+- Kelly (23:30 UTC): Approved Pen's Segment A framing recommendation — single-sentence opener variant, not full rewrite.
+- Max (23:45 UTC): Email sequence doc updated to v3 — Email 1 split into 1A (Segment A: accountability opener + social proof) and 1B (Segments B/C: product news framing unchanged). Ready for Boss CSV.
+
+**What I did this heartbeat:**
+- Acked Kelly's @mention on ads task (23:15 UTC) — dropped technical spec on `lw_purchased = NULL` webhook issue: Email 3 gate must use `lw_purchased is false` (exact match) not `lw_purchased is not true`, because NULL doesn't match "is false" in Kit.com; initial form submit handler must write `lw_purchased = "false"` as default; webhook must always include the field on every event (not just on change).
+- Dropped technical note on affiliate re-engagement task: recommended two separate Instantly sequences (not variants in one) for Segment A vs B/C — separate sequences = clean A/B data. Also offered ~15-line Node.js CSV splitter script to auto-bucket Freemius export into 3 cohorts by signup date before Max loads into Instantly.
+
+**Status:**
+- Both assigned tasks (homepage features + automated review monitoring): still `review`, waiting on Boss.
+- All major builds deploy-ready. Affiliate calculator widget v1.1 is done (Year 2+ label fixed). Single gates: Boss cookie duration, free tool URL, Meta Pixel ID.
+
+## Heartbeat 22:40 UTC 2026-02-27
+
+**What happened since last heartbeat (21:40 → 22:40 UTC):**
+- Rex (22:10 UTC): WP.org scan clean, 50K+ confirmed, no new 1-stars.
+- Rex (22:10 UTC): Conversion lag benchmark research delivered — Google Search avg time-to-purchase ~15 days; confirms 30-day window is correct; flags Day 8–14 as the key bucket to check when export lands.
+- Kelly (21:45 UTC): @Dev mentioned — asked to add 30-day conversion window setup to build spec. Already covered in 21:40 UTC comment. Acked.
+- Pen (22:20 UTC): Email 4 contingency copy drafted ("Still thinking?" — Day 10–11 send, vault-locked, fires only if Rex's Day 8–14 pull hits >20%). Callback to free tool H1 ("links don't build themselves").
+- Kelly (22:30 UTC): Email 4 vault-locked. Merge-tag personalization flagged as important if audience skews affiliate/review searchers.
+- Max (22:30 UTC): Kit.com implementation pre-plan for Email 4 — `orphan_page_count` custom field, `free_tool_signup` segment gate. Flagged Matt/Dev as implementers for the webhook.
+
+**What I did this heartbeat:**
+- Acked Kelly's @mention on ads task (21:45 UTC 30-day window spec).
+- Dropped Kit.com webhook spec on ads task: `orphan_page_count` + `weak_link_count` + `free_tool_signup` + `audit_score` fields passed from free tool form submit handler to Kit.com API. ~8 lines in existing form handler. Gated on Boss/Matt creating 4 Kit.com custom fields (2 min). Only needs to be live if Rex's Day 8–14 bucket >20%.
+
+**Status:**
+- Both assigned tasks (homepage features + automated review monitoring): still `review`, waiting on Boss.
+- All major builds deploy-ready. Single gates outstanding: Boss's free tool URL, Meta Pixel ID, Google Ads access.
+
+## Heartbeat 21:40 UTC 2026-02-27
+
+**What happened since last heartbeat (20:40 → 21:40 UTC):**
+- Max (21:30 UTC): Flagged timing risk on Ad Group B's ROI curve — dual-destination structure means email-mediated purchases fire on Day 7, but default 7-day Google Ads conversion window may miss them. Also flagged Meta attribution gap (7-day click window expires before Day 7 purchase email). Recommended 14-day eval window + 30-day conversion window in Google Ads.
+- Kelly (20:45 UTC): Confirmed dual-destination structure is the call, Dev's reframe locked in.
+- Rex (21:10 UTC): WP.org scan clear, no new 1-stars.
+
+**What I did this heartbeat:**
+- Dropped technical implementation spec on ads task: Google Ads 30-day conversion window setup (Option A: separate conversion action w/ UTM segmentation; Option B: campaign-level override — recommend B to ship fast). Meta attribution gap documented (7-day default doesn't cover Day 7 email purchase). Custom "14-Day CPA" column recommendation for Alex's dashboard. No Boss gates needed — this is Alex's account setup when launch-ready.
+
+**Status:**
+- No @mentions requiring action beyond the above.
+- Both assigned tasks (homepage features + automated review monitoring): still `review`, waiting on Boss.
+- All major builds deploy-ready. Single gates outstanding: Boss's free tool URL, Meta Pixel ID.
+
+## Heartbeat 20:40 UTC 2026-02-27
+
+**What happened since last heartbeat (19:40 → 20:40 UTC):**
+- Pen (20:20 UTC): Synthesized 40+ comment thread into landing page copy brief for Alex — tier-mapped (Tier 1/2/3), actionable without the data export.
+- Max (20:30 UTC): Cannibalization risk framework — three scenarios (A/B/C) for whether free-tool-adjacent queries are currently converting to purchases. Critical pre-launch gate.
+- Kelly (20:30 UTC): Confirmed Pen's brief is actionable, cannibalization check is Rex's first pull when export lands.
+- Rex (20:10 UTC): WP.org all clear, no new 1-stars. Also flagged LinkBoss mention in old review — Kelly clarified LinkBoss ≠ Linkbot (different competitors, both already tracked).
+
+**What I did this heartbeat:**
+- Posted technical note on Max's cannibalization framework: proposed dual-destination campaign structure (Ad Group A → purchase-intent, Ad Group B → free tool for audit-intent) that pre-empts Scenario A without needing the data export first. Reframes the cannibalization check as "how much to bid on Ad Group B" rather than "should we launch" — removes the go/no-go blocker.
+- Both assigned tasks (homepage features + automated review monitoring): still in `review`, waiting on Boss.
+
+**Status:**
+- No new blockers. No @mentions.
+- All pre-staged work waiting on Boss: free tool URL, Meta Pixel ID, Ads Manager access, lw-vs-linkbot greenlight.
+
+## Heartbeat 19:40 UTC 2026-02-27
+
+**What happened since last heartbeat (18:40 → 19:40 UTC):**
+- Rex (19:10 UTC): Pulled live WP.org stats — "10 million links in the past 30 days" + "12 hours per week saved" — both already published/indexed on WP.org. Solves the `[X]` stat row placeholders without a DB pull from Boss.
+- Kelly (19:15 UTC): Green-lit Dev to drop in the WP.org stats once Boss confirms he's OK using them on the landing page. Also confirmed ILJ Sequence D copy locked (Rex confirmed ILJ = editor-mode only, no batch audit).
+- Pen (19:20 UTC): Gave exact formatted stat versions: `10M+` / `links built last month` | `12 hrs` / `saved per week`. Recommended small WP.org attribution line below stats row.
+- Max (19:30 UTC): Flagged the same stats should flow into Email sequence + outreach doc v15 at the same time (one Boss confirmation, three touchpoints updated).
+- Rex submitted FB + Google Ads analysis task to `review`.
+- Max (19:30 UTC): Added velocity stat RSA description to ads analysis task.
+
+**What I did this heartbeat:**
+- Updated `Active sites` stat from `40,000+` → `50,000+` in free tool landing page HTML (Rex confirmed 50K live on WP.org — no Boss gate needed for this one).
+- Pre-staged the `[X]` stat row swap in HTML with a READY-TO-DEPLOY commented block using Pen's exact formatted versions. Boss green light = 60-second deploy.
+- Commented on free tool landing page task with pre-stage status + confirmation that Max's email sequence note is acked (same confirmation, three touchpoints updated simultaneously).
+- Contributed technical RSA description trim options to ads analysis task — Max's velocity stat description was 14 chars over limit; gave 3 options with recommendation (Option A, velocity-first, 89 chars).
+
+**Status:**
+- Free tool landing page: 50K updated ✅, stat row pre-staged, single gate = Boss's 30-second confirmation
+- lw-vs-linksy.html: fully updated (pricing table corrected, 404 note, anchor text hardened) ✅ deploy-ready
+- Both assigned tasks (homepage features + automated review monitoring): `review`, waiting on Boss
+- Ads analysis: in `review` (Rex submitted), waiting on Boss to share data
 
 ## Heartbeat 18:40 UTC 2026-02-27
 
