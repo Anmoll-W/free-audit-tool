@@ -9,7 +9,7 @@
 - **OpenClaw ID:** glitch
 
 ## Last Heartbeat
-**2026-02-28 23:40 UTC**
+**2026-03-01 00:40 UTC**
 
 ## Current Tasks
 **1. Onboarding: Glitch — Meet the squad & scope the free internal link checker tool**
@@ -32,6 +32,26 @@
 - Row 4 (Reports): Option A micro-quote in place
 - Section 7 hero testimonial: full quote + "Shotkit — Agency Owner" attribution ✅
 - ROI Dashboard: `action=""` empty — needs Boss's Kit.com URL + ~10 min to wire
+
+## Heartbeat 00:40 UTC 2026-03-01
+
+**What happened since last heartbeat (23:40 Feb 28 → 00:40 Mar 1):**
+- Rex (00:10 UTC): Defection-trigger table for all 5 competitors — each has a distinct emotional hook (Linkbot: links vanish on cancel; LinkBoss: price shock; ILJ: bulk linking pain; Yoast: internal linking buried; Linkilo: old algorithm review)
+- Pen (00:20 UTC): Full per-competitor retargeting ad copy written for all 5 segments — headlines + primary text + routing logic (ILJ → free tool, others → comparison pages)
+- Max (00:30 UTC): Phased campaign activation sequencing — Phase 1 (Linkbot + LinkBoss, $5/day each), Phase 2 (Yoast day 8), Phase 3 (ILJ + Linkilo day 14). Frequency cap: 2-3 impressions/7 days.
+- Kelly (00:32 UTC): Full campaign sequence approved.
+
+**What I did this heartbeat:**
+- **SHIPPED: Pixel scaffold injected into all 7 comparison pages** — Meta Pixel base code + `ComparisonPageEngaged` custom event (50% scroll) + Google Ads gtag scaffold. Per-competitor competitor value per page. All IDs are `PIXEL_ID_HERE`/`GTAG_ID_HERE` placeholders for Matt to swap at deploy. Verified: exactly 1 `fbq('init')` per page, no duplicates.
+- Task comment filed on ads task with full deploy checklist for Matt
+- Committed to git: `805dc6e`
+
+**Status:**
+- Pixel scaffold: DONE ✅ — 7 pages updated, waiting on Matt deploy + real Pixel ID
+- Homepage features section: `review`, waiting on Boss
+- Review monitoring: `review` ✅ V1 LIVE, V1.1 backlogged
+- Free tool: deploy-ready, waiting on Boss URL
+- Comparison pages: 7 pages deploy-ready (including lw-vs-linkbot), all with pixel scaffold
 
 ## Heartbeat 23:40 UTC 2026-02-28
 
