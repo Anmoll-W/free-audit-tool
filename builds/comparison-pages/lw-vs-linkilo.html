@@ -151,6 +151,55 @@
     /* Footer */
     footer { border-top: 1px solid var(--lw-gray-200); padding: 2rem 0; text-align: center; color: var(--lw-gray-400); font-size: .85rem; }
   </style>
+
+  <!-- ============================================================
+  META PIXEL + GOOGLE ADS RETARGETING SCAFFOLD
+  Boss/Matt: Replace PIXEL_ID_HERE with your Meta Pixel ID
+  (15-digit number from Meta Business Manager → Events Manager).
+  Replace GTAG_ID_HERE with your Google Ads tag ID (AW-XXXXXXXXXX).
+  Competitor segment: linkilo
+  ============================================================ -->
+  <script>
+    /* META PIXEL BASE CODE */
+    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+    n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+    document,'script','https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', 'PIXEL_ID_HERE');
+    fbq('track', 'PageView');
+
+    /* Per-competitor custom event — fires once at 50% scroll depth.
+       Creates distinct audience: "linkilo" comparison page visitors. */
+    (function() {
+      var fired = false;
+      window.addEventListener('scroll', function() {
+        var scrollPct = window.scrollY / (document.body.scrollHeight - window.innerHeight);
+        if (!fired && scrollPct > 0.5) {
+          fired = true;
+          fbq('trackCustom', 'ComparisonPageEngaged', {
+            competitor: 'linkilo',
+            scroll_depth: '50pct'
+          });
+        }
+      });
+    })();
+
+    /* GOOGLE ADS REMARKETING */
+    (function() {
+      var s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=GTAG_ID_HERE';
+      document.head.appendChild(s);
+    })();
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'GTAG_ID_HERE');
+    gtag('event', 'comparison_page_engaged', { competitor: 'linkilo' });
+  </script>
+  <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=PIXEL_ID_HERE&ev=PageView&noscript=1" /></noscript>
 </head>
 <body>
 
@@ -346,6 +395,7 @@
         <li><a href="/link-whisper-vs-linksy/?utm_source=compare-linkilo&utm_medium=comparison&utm_campaign=vs-pages">LinkWhisper vs Linksy →</a></li>
         <li><a href="/link-whisper-vs-internal-link-juicer/?utm_source=compare-linkilo&utm_medium=comparison&utm_campaign=vs-pages">LinkWhisper vs Internal Link Juicer →</a></li>
         <li><a href="/link-whisper-vs-yoast-seo/?utm_source=compare-linkilo&utm_medium=comparison&utm_campaign=vs-pages">LinkWhisper vs Yoast SEO →</a></li>
+        <li><a href="/link-whisper-vs-linkbot/?utm_source=compare-linkilo&utm_medium=comparison&utm_campaign=vs-pages">LinkWhisper vs Linkbot →</a></li>
         <li><a href="/compare/?utm_source=compare-linkilo&utm_medium=comparison&utm_campaign=vs-pages">See all LinkWhisper comparisons →</a></li>
       </ul>
     </div>

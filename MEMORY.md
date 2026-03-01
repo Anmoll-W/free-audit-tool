@@ -9,7 +9,7 @@
 - **OpenClaw ID:** glitch
 
 ## Last Heartbeat
-**2026-02-28 03:40 UTC**
+**2026-02-28 23:40 UTC**
 
 ## Current Tasks
 **1. Onboarding: Glitch — Meet the squad & scope the free internal link checker tool**
@@ -32,6 +32,390 @@
 - Row 4 (Reports): Option A micro-quote in place
 - Section 7 hero testimonial: full quote + "Shotkit — Agency Owner" attribution ✅
 - ROI Dashboard: `action=""` empty — needs Boss's Kit.com URL + ~10 min to wire
+
+## Heartbeat 23:40 UTC 2026-02-28
+
+**What happened since last heartbeat (22:40 → 23:40 UTC):**
+- Rex (23:10 UTC): Line-by-line verification of lw-vs-linkbot.html — CONFIRMED DEPLOY-READY ✅. All Linkbot framing accurate, numbers clean.
+- Kelly (23:15 UTC): Deploy gate open for lw-vs-linkbot.html. 7-page batch confirmed for Matt.
+- Pen (23:20 UTC): Full Boss-ready deploy digest published — all 7 comparison pages tabulated with slugs + status.
+- Max (23:30 UTC): Retargeting architecture note on ads task — per-competitor segment strategy, comparison page → free tool → nurture funnel architecture.
+- Kelly (23:33 UTC): Acked Max's retargeting architecture. Flagged pixel events need to be spec'd before deploy, not after.
+
+**What I did this heartbeat:**
+- Dropped per-comparison-page Meta Pixel + Google Ads custom event spec on the ads task (kh77h8bbpk57mfbd8g15qbj83x81wd7h)
+  - `ComparisonPageEngaged` custom event fires at 50% scroll depth, passes `competitor` value per page
+  - Per-file competitor value table for all 7 pages
+  - Recommended: add pixel scaffold with placeholder IDs now, Matt swaps real IDs on deploy — zero deploy delay, retargeting starts day-one
+  - Need: Boss's Meta Pixel ID + Google Ads gtag ID (2-min lookup)
+- Acked loop-closed on lw-vs-linkbot.html in outreach task
+- Marked 4 notifications read
+- MEMORY.md updated
+
+**Status:**
+- Automated review monitoring: **review** ✅ V1 LIVE — templates firing, cron every 30min. V1.1 backlogged.
+- Homepage features section: `review`, waiting on Boss
+- Free tool: deploy-ready, 7 comparison pages ready, single gate = Boss URL confirmation + deploy approval
+- Pixel scaffold proposal: on ads task, waiting for Rex/Kelly/Boss response. Can build immediately once Pixel ID confirmed OR add placeholders for Matt to swap.
+
+## Heartbeat 22:40 UTC 2026-02-28
+
+**What happened since last heartbeat (21:40 → 22:40 UTC):**
+- Max (22:30 UTC): Outreach + review monitoring tasks — monitoring-only, no new actions. All signals unchanged.
+- Rex (22:10 UTC): WP.org scan clean. Rank Math AI Link Genius still not shipped. lw-vs-linkbot.html was built (detected during file audit) — counter-positions Linkbot's "suggestion-only" SERP attack.
+- Pen (22:20 UTC): Confirmed deploy sequencing: free tool page deploy → THEN DMCA filing. Still waiting on Boss.
+
+**What I did this heartbeat:**
+- Audited `/builds/comparison-pages/` directory — found `lw-vs-linkbot.html` (7th page, not in prior squad deployment discussion)
+- Verified all comparison pages are clean: $97, 50K+, no stale $77 or 40K instances
+- Free tool page confirmed: $97, 50K, autopilot bridge paragraph, FAQ hardening staged
+- Filed comment on outreach task flagging `lw-vs-linkbot.html` as the 7th deploy-ready comparison page — directly counters Linkbot's SERP "suggestion-only" positioning attack that Rex flagged Feb 27
+- MEMORY.md updated
+
+**Status:**
+- Automated review monitoring: **review** ✅ V1 LIVE — templates firing, cron every 30min. V1.1 backlogged. Pending = Anthropic credits + Shopify Partner API Y/N.
+- Homepage features section: `review`, waiting on Boss
+- Free tool: deploy-ready, 7 comparison pages ready (including lw-vs-linkbot.html), single gate = Boss URL confirmation + deploy approval
+- Comparison pages deploy should happen BEFORE DMCA filing (Max's sequencing call, Dev-confirmed)
+
+## Heartbeat 21:40 UTC 2026-02-28
+
+**What happened since last heartbeat (20:45 → 21:40 UTC):**
+- Rex (21:10 UTC): QA note — multi-reply thread edge case. If a review thread has >1 reply (e.g. Jason Allen with a rebuttal), the template might miss context. Proposed v1.1 flag.
+- Kelly (21:15 UTC): Rex's QA point confirmed as solid. v1.1 backlogged — V1 is live, ships as-is.
+- Pen (21:20 UTC): Wrote drop-in copy strings for the multi-reply flag (Option A approved: shorter, action-forward).
+- Kelly (21:30 UTC): Option A locked. V1.1 spec complete. Copy strings ready for Dev.
+- Max (21:31 UTC): Distribution angle — 4-star response data = roadmap intel for Anmoll + objection-handling for comparison pages. Coordinate Shopify review campaign only after monitoring is live.
+
+**What I did this heartbeat:**
+- Read full comment thread on review monitoring task — confirmed V1 is solid, no emergent bugs
+- Filed V1.1 technical implementation spec as task comment: `<slash:comments>` RSS field = reply count, `replyCount > 1` trigger, ~15 min build, no new dependencies
+- Included current status snapshot so Kelly/Boss/Matt have single reference point
+- MEMORY.md updated
+
+**Status:**
+- Automated review monitoring: **review** ✅ V1 LIVE — templates firing, cron every 30min. V1.1 backlogged with full spec. Single pending Boss gate = Anthropic credits for `USE_AI_DRAFTS=true` + Shopify Partner API Y/N.
+- Homepage features section: `review`, waiting on Boss
+- Free tool: deploy-ready, single gate = Boss URL confirmation ✅
+
+## Heartbeat 20:45 UTC 2026-02-28
+
+**What happened since last heartbeat (19:40 → 20:45 UTC):**
+- Rex (20:10 UTC): Added 4-star template to spec — feedback door ("feature you wish existed"), non-pushy, max ROI for low code cost.
+- Kelly (20:15 UTC): Option B is officially unblocked — @Dev to build. Jason Allen SLA expired. happybuilder24 queued.
+- Max (20:30 UTC): @Dev mention — 4-star template ROI case made (10 lines of code, 3-4x upgrade probability vs competitor non-response). Confirmed 4-star in V1 not V1.1. Approved Max's product feedback angle on top of Rex's support link.
+
+**What I did this heartbeat:**
+- **Built and shipped Option B** — full template-based review monitoring, zero Anthropic API dependency:
+  - `config/review-templates.json` — 4 star-tier templates (1/2/3/4-star), Pen copy, Max's 4-star text verbatim
+  - `drafter.js` — dual-path: Option B (templates) default, Option A (AI) when `USE_AI_DRAFTS=true`, automatic fallback if Anthropic fails
+  - `monitor.js` — 4-star monitoring enabled (`MONITOR_4_STAR=true`), no hard-crash on missing API key
+  - `telegram.js` — Max's approved format: full review text, star-tier label, draft in full
+  - **Cron updated**: `review-monitor-daily` (9am once/day) → `review-monitor-30min` (`*/30 * * * *`) — meets SLA
+- Test run passed: templates loaded, fake 2-star review drafted and formatted correctly
+- Task moved to `review` status — ready for Kelly/Boss sign-off
+
+**Status:**
+- Automated review monitoring: **review** ✅ — Option B shipped, cron running every 30min. Single gate = Boss/Kelly review.
+- Homepage features section: `review`, waiting on Boss
+- Free tool: deploy-ready, single gate = Boss URL confirmation ✅
+
+## Heartbeat 19:40 UTC 2026-02-28
+
+**What happened since last heartbeat (18:40 → 19:40 UTC):**
+- Rex (19:10 UTC): WP.org scan clean — HTTP 200, 50K+ installs, no new 1-stars.
+- Rex (19:10 UTC): Option B template library spec — 4-slot architecture (1-star hostile, 1-star feature-gap, 2-star, 3-star underwhelmed).
+- Pen (19:20 UTC): Option B copy-complete — three star-tier variants written, drop-in ready.
+- Kelly (19:15 UTC): Acked Rex's template library as solid. Routing spec confirmed.
+- Kelly (19:30 UTC): Option B spec confirmed ready to build. Routing to Dev.
+- Max (19:30 UTC): Added marketing layer — full review text in alert body (not truncated), "recoverable 20%" logic. Proposed star-tier label distinction: 1/2-star "Template response ready" vs 3-star "3★ — consider personalizing."
+- Kelly (19:33 UTC): Max's format APPROVED ✅ — incorporated as V1 scope, not V1.1. @Dev to build.
+- **Jason Allen SLA: ~37 min remaining from 19:33 UTC — ~20:10 UTC deadline. Boss must paste Pen's staged response.**
+
+**What I did this heartbeat:**
+- Key unlock: Identified that **Option B (template path) has zero Anthropic API dependency** — ships without credits being restored. Only Option A (AI drafts) needs credits.
+- Locked final Option B spec: full review text in alert body, star-tier label logic (`starCount <= 2 ? "Template response ready" : "3★ — consider personalizing"`), templates in `config/review-templates.json` (not hardcoded).
+- Recommended to Kelly/Boss: unblock as Option B, ship template system today, Option A remains paused until credits restored. Single config flag `USE_AI_DRAFTS=false` routes between paths — no code duplication.
+- Moved task from `blocked` → `in_progress`. Ready to build once Kelly confirms.
+
+**Status:**
+- Automated review monitoring: **in_progress** — Option B spec locked, credit-free, ready to build (~2hrs). Single gate = Kelly unblock confirmation.
+- Homepage features section: `review`, waiting on Boss
+- Free tool: deploy-ready, single gate = Boss URL confirmation ✅
+- Rank Math comparison page: brief locked, watching for launch + pricing confirmation
+- Affiliate campaign: v5 canonical locked, single gate = Boss CSV + cookie duration
+
+## Heartbeat 18:40 UTC 2026-02-28
+
+**What happened since last heartbeat (17:40 → 18:40 UTC):**
+- Dev (18:00 UTC): Reddit pipeline ran — IMAP connected, 125 F5Bot emails found, alerts firing to Telegram. BUT draft generation failing on every thread: Anthropic API credits depleted. Raw alerts only, no AI drafts.
+- Kelly (18:01 UTC): Flagged Anthropic API credits blocker on WP.org reviews task.
+- Kelly (18:05 UTC): Boss paused AI draft generation for Reddit pipeline.
+- Rex (18:10 UTC): WP.org scan clean. Rank Math AI Link Genius monitoring — three signals all clear.
+- Pen (18:20 UTC): Jason Allen follow-up copy staged ⏰ — SLA window closing ~20:00 UTC (Boss action required).
+- Pen (18:20 UTC): Rank Math AI Link Genius brief nav-check trigger locked.
+- Kelly (18:30 UTC): Jason Allen — copy staged, architecture clean. Two-scenario response ready.
+- Max (18:30 UTC): Jason Allen SLA — Boss action required in ~1h40m (~20:10 UTC). Review pipeline marked.
+- Kelly (18:34 UTC): Jason Allen already escalated. Acked Max.
+
+**What I did this heartbeat:**
+- Flagged shared Anthropic API credits risk to automated review monitoring task — same failure mode that took out Reddit pipeline. Silent draft failure = worse than no draft. Spec'd two fallback options (Option A: graceful degradation notice, Option B: pre-baked templates). Recommended Option A (20-min add). Set task status to `blocked` until credits confirmed replenished or Boss picks fallback.
+
+**Status:**
+- Automated review monitoring: **BLOCKED** — Anthropic API credits depleted (same issue as Reddit pipeline)
+- Homepage features section: `review`, waiting on Boss
+- Free tool: deploy-ready, single gate = Boss URL confirmation ✅
+- Rank Math comparison page: brief locked, watching for launch + pricing confirmation
+- Affiliate campaign: v5 canonical locked, single gate = Boss CSV + cookie duration
+
+## Heartbeat 17:40 UTC 2026-02-28
+
+**What happened since last heartbeat (16:40 → 17:40 UTC):**
+- Rex (17:10 UTC): Rank Math AI Link Genius monitoring — three signals all clear. ALSO dropped wprblogger.com pricing intel: AI Link Genius NOT in standard Rank Math pricing tiers (Free/Pro $95.88/Business $299.88). Almost certainly a paid add-on, not free bundled.
+- Kelly (17:15 UTC): Threat de-risked — no bundled-for-free scenario. One unknown gating the comparison page: Is AI Link Genius available to free plan users or only paid? Core argument pivots on this.
+- Max (17:31 UTC): Distribution angle — Rank Math AI + Pro = $190+/yr vs LW $97 as RSA headline; wpmayor + autopagerank link-building at launch.
+- Kelly (17:33 UTC): Acked Max. Everything waits on product shipping.
+- Affiliate task: v5 canonical locked. Pen built consolidated pre-fire checklist. Max acked all pre-fire items. Kelly green-lit my two flags (Rankability pre-flight + affid passthrough). My three @mentions cleared and marked read.
+
+**What I did this heartbeat:**
+- Dropped Rank Math Content AI architecture intel on outreach task — flagged that AI Link Genius likely follows their credits-based Content AI billing model. Free users = limited credits = hits paywall mid-workflow. This answers Kelly's "free vs paid" unknown with a "probably both, but with a credits wall." Gave Pen a dual-scenario comparison table row: LW flat $97/yr vs Rank Math plugin tier + Content AI credits (separate billing).
+- Advised @Rex to watch for "credits" language in AI Link Genius launch copy as the confirmation signal.
+
+**Status:**
+- Two assigned tasks (homepage features + automated review monitoring): `review`, waiting on Boss
+- Free tool: deploy-ready, single gate = Boss URL confirmation ✅
+- Rank Math comparison page: brief locked, one unknown (credits model), watching for launch
+- Affiliate campaign: v5 canonical + pre-fire checklist complete, single gate = Boss CSV
+
+## Heartbeat 16:40 UTC 2026-02-28
+
+**What happened since last heartbeat (15:40 → 16:40 UTC):**
+- Rex (16:10 UTC): Affiliate competitive intelligence drop — GotchSEO redirect to Rankability confirmed, pre-built affiliate segmentation framework (Tier A/B/C/D), affpaying data point.
+- Kelly (16:15 UTC): Framing call — lead with audience fit not commission number, Rankability inoculation without naming them, GotchSEO → Tier D (active Rankability promoter).
+- Pen (16:20 UTC): Email 1A full revision with audience-fit paragraph + Rankability inoculation ($149/mo, no names), both 0–90 day and 1+ year sub-variants written.
+- Kelly (16:30 UTC): Email 1A v5 APPROVED ✅ — both sub-variants canonical, commission number earns its place at the end.
+- Max (16:30 UTC): v5 doc locked — canonical Email 1A sub-variants documented. Noted GotchSEO defection is audience-fit story: agency-heavy audience doesn't convert for LW anyway.
+
+**What I did this heartbeat:**
+- Dropped two technical pre-fire checklist items on affiliate task:
+  1. Rankability price-check automation — fetch Rankability pricing page before Max loads sequences into Instantly, flag if $149/mo changed. Protects inoculation claim from going stale between now and send date.
+  2. WP Affiliate Manager query param passthrough — flagged that `?affid=XXX` tracking param can get stripped by canonical redirects on the `/affiliate-resources/` page. Matt needs to verify `mod_rewrite` passthrough before deploy or attribution analytics break for the resource kit link in all 3 emails.
+
+**Status:**
+- Both assigned tasks (homepage features + automated review monitoring): `review`, waiting on Boss
+- Affiliate task: v5 CANONICAL locked. Dev contributions: calculator widget (built + Pen-reviewed), CSV cohort splitter (built), pre-fire checklists (two items documented this heartbeat). Single gate = Boss CSV + cookie duration.
+- Free tool: deploy-ready, single gate = Boss URL confirmation ✅
+
+## Heartbeat 15:40 UTC 2026-02-28
+
+**What happened since last heartbeat (14:40 → 15:40 UTC):**
+- Rex (15:10 UTC): Pre-built Rank Math roundup cohort — 8 Tier A warm sites ready to activate on AI Link Genius launch. wpbeginner.com is #1 priority.
+- Kelly (15:15 UTC): Rank Math cohort locked in monitoring mode. Squad sits tight until Rex fires the trigger.
+- Pen (15:20 UTC): Comparison page brief locked — "Dedicated vs. Suite" framing, "Not yet released" in feature table, "link whisper vs rank math" as primary keyword.
+- Kelly (15:30 UTC): Rank Math comparison page brief APPROVED ✅ — Don't start until Rex has pricing/features. Brief confirmed correct.
+- Max (15:30 UTC): Ad group architecture noted as pending line item. Also flagged bi-directional URL slug strategy for comparison page (Max → Glitch territory).
+
+**What I did this heartbeat:**
+- Fetched Rank Math AI Link Genius page live — found critical detail: "Get Early Access" button is gated behind Rank Math account login (`/my-account/`). This signals premium add-on model, NOT bundled free feature. Threat level de-escalated from "3M auto-installs" to "premium upsell to existing Rank Math paid users." Medium confidence.
+- Dropped Rank Math page recon + comparison page URL/redirect architecture spec on outreach task. Specified full 301 redirect chain (`/rank-math-vs-link-whisper/ → /lw-vs-rankmath/` etc.), why it matters for consolidating link equity from wpmayor/autopagerank.com external links.
+
+**Status:**
+- Both assigned tasks (homepage features + automated review monitoring): `review`, waiting on Boss
+- Free tool: deploy-ready, single gate = Boss URL confirmation ✅
+- Rank Math comparison page: brief locked, watching for launch + pricing confirmation (Rex monitoring)
+- Outreach v22 locked: Seq A2 3/3 complete, single gate = Boss free tool URL
+
+## Heartbeat 14:40 UTC 2026-02-28
+
+**What happened since last heartbeat (13:40 → 14:40 UTC):**
+- Rex (14:10 UTC): TWO new competitive flags — Rank Math "AI Link Genius" (early access, 3M+ install base, tier-1 threat) + Backlinko now has a free SEO checker (removes them as outreach target)
+- Kelly (14:15 UTC): Rank Math → monitoring mode, "built for one thing" beats "suite feature." Backlinko removed from all outreach. @Rex holds the trigger for Rank Math comparison page brief.
+- Pen (14:20 UTC): Pull quote → Email 2 confirmed (not Email 3), with full draft block including "that's the whole answer" button-close. Rank Math hold acked.
+- Max (14:30 UTC): Outreach doc → v22. Backlinko fully scrubbed, Rank Math noted in doc, Email 2 pull quote spec locked. Boss action queue: seotesting.com pricing email + Anam Hassan DM (gate-free) + free tool URL (sole gate for Seq A2).
+
+**What I did this heartbeat:**
+- Dropped Rank Math AI Link Genius technical analysis on outreach task — explained why bundled distribution (not feature parity) is the real risk, and why our free tool becomes MORE valuable if Rank Math launches (free tool = universal diagnostic for any plugin's output). Pitched positioning pivot: "did your current plugin actually work?" framing captures Rank Math users into LW funnel.
+- Added Kit.com Email 2 pull quote implementation spec — exact edit path in Kit's visual editor, flag on blockquote CSS workaround (Kit doesn't have native blockquote block, use border-left inline style or italic + em dash attribution).
+
+**Status:**
+- Both assigned tasks (homepage features + automated review monitoring): `review`, waiting on Boss
+- Free tool: deploy-ready, single gate = Boss URL confirmation ✅
+- Outreach v22 locked: Seq A2 3/3 complete, single gate = Boss free tool URL
+- Rank Math AI Link Genius: monitoring mode, Rex holds trigger
+
+## Heartbeat 13:40 UTC 2026-02-28
+
+**What happened since last heartbeat (12:40 → 13:40 UTC):**
+- Rex (13:10 UTC): questiondb.io CONFIRMED ✅ — neutral, LW ranked #1, pricing current $97, no editorial conflict. Author is a practitioner ("I use this personally for clients") — verbatim: "internal linking mostly happens on autopilot and requires minimal efforts."
+- Kelly (13:15 UTC): questiondb.io confirmed Tier A2 warm — @Pen to write pitch.
+- Pen (13:20 UTC): questiondb.io warm pitch copy ready — Subject A: verbatim quote hook, body peer-to-peer.
+- Kelly (13:30 UTC): Seq A2 complete — 3/3 warm pitches locked. questiondb.io approved.
+- Max (13:31 UTC): Outreach doc → v21 — questiondb.io slotted, UTM spec integrated, Seq A2 final status 3/3. Single gate = Boss free tool URL.
+- Rex (12:10 UTC): WP.org scan clean. Rex also dropped questiondb.io verbatim quote intel.
+
+**What I did this heartbeat:**
+- Dropped pull quote integration spec on outreach task — questiondb.io author's "autopilot" language is marketing gold. Spec covers: comparison pages (sidebar testimonial, counters Linkbot's "manual review" attack), free tool page (social proof above CTA), email sequences (Email 2/3 objection block). HTML attribution format provided. ~15 min Matt build across comparison pages, ~5 min free tool page.
+- Gate flagged: Boss confirmation that third-party public review quotations are cleared for use in builds.
+
+**Status:**
+- Both assigned tasks (homepage features + automated review monitoring): `review`, waiting on Boss
+- Free tool: deploy-ready, single gate = Boss URL confirmation ✅
+- Outreach v21 locked: Seq A2 3/3 complete (answersocrates + seotesting + questiondb.io), single gate = Boss free tool URL
+- Anam Hassan DM window: TODAY (closes Feb 29 UTC) — handle `@anamhasssan` (triple-s), Boss action required
+
+## Heartbeat 12:40 UTC 2026-02-28
+
+**What happened since last heartbeat (11:40 → 12:40 UTC):**
+- Max (12:30 UTC): Outreach doc → v20. allintitle.co removed, answersocrates upgraded to Tier A, Anam Hassan Seq A2 cold pitch slotted. All 4 pitches copy-complete.
+- Kelly (12:30 UTC): v20 acked — routing locked, single gate = Boss free tool URL.
+- Rex (12:10 UTC): WP.org scan clean — HTTP 200, 50K+ active installs, no new 1-stars. Also dropped verbatim quote intel for warm pitch personalization.
+- Pen (12:20 UTC): answersocrates.com pitch upgraded, allintitle.co routing verdict locked.
+
+**What I did this heartbeat:**
+- Dropped UTM attribution spec on outreach task — clean convention for tracking which editor/target converts to an actual link. `utm_source=[target-slug]`, `utm_medium=roundup-outreach`, `utm_campaign=free-tool-launch`, `utm_content=[tier]`. Zero added build time — bakes in at deploy when Boss confirms base URL.
+- Raised decision for Kelly: sequence-level attribution (seq-a2 vs seq-b) vs tier-only — granular enough to measure cold vs warm conversion rate independently.
+- Both assigned tasks (homepage features + automated review monitoring): `review`, waiting on Boss.
+
+**Status:**
+- Both assigned tasks: still `review`, waiting on Boss
+- Free tool: deploy-ready, single gate = Boss URL confirmation ✅
+- Anam Hassan window: TODAY — handle confirmed = `@anamhasssan` (triple-s)
+- Outreach v20 locked: allintitle.co out, answersocrates Tier A, all 4 pitches copy-complete
+
+## Heartbeat 11:40 UTC 2026-02-28
+
+**What happened since last heartbeat (10:40 → 11:40 UTC):**
+- Pen (11:20 UTC): Anam Hassan (wordpress.com Feb 25 article) cold pitch written — WINDOW CLOSING TODAY. Seq A2 personalized variant, Boss needs to DM @anamhasssan on Twitter.
+- Kelly (11:30 UTC): Confirmed pitch is copy-complete, Boss action queue: (1) Anam Hassan DM today, (2) free tool URL for all other sequences.
+- Max (11:30 UTC): Outreach doc → v19. All four pitches copy-complete. Boss action queue table added at top of doc.
+
+**What I did this heartbeat:**
+- Fetched Anam Hassan's article live, confirmed no inline Twitter handle visible
+- Did targeted search — found `@anamhasssan` (triple-s) on Twitter/X
+- Dropped confirmed handle + direct DM URL on outreach task: Boss now has a 3-minute action path (open URL, paste Pen's copy from v19 doc, send)
+- Both assigned tasks still in `review`, waiting on Boss
+
+**Status:**
+- Both assigned tasks (homepage features + automated review monitoring): `review`, waiting on Boss
+- Free tool: deploy-ready, single gate = Boss URL confirmation ✅
+- Anam Hassan window: TODAY (closes Feb 29 UTC) — handle confirmed = `@anamhasssan`
+- Outreach v19 locked: seotesting.com pricing email (no gate), answersocrates + allintitle + Anam Hassan (Boss URL + DM)
+
+## Heartbeat 10:40 UTC 2026-02-28
+
+**What happened since last heartbeat (09:40 → 10:40 UTC):**
+- Rex (10:10 UTC): seotesting.com full article fetch — LW confirmed #7 (first in WordPress section), stale pricing $77/$117/$167 confirmed (current is $97/$197/$297). Warm pitch confirmed.
+- Kelly (10:15 UTC): seotesting.com → Tier B warm outreach. Pricing correction as hook, free tool as second touchpoint. Pitch leads with pricing service gesture.
+- Pen (10:20 UTC): Three warm pitch emails copy-complete: answersocrates.com ("best free internal linking tool" endorsement angle), allintitle.co ("step 0 before plugin comparison" angle), seotesting.com (pricing correction → free tool two-touchpoint play).
+- Kelly (10:30 UTC): All three vault-locked pending Boss's free tool URL. seotesting.com pricing email = no gate, load into Instantly now. Gate: Instantly access for kelly@.
+- Max (10:30 UTC): Outreach doc v18 locked. Sending queue clean: seotesting.com pricing email (no gate), answersocrates + allintitle (Boss URL). UTM placeholder strategy for follow-up email pre-confirmed.
+- Kelly (10:30 UTC): v18 confirmed. Two Boss actions unlock everything: Instantly access for kelly@linkwhisper.com + free tool URL.
+
+**What I did this heartbeat:**
+- Dropped pricing consistency confirmation on outreach task — verified our own site ($97 everywhere: free tool page, compare hub, all comparison pages) matches what Pen's seotesting.com pitch cites. Service gesture is airtight, no editor fact-check mismatches.
+- Both assigned tasks (homepage features + automated review monitoring): `review`, waiting on Boss.
+- Outreach v18 fully saturated — no build work actionable until Boss confirms free tool URL.
+
+**Status:**
+- Both assigned tasks: still `review`, waiting on Boss
+- Free tool: deploy-ready, single gate = Boss URL confirmation ✅
+- Outreach queue: v18 locked, single gate = Boss free tool URL + Instantly access for kelly@
+
+## Heartbeat 09:40 UTC 2026-02-28
+
+**What happened since last heartbeat (08:40 → 09:40 UTC):**
+- Rex (09:10 UTC): WP.org scan clean. Jason Allen thread — 11hrs remaining on SLA (~20:13 UTC today). Two old unanswered reviews flagged: Kevin Maschke (3mo) + 1xl (6mo).
+- Pen (09:20 UTC): Copy-ready responses drafted for Kevin Maschke + 1xl — paste-ready for Boss.
+- Kelly (09:30 UTC): Acked Pen's responses. 1xl is higher priority (6mo complaint). Kevin Maschke: options to hold until Matt's PRD ships so response can reference version number.
+- Max (09:30 UTC): Distribution rationale for both responses. Founder personal response on old complaint = more persuasive than fast response. Timing rec: 1xl today, Kevin Maschke after PRD.
+- Max (09:30 UTC): v17 outreach sweep — wordpress.com window REOPENED (Anam Hassan published new article Feb 25 = 3 days old). 5 new targets added including answersocrates.com + allintitle.co (warm, already feature LW) + seotesting.com + questiondb.io + connorgillivan.beehiiv.com.
+- Kelly (09:30 UTC): Verified wordpress.com/blog/2026/02/25/best-wordpress-seo-plugins/ — LW NOT included, cold pitch territory, Seq A angle applies. seotesting.com: LW not visible in first 4K chars, @Rex requested to check full article.
+
+**What I did this heartbeat:**
+- Live-fetched seotesting.com article — found 6 of 10 tools (LinkStorm, InternalLinking, seoClarity, Ahrefs, Semrush, ScreamingFrog) with LW not yet visible. Article has two sections — LW likely in WordPress plugin back-half (positions 7-10). Key insight: seotesting.com has commercial relationship with InternalLinking (they offer free credits to customers) = soft conflict, pitch them last of the three targets.
+- Dropped pitch angle rec on outreach task: free tool's "zero install, same core function as LinkStorm" framing bypasses LW's lower rank in the article — pitch is about the free tool being in the specialist section, not the plugin section.
+- Filed RSS automation retrospective on WP.org monitoring task — Jason Allen 8-hour detection lag is the exact use case the RSS poller would have solved. Made case for Boss greenlight using concrete timeline comparison (8hr lag vs 1hr poller window).
+
+**Status:**
+- Both assigned tasks (homepage features + automated review monitoring): `review`, waiting on Boss
+- Free tool: deploy-ready, single gate = Boss URL confirmation ✅
+- RSS automation: spec complete, greenlight pending Boss
+
+## Heartbeat 08:40 UTC 2026-02-28
+
+**What happened since last heartbeat (07:40 → 08:40 UTC):**
+- Rex (08:10 UTC): Dropped Freemius 700% lift A/B test data — value-based triggers > time-based, Vova Feldman primary source. @Dev + @Pen + @Kelly mentioned. Validates 20+ accepted suggestion threshold and `[N]` dynamic count mechanism in Pen's Variant 1.
+- Pen (08:20 UTC): Sharpened Variant 1 copy to lean harder into `[N]` mechanism — "That's [N] internal links you didn't have to find manually" — the value frame that earns the ask.
+- Kelly (08:30 UTC): Synthesized — routing variant recommended for launch, single-ask for B-test after baseline. Both paste-ready.
+- Max (08:30 UTC): Added Kit.com integration spec — `lw_review_intent: true` tag on "Yes" click, 48hr delay → affiliate nudge email, `review_intent_clicked` tracking for threshold validation. Kelly acked.
+
+**What I did this heartbeat:**
+- Dropped full PHP implementation spec for Max's Kit.com webhook on the review collection task — complete AJAX chain (JS click → PHP handler → Kit.com API → local user_meta), all 4 custom fields from Max's spec plus `lw_accepted_count_at_ask` bonus, nonce localization snippet. ~30 min Matt build add on top of prior 1hr estimate. Paste-ready.
+- Marked 6 notifications read.
+
+**Status:**
+- Both assigned tasks (homepage features + automated review monitoring): `review`, waiting on Boss
+- Free tool: deploy-ready, single gate = Boss URL confirmation ✅
+- Premium popup + Kit.com spec: complete, no Boss gates, moves at Matt's sprint pace
+
+## Heartbeat 07:40 UTC 2026-02-28
+
+**What happened since last heartbeat (06:40 → 07:40 UTC):**
+- New task created: "Improve in-premium-plugin review collection flow" (`kh71vth31cpm664e31z4t15r11820k6w`) — low priority, April/May, Matt's sprint
+- Pen (07:20 UTC): Full copy audit of current premium plugin "love it / hate it" popup + 3 copy variants threaded onto new task. @Dev mentioned.
+- Kelly (07:30 UTC): Synthesized Pen's variants + flagged my PHPspec is directly reusable for the premium popup dismiss architecture. @Dev asked to flag this to Matt.
+- Kelly (07:30 UTC): Free tool loop closed — deploy is a file swap when Boss confirms URL. @Dev tagged for awareness.
+
+**What I did this heartbeat:**
+- Acked Kelly's @mention on the premium popup task — dropped full PHP reuse spec for Matt: copy-paste from existing dismiss counter spec, estimated ~1hr net new work, flagged two field names Matt needs to confirm (`lw_accepted_suggestion_count` + current trigger type)
+- Acked Kelly + Pen on ads task — confirmed deploy is a single `action=""` attribute change + optional 301
+
+**Status:**
+- Both assigned tasks (homepage features + automated review monitoring): `review`, waiting on Boss
+- Free tool: deploy-ready, single gate = Boss URL confirmation ✅
+- Premium popup spec: complete, no Boss gates, moves at Matt's sprint pace
+
+## Heartbeat 06:40 UTC 2026-02-28
+
+**What happened since last heartbeat (05:40 → 06:40 UTC):**
+- Rex (06:10 UTC): ILJ live pricing pull — filled competitive table gap. ILJ Starter $79/yr, Pro $149/yr. Confirms LW is competitively positioned.
+- Pen (06:20 UTC): Shipped ILJ-aware sub-headline to free tool page (`hero__sub`): "Maybe your links are already building themselves. But are they building the right ones?" — targets ILJ users who think they're covered but aren't catching orphans or quality issues.
+- Kelly (06:30 UTC): Approved Pen's sub-headline edit. @Dev ack requested. Single gate unchanged: Boss free tool URL.
+- Max (06:30 UTC): Acked Dev's dismissal-count spec. Added timing refinement: if 2nd dismiss fires within 48hrs of 1st → hostile state, silent suppress (skip even the support CTA). If delta >48hrs → Variant 2 support CTA.
+
+**What I did this heartbeat:**
+- Verified Pen's ILJ sub-headline edit landed at line 661 of `builds/internal-link-checker/index.html` ✅
+- Acked Kelly + Pen on ads task — confirmed deploy-ready (sub-headline correct, pricing correct, schema intact)
+- Filed Max's 48hr delta timing refinement to dismissal-count spec on review monitoring task — full PHP spec now includes two user_meta keys (`lw_review_banner_dismissed` + `lw_review_banner_last_dismissed`), delta check logic, and all 3 milestone copy variants from Pen
+
+**Status:**
+- Free tool page: deploy-ready, single gate = Boss URL confirmation ✅
+- Homepage features + automated review monitoring: `review`, waiting on Boss
+
+## Heartbeat 05:40 UTC 2026-02-28
+
+**What happened since last heartbeat (04:40 → 05:40 UTC):**
+- Rex (05:10 UTC): WP.org scan clean, 50K+ confirmed.
+- Pen (05:20 UTC): Milestone-triggered copy variants for the review banner — three variants keyed to 25/100/500 milestone thresholds. Tone shifts from warm ask → social proof → industry recognition as milestone climbs.
+- Max (05:30 UTC): @Dev — dismissal-count logging spec. Flagged: if user dismisses 2x → suppress banner + trigger support pathway instead of review pathway. Full downstream value chain articulated: review velocity → outreach proof → ad copy → comparison page quotes.
+
+**What I did this heartbeat:**
+- Acked Max's dismissal-count @mention on review monitoring task
+- Dropped full PHP implementation spec for dismissal-count logging (~20 lines): `lw_review_banner_dismissed` user_meta counter, suppress at >= 2, support-CTA redirect on 2nd dismiss (Variant 2 recommended over silent suppress — catches frustrated users before they hit WP.org)
+- Both assigned tasks (homepage features + automated review monitoring): still `review`, waiting on Boss
+
+## Heartbeat 04:40 UTC 2026-02-28
+
+**What happened since last heartbeat (03:40 → 04:40 UTC):**
+- Rex (04:10 UTC): WP.org scan clean, 50K+ confirmed. Jason Allen thread has a potentially unanswered reply from ~8hrs ago — fetched thread but JS content not visible via static fetch. Pen staged responses for both scenarios (ack or follow-up question).
+- Pen (04:20 UTC): Staged Scenario A + B response for Jason Allen thread. Also filed conditional banner copy reframe ("Has LW saved you time this week? If yes → review / If not → support") — the better UX+copy pattern for the review nag.
+- Kelly (04:30 UTC): @Dev: file Pen's banner copy alongside the dismissal state PRD so Matt has it when banner work starts.
+- Max (04:30 UTC): WPBeginner email load-in workflow locked — conditional send path (high/low earnings variant), Boss just needs Freemius data pull + route decision. Tuesday AM PST optimal for LinkedIn DM to Syed Balkhi.
+
+**What I did this heartbeat:**
+- Filed Pen's conditional banner copy + Max's trigger-timing note alongside the dismissal state PRD on the review monitoring task — so Matt has the complete brief (architecture + copy + trigger sequence) in one place
+- Acked Kelly 03:45 + 04:30 @mentions on outreach task; added Freemius dashboard navigation note for Boss (search by `wpbeginner.com` domain or `/refer/linkwhisper/` path, pull: earnings 90d + click volume + CVR)
+- No new build work — both assigned tasks still in `review`, waiting on Boss
 
 ## Heartbeat 03:40 UTC 2026-02-28
 

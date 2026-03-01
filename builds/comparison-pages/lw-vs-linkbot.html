@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Link Whisper vs Linkbot: Your Links Stay Forever. Or They Don't. (2026)</title>
+  <meta name="description" content="Linkbot's review says Link Whisper is 'suggestion-only.' That's one of two modes. Here's the full comparison — plus why $8/month beats $19/month forever.">
+
+  <!-- FAQPage Schema -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Is Link Whisper better than Linkbot?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "For WordPress site owners, Link Whisper is the stronger choice. It's a native WordPress plugin that writes links directly into your post content — meaning those links are yours permanently, even if you cancel. Linkbot uses a JavaScript snippet injected by their servers; when you cancel, the links stop rendering. Link Whisper also includes two modes: AI suggestion review (you approve links) and auto-link rules (links placed automatically with no approval queue). Linkbot's own review describes LW as 'suggestion-only' — that's not accurate. Both modes are included at $97/yr."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What happens to my links if I cancel Linkbot?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Linkbot works via a JavaScript snippet injected client-side by their servers. When you cancel your Linkbot subscription, that snippet stops working and the injected links stop rendering on your site. The links were never stored in your WordPress database — they were injected in the browser by Linkbot's external code. With Link Whisper, links are written directly into your WordPress post content (stored in the database). If you cancel, every link you built remains in your posts permanently. You own them."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does Link Whisper automate internal linking?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. Link Whisper has two modes. Mode 1: AI suggestions in the WordPress editor — you review and approve links one-click at a time. Mode 2: auto-link rules — you define keyword targets once, and Link Whisper automatically places the link every time that keyword appears in a published post. No approval queue, no manual clicks. Both modes are included in the $97/yr license. Some reviews only describe Mode 1. Both exist."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How much does Linkbot cost?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Linkbot's Pro plan is $19/month ($228/year) for up to 5 sites. Their Business plan is $49/month for 10 sites. All paid plans include a 14-day free trial. Link Whisper costs $97/year for 1 site, $147/year for 3 sites, or $197/year for 10 sites — a one-time annual license, not a monthly SaaS fee."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is Linkbot a WordPress plugin?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. Linkbot is a SaaS platform. You install it by pasting a JavaScript snippet into your site's head tag. It works on WordPress, Webflow, HubSpot, and other platforms — but it is not a native WordPress plugin. It runs on Linkbot's external servers and processes your site's URLs there. Link Whisper is a WordPress plugin that installs like any other plugin and runs entirely on your own server. Your data stays on your site."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does Link Whisper work for agencies?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. Link Whisper's 10-site license ($197/yr) covers an agency managing 10 client WordPress sites. If a client churns, you cancel that site — and critically, the links built with Link Whisper remain in the client's posts permanently (they're stored in the WordPress database). With Linkbot, canceling a client's subscription removes all their injected links. For agencies, Link Whisper's database-write model means your work product survives a client transition. Linkbot's JS injection model does not."
+        }
+      }
+    ]
+  }
+  </script>
+
+  <!-- Retargeting pixel placeholder — activate when Boss confirms ad platform -->
+  <!--
+    For Google Ads: paste Google tag here
+    For Meta: paste Meta Pixel base code here
+    Then add per-page audience event:
+    gtag('event', 'comparison_view', { competitor: 'linkbot' });
+    fbq('trackCustom', 'ComparisonView', { competitor: 'linkbot' });
+  -->
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --lw-blue: #2563eb;
+      --lw-blue-dark: #1d4ed8;
+      --lw-green: #16a34a;
+      --lw-red: #dc2626;
+      --lw-amber: #d97706;
+      --lw-gray-50: #f9fafb;
+      --lw-gray-100: #f3f4f6;
+      --lw-gray-200: #e5e7eb;
+      --lw-gray-400: #9ca3af;
+      --lw-gray-600: #4b5563;
+      --lw-gray-700: #374151;
+      --lw-gray-900: #111827;
+      --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --max-w: 860px;
+    }
+    body { font-family: var(--font-sans); color: var(--lw-gray-700); line-height: 1.7; background: #fff; }
+    .container { max-width: var(--max-w); margin: 0 auto; padding: 0 1.25rem; }
+
+    /* Hero */
+    .hero { background: var(--lw-gray-50); border-bottom: 1px solid var(--lw-gray-200); padding: 4rem 0 3rem; }
+    .hero .tag { display: inline-block; background: var(--lw-blue); color: #fff; font-size: .75rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; padding: .25rem .75rem; border-radius: 4px; margin-bottom: 1.25rem; }
+    .hero h1 { font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 800; color: var(--lw-gray-900); line-height: 1.2; margin-bottom: 1rem; }
+    .hero .subhead { font-size: 1.15rem; color: var(--lw-gray-600); max-width: 680px; margin-bottom: 2rem; }
+    .cta-group { display: flex; flex-wrap: wrap; gap: .75rem; }
+    .btn { display: inline-block; padding: .75rem 1.5rem; border-radius: 6px; font-weight: 600; font-size: .95rem; text-decoration: none; transition: opacity .15s; }
+    .btn-primary { background: var(--lw-blue); color: #fff; }
+    .btn-primary:hover { opacity: .9; }
+    .btn-secondary { background: #fff; color: var(--lw-blue); border: 2px solid var(--lw-blue); }
+    .btn-secondary:hover { background: var(--lw-gray-50); }
+
+    /* TL;DR */
+    .tldr { background: #eff6ff; border-left: 4px solid var(--lw-blue); padding: 1.5rem; border-radius: 0 8px 8px 0; margin: 2.5rem 0; }
+    .tldr h2 { font-size: 1rem; font-weight: 700; color: var(--lw-blue); margin-bottom: .75rem; }
+    .tldr p { margin-bottom: .5rem; font-size: .95rem; }
+
+    /* Content */
+    .content { padding: 3rem 0; }
+    .section { margin-bottom: 3.5rem; }
+    .section h2 { font-size: 1.5rem; font-weight: 700; color: var(--lw-gray-900); margin-bottom: 1rem; }
+    .section h3 { font-size: 1.15rem; font-weight: 700; color: var(--lw-gray-900); margin: 1.5rem 0 .75rem; }
+    .section p { margin-bottom: 1rem; }
+    .section ul, .section ol { margin: .75rem 0 1rem 1.5rem; }
+    .section li { margin-bottom: .4rem; }
+
+    /* Warning callout */
+    .callout-warn { background: #fffbeb; border: 1px solid #fde68a; border-left: 4px solid var(--lw-amber); padding: 1.25rem 1.5rem; border-radius: 0 8px 8px 0; margin: 1.5rem 0; }
+    .callout-warn h3 { color: var(--lw-amber); font-size: 1rem; margin-bottom: .5rem; }
+
+    /* Blockquote */
+    blockquote { border-left: 3px solid var(--lw-gray-200); padding-left: 1.25rem; margin: 1.25rem 0; color: var(--lw-gray-600); font-style: italic; }
+
+    /* Tables */
+    .table-wrap { overflow-x: auto; margin: 1.5rem 0; }
+    table { width: 100%; border-collapse: collapse; font-size: .9rem; }
+    th { background: var(--lw-gray-100); font-weight: 700; color: var(--lw-gray-900); padding: .65rem 1rem; text-align: left; border: 1px solid var(--lw-gray-200); }
+    td { padding: .6rem 1rem; border: 1px solid var(--lw-gray-200); vertical-align: top; }
+    tr:nth-child(even) td { background: var(--lw-gray-50); }
+    .yes { color: var(--lw-green); font-weight: 600; }
+    .no { color: var(--lw-red); }
+    .warn { color: var(--lw-amber); }
+    td.lw-win { background: #f0fdf4 !important; font-weight: 600; color: var(--lw-green); }
+
+    /* CTA section */
+    .cta-section { background: var(--lw-gray-50); border: 1px solid var(--lw-gray-200); border-radius: 12px; padding: 2.5rem; text-align: center; margin: 3rem 0; }
+    .cta-section h2 { font-size: 1.5rem; margin-bottom: .75rem; }
+    .cta-section p { color: var(--lw-gray-600); margin-bottom: 1.5rem; }
+
+    /* FAQ */
+    .faq-item { border-bottom: 1px solid var(--lw-gray-200); padding: 1.25rem 0; }
+    .faq-item:last-child { border-bottom: none; }
+    .faq-q { font-weight: 700; color: var(--lw-gray-900); margin-bottom: .5rem; }
+
+    /* Cross-links */
+    .cross-links { background: var(--lw-gray-50); border-radius: 8px; padding: 1.5rem; }
+    .cross-links h3 { font-size: 1rem; font-weight: 700; margin-bottom: 1rem; }
+    .cross-links ul { list-style: none; margin: 0; padding: 0; }
+    .cross-links li { padding: .3rem 0; }
+    .cross-links a { color: var(--lw-blue); text-decoration: none; }
+    .cross-links a:hover { text-decoration: underline; }
+
+    /* Footer */
+    footer { border-top: 1px solid var(--lw-gray-200); padding: 2rem 0; text-align: center; color: var(--lw-gray-400); font-size: .85rem; }
+  </style>
+
+  <!-- ============================================================
+  META PIXEL + GOOGLE ADS RETARGETING SCAFFOLD
+  Boss/Matt: Replace PIXEL_ID_HERE with your Meta Pixel ID
+  (15-digit number from Meta Business Manager → Events Manager).
+  Replace GTAG_ID_HERE with your Google Ads tag ID (AW-XXXXXXXXXX).
+  Competitor segment: linkbot
+  ============================================================ -->
+  <script>
+    /* META PIXEL BASE CODE */
+    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+    n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+    document,'script','https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', 'PIXEL_ID_HERE');
+    fbq('track', 'PageView');
+
+    /* Per-competitor custom event — fires once at 50% scroll depth.
+       Creates distinct audience: "linkbot" comparison page visitors. */
+    (function() {
+      var fired = false;
+      window.addEventListener('scroll', function() {
+        var scrollPct = window.scrollY / (document.body.scrollHeight - window.innerHeight);
+        if (!fired && scrollPct > 0.5) {
+          fired = true;
+          fbq('trackCustom', 'ComparisonPageEngaged', {
+            competitor: 'linkbot',
+            scroll_depth: '50pct'
+          });
+        }
+      });
+    })();
+
+    /* GOOGLE ADS REMARKETING */
+    (function() {
+      var s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=GTAG_ID_HERE';
+      document.head.appendChild(s);
+    })();
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'GTAG_ID_HERE');
+    gtag('event', 'comparison_page_engaged', { competitor: 'linkbot' });
+  </script>
+  <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=PIXEL_ID_HERE&ev=PageView&noscript=1" /></noscript>
+</head>
+<body>
+
+<div class="hero">
+  <div class="container">
+    <span class="tag">Comparison</span>
+    <h1>Link Whisper vs Linkbot: Your Links Stay Forever. Or They Don't.</h1>
+    <p class="subhead">If you're seeing Linkbot recommended as a Link Whisper alternative, here's the comparison Linkbot's review left out. Updated February 2026.</p>
+    <div class="cta-group">
+      <a href="https://linkwhisper.com/pricing?utm_source=compare-linkbot&utm_medium=comparison&utm_campaign=vs-pages" class="btn btn-primary">Try Link Whisper Free →</a>
+      <a href="https://linkwhisper.com/internal-link-checker?utm_source=compare-linkbot&utm_medium=comparison&utm_campaign=vs-pages" class="btn btn-secondary">Free Site Audit (No Plugin Required)</a>
+    </div>
+  </div>
+</div>
+
+<div class="content">
+  <div class="container">
+
+    <div class="tldr">
+      <h2>TL;DR</h2>
+      <p><strong>The one thing Linkbot's comparison page never mentions:</strong> when you cancel Linkbot, every internal link they built disappears. Their links live in JavaScript injected by Linkbot's servers — not in your WordPress database. Cancel your subscription, and your internal link structure disappears overnight.</p>
+      <p><strong>Link Whisper writes links directly into your WordPress posts.</strong> They're stored in your database. They're yours. Forever. Whether you stay on Link Whisper or not.</p>
+      <p><strong>Also worth knowing:</strong> Linkbot's review describes Link Whisper as "suggestion-only." That's one of two modes. Link Whisper also has auto-link rules that place links automatically — no approval queue, no manual clicks. Both modes are included in the same $97/yr plan.</p>
+    </div>
+
+    <!-- SECTION 1: COUNTER-FRAMING -->
+    <div class="section">
+      <h2>Let's address the review first</h2>
+      <p>A recent review called Link Whisper "firmly in the AI suggestion tier… it does not automate link placement autonomously."</p>
+      <p>That describes one of two modes.</p>
+      <p>Link Whisper's <strong>auto-link rules</strong> place links automatically based on keywords you define — no approval, no clicks, no queue. 50,000+ WordPress sites use it. You set the keyword target once, and every future post that contains that keyword gets the link inserted automatically on publish.</p>
+      <p>The review is accurate about the <em>suggestions panel</em> — where you review and approve individual link recommendations in the editor. That mode exists. It's not the full picture.</p>
+      <p>Both modes are included in the same $97/yr plan. Here's how the two tools actually compare.</p>
+    </div>
+
+    <!-- SECTION 2: HOW IT WORKS -->
+    <div class="section">
+      <h2>How each tool works — this is the key difference</h2>
+
+      <h3>Link Whisper: WordPress plugin</h3>
+      <p>Link Whisper installs like any WordPress plugin. It runs on <strong>your server</strong>. The AI scans your content natively — no API keys, no external service, no data leaving your site. When you build a link, it's written directly into your WordPress post content and saved in your database.</p>
+      <p>Cancel Link Whisper, and every link you built stays. They're in your posts. They belong to you.</p>
+
+      <h3>Linkbot: SaaS JavaScript snippet</h3>
+      <p>Linkbot is a SaaS platform. You copy and paste a JavaScript snippet into your site's <code>&lt;head&gt;</code> tag. Linkbot's servers crawl your site URLs, identify internal link opportunities, and inject links <strong>client-side via JavaScript</strong> — not by writing to your WordPress database.</p>
+      <p>This means Linkbot works on WordPress, Webflow, HubSpot, and other platforms. The tradeoff: it's external infrastructure, not a native plugin.</p>
+
+      <div class="callout-warn">
+        <h3>⚠️ The cancellation problem</h3>
+        <p><strong>When you cancel Linkbot, the links go with it.</strong> Their JS snippet becomes inactive. Every link injected by Linkbot stops rendering on your site. The links were never stored in your posts — they were rendered by Linkbot's JavaScript on each page load.</p>
+        <p style="margin-top:.75rem">For an agency managing 10 client sites: if a client churns and you cancel Linkbot for their site, every internal link Linkbot built disappears. The client's internal link structure is gone. Your work product evaporates.</p>
+        <p style="margin-top:.75rem"><strong>Link Whisper writes to the database.</strong> Cancel tomorrow. Your links are still there next year.</p>
+      </div>
+
+      <p style="font-weight:600;font-size:1.05rem;">"Link Whisper installs like a plugin. Linkbot installs like a dependency."</p>
+    </div>
+
+    <!-- SECTION 3: PRICING -->
+    <div class="section">
+      <h2>Pricing: $97/yr vs $228/yr — and the dependency you can never uninstall</h2>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th></th><th>Link Whisper</th><th>Linkbot Pro</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Price</strong></td><td class="lw-win">$97/year</td><td>$19/month ($228/year)</td></tr>
+            <tr><td><strong>Per month equivalent</strong></td><td class="lw-win">~$8.08/mo</td><td>$19/mo</td></tr>
+            <tr><td><strong>Sites included</strong></td><td>1 site</td><td>5 sites</td></tr>
+            <tr><td><strong>Installation</strong></td><td class="lw-win">WordPress plugin (native)</td><td>JS snippet (any platform)</td></tr>
+            <tr><td><strong>Data location</strong></td><td class="lw-win">Your server</td><td>Linkbot's servers</td></tr>
+            <tr><td><strong>Links stored in your DB?</strong></td><td class="lw-win">✅ Yes — permanent</td><td class="no">❌ No — JS injection</td></tr>
+            <tr><td><strong>Cancel and keep links?</strong></td><td class="lw-win">✅ Yes — links stay forever</td><td class="no">❌ No — links disappear</td></tr>
+            <tr><td><strong>Free trial</strong></td><td>60-day money-back guarantee</td><td>14-day free trial</td></tr>
+            <tr><td><strong>Free tier</strong></td><td>Free audit tool (no install required)</td><td>Free plan (requires credit card)</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p><em>Linkbot pricing from linkbot.com, February 2026. LW pricing confirmed live February 2026. Always verify current pricing before purchasing.</em></p>
+
+      <p><strong>The one-line version: $97 once a year. Or $228 a year — and when you cancel, the links go with it.</strong></p>
+
+      <p>Linkbot's Pro plan covers 5 sites at $228/yr. Link Whisper's 3-site plan covers 3 sites at $147/yr. For multi-site operators, Link Whisper is actually the cheaper option — and the links you build are permanently yours.</p>
+    </div>
+
+    <!-- SECTION 4: FULL COMPARISON TABLE -->
+    <div class="section">
+      <h2>Full feature comparison</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Feature</th><th>Link Whisper</th><th>Linkbot</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Installation type</strong></td><td class="lw-win">WordPress plugin (native)</td><td>JS snippet (SaaS, any platform)</td></tr>
+            <tr><td><strong>Runs on</strong></td><td class="lw-win">Your WordPress server</td><td>Linkbot's external servers</td></tr>
+            <tr><td><strong>Links stored in WordPress DB</strong></td><td class="lw-win">✅ Yes — permanent</td><td class="no">❌ No — injected via JS</td></tr>
+            <tr><td><strong>Links survive cancellation</strong></td><td class="lw-win">✅ Yes</td><td class="no">❌ No — disappear on cancel</td></tr>
+            <tr><td><strong>AI link suggestions</strong></td><td class="lw-win">✅ Semantic AI (v3, Aug 2025)</td><td>✅ AI keyword extraction</td></tr>
+            <tr><td><strong>Auto-link rules (no approval)</strong></td><td class="lw-win">✅ Keyword rules → auto-place</td><td>✅ Automated injection</td></tr>
+            <tr><td><strong>Orphan page detection</strong></td><td class="lw-win">✅ Full orphan page report</td><td class="no">❌ No audit tool</td></tr>
+            <tr><td><strong>Free audit tool (no install)</strong></td><td class="lw-win">✅ linkwhisper.com/internal-link-checker</td><td class="no">❌ Plugin/snippet install required</td></tr>
+            <tr><td><strong>Anchor text generation</strong></td><td class="lw-win">✅ AI-diverse anchor text on placement</td><td class="warn">⚠️ AI keyword extractor</td></tr>
+            <tr><td><strong>Multi-platform support</strong></td><td>WordPress (+ Shopify)</td><td class="lw-win">WordPress, Webflow, HubSpot, more</td></tr>
+            <tr><td><strong>Sites on 1-site plan</strong></td><td>1 site</td><td>1 site (Free)</td></tr>
+            <tr><td><strong>Price (mid-tier)</strong></td><td class="lw-win">$147/yr (3 sites)</td><td>$228/yr (5 sites Pro)</td></tr>
+            <tr><td><strong>Money-back guarantee</strong></td><td class="lw-win">60 days</td><td>14-day trial only</td></tr>
+            <tr><td><strong>Active installs / users</strong></td><td class="lw-win">50,000+ WordPress sites</td><td>14,000 websites</td></tr>
+            <tr><td><strong>Support</strong></td><td class="lw-win">US-based team, 1-on-1 calls, monthly AMAs</td><td>Async / email</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- SECTION 5: SOCIAL PROOF -->
+    <div class="section">
+      <h2>What independent reviewers say</h2>
+
+      <p>What real users say about Link Whisper:</p>
+      <blockquote>
+        "It didn't just save me hours every week — it significantly boosted my organic rankings by improving internal link distribution and fixing orphaned content issues."
+        <br><cite>— bloggingjoy.com review (4.8/5, "Must-have plugin for smart internal linking")</cite>
+      </blockquote>
+
+      <p>Techoclock, in their most recent Link Whisper review (February 2026), called it the site's "#1 internal linking tool" after testing it against the latest alternatives.</p>
+
+      <p>50,000+ active WordPress sites. 14,000 Linkbot websites. The install gap is real — and WP.org install counts require verified plugin installation, not self-reported numbers.</p>
+    </div>
+
+    <!-- SECTION 6: WHO IS EACH TOOL FOR -->
+    <div class="section">
+      <h2>Who should use which tool</h2>
+      <p>This is an honest breakdown. Link Whisper wins for most WordPress site owners — but Linkbot has a real use case.</p>
+
+      <h3>Choose Link Whisper if:</h3>
+      <ul>
+        <li>You run a WordPress blog, content site, or WooCommerce store</li>
+        <li>You want links stored permanently in your WordPress database — not in external JS</li>
+        <li>You want an audit of your site's internal link health before you install anything</li>
+        <li>You want auto-link rules that fire on publish with no approval queue</li>
+        <li>You want $97/yr with no monthly SaaS subscription</li>
+        <li>You're an agency and want your work product to survive client churn</li>
+        <li>You want a US-based support team you can actually reach</li>
+      </ul>
+
+      <h3>Choose Linkbot if:</h3>
+      <ul>
+        <li>You manage sites across multiple platforms (WordPress, Webflow, HubSpot) and want one tool for all of them</li>
+        <li>You're comfortable with a monthly SaaS subscription and external data processing</li>
+        <li>You understand that your links are rented, not owned, and are okay with that tradeoff</li>
+      </ul>
+
+      <p>The multi-platform capability is Linkbot's genuine strength. If you're managing 15 client sites across WordPress and Webflow, one JS snippet is simpler than managing two tools. For pure WordPress operators — solo bloggers, content publishers, WP agencies — Link Whisper is the better choice on every dimension that matters: price, permanence, and data ownership.</p>
+    </div>
+
+    <!-- CTA section -->
+    <div class="cta-section">
+      <h2>Your links should be yours. Full stop.</h2>
+      <p>Link Whisper writes internal links directly into your WordPress posts. They're stored in your database. Cancel anytime — your links stay forever.</p>
+      <div class="cta-group" style="justify-content:center">
+        <a href="https://linkwhisper.com/pricing?utm_source=compare-linkbot&utm_medium=comparison&utm_campaign=vs-pages" class="btn btn-primary">Get Link Whisper — $97/yr, 60-Day Guarantee →</a>
+      </div>
+      <p style="margin-top:1rem;font-size:.875rem;color:var(--lw-gray-600);">Not sure yet? <a href="https://linkwhisper.com/internal-link-checker?utm_source=compare-linkbot&utm_medium=comparison&utm_campaign=vs-pages" style="color:var(--lw-blue)">Run a free audit of your site's internal links first</a> — no plugin or credit card required.</p>
+    </div>
+
+    <!-- FAQ -->
+    <div class="section">
+      <h2>Frequently asked questions</h2>
+      <div class="faq-item">
+        <div class="faq-q">Is Link Whisper better than Linkbot?</div>
+        <p>For WordPress site owners, yes — on the metrics that matter most. Link Whisper writes links to your WordPress database (permanent), runs on your server (no data leaving your site), costs $97/yr vs $228/yr, and includes a free audit tool with no install required. The one area where Linkbot has a genuine advantage: multi-platform support (WordPress, Webflow, HubSpot in one tool). If you're WordPress-only, Link Whisper is the stronger choice.</p>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">What happens to my links if I cancel Linkbot?</div>
+        <p>They disappear. Linkbot uses client-side JavaScript injection — links are rendered on each page load by Linkbot's script, not stored in your WordPress database. When you cancel, the script stops running and the links stop rendering. With Link Whisper, every link is written into your post content in the WordPress database. Cancel Link Whisper and those links remain in your posts indefinitely — they're yours.</p>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Does Link Whisper automate internal linking?</div>
+        <p>Yes. Link Whisper has two modes. The suggestions panel (Mode 1): AI surfaces link recommendations in the WordPress editor and you approve them with one click. Auto-link rules (Mode 2): you define a keyword target once, and Link Whisper automatically places that link whenever the keyword appears in a published post — no approval needed, no manual clicks. Both modes are included in the $97/yr license. Linkbot's review only describes Mode 1 — both exist.</p>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">How much does Linkbot cost?</div>
+        <p>Linkbot's paid plans start at $19/month ($228/year) for their Pro plan (up to 5 sites). Business plan: $49/month (10 sites). Agency: $199/month (50 sites, whitelabel + API). Link Whisper costs $97/year (1 site), $147/year (3 sites), or $197/year (10 sites). LW pricing confirmed February 2026.</p>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Is Linkbot a WordPress plugin?</div>
+        <p>No. Linkbot is a SaaS platform that works via a JavaScript snippet pasted into your site's head tag. It supports multiple platforms (WordPress, Webflow, HubSpot). Link Whisper is a native WordPress plugin that installs from the dashboard and runs entirely on your server. Your data never leaves your site.</p>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Does Link Whisper work for agencies?</div>
+        <p>Yes. The 10-site license ($197/yr) covers agency use across 10 client WordPress sites. When a client churns and you remove Link Whisper from their site, every link built remains in their posts — they're stored in the WordPress database. With Linkbot, canceling a client's subscription removes all injected links from their site. For agencies, Link Whisper's database-write model means your work product survives client transitions.</p>
+      </div>
+    </div>
+
+    <!-- Cross-links -->
+    <div class="cross-links">
+      <h3>Also comparing before you decide?</h3>
+      <ul>
+        <li><a href="/link-whisper-vs-linkboss/?utm_source=compare-linkbot&utm_medium=cross-link">Link Whisper vs LinkBoss</a></li>
+        <li><a href="/link-whisper-vs-linksy/?utm_source=compare-linkbot&utm_medium=cross-link">Link Whisper vs Linksy</a></li>
+        <li><a href="/link-whisper-vs-internal-link-juicer/?utm_source=compare-linkbot&utm_medium=cross-link">Link Whisper vs Internal Link Juicer</a></li>
+        <li><a href="/link-whisper-vs-linkilo/?utm_source=compare-linkbot&utm_medium=cross-link">Link Whisper vs Linkilo</a></li>
+        <li><a href="/link-whisper-vs-yoast/?utm_source=compare-linkbot&utm_medium=cross-link">Link Whisper vs Yoast (Internal Linking)</a></li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  <div class="container">
+    <p>© 2026 Link Whisper. All rights reserved. Pricing verified February 2026. <a href="https://linkwhisper.com" style="color:var(--lw-blue)">linkwhisper.com</a></p>
+  </div>
+</footer>
+
+</body>
+</html>
