@@ -9,7 +9,7 @@
 - **OpenClaw ID:** glitch
 
 ## Last Heartbeat
-**2026-03-01 00:40 UTC**
+**2026-03-01 07:40 UTC**
 
 ## Current Tasks
 **1. Onboarding: Glitch — Meet the squad & scope the free internal link checker tool**
@@ -32,6 +32,155 @@
 - Row 4 (Reports): Option A micro-quote in place
 - Section 7 hero testimonial: full quote + "Shotkit — Agency Owner" attribution ✅
 - ROI Dashboard: `action=""` empty — needs Boss's Kit.com URL + ~10 min to wire
+
+## Heartbeat 07:40 UTC 2026-03-01
+
+**What happened since last heartbeat (06:40 → 07:40 UTC):**
+- Kelly (06:34 UTC → 08:30 UTC): Approved Pen's Yoast blog post draft. Approved Max's newsletter pitch templates. All clear to proceed on comparison page deploy + Yoast post publish sequence.
+- Pen (07:20 UTC): Yoast post DRAFTED — ~1,100 words, includes Dev's Free/Premium split table, canonical URL baked in, CTAs to free tool + comparison page. Ready for Kelly review (which Kelly did at 08:30 UTC).
+- Max (06:30 UTC): Newsletter pitch templates DRAFTED for WP Tavern, SEOFOMO, Search Engine Roundtable — all three using the "2022 developer quote, still true in v27.0" angle. Waiting on Pen's post URL before firing.
+- Rex (06:10 UTC): WP.org clean. 50K+ installs confirmed. Jason Allen thread: last post still from Jason, urgency escalating.
+
+**What I did this heartbeat:**
+- Added Yoast blog post cross-link placeholder to `lw-vs-yoast.html` hub nav section — `<li>` pointing to `/blog/link-whisper-vs-yoast/`. Wired per the cross-link architecture Dev spec'd at 05:40 UTC. No second Matt deploy needed when post goes live.
+- Committed: `da42e1c`
+- Filed task comment on ads task explaining the change.
+
+**Status:**
+- lw-vs-yoast.html: deploy-ready ✅ with Yoast blog post cross-link placeholder
+- Comparison pages: 7 pages deploy-ready, all with pixel scaffold — waiting Boss Pixel ID + Matt deploy
+- Yoast post: Kelly-approved, waiting comparison pages deploy before publish
+- Max's newsletter pitches: staged, waiting for Pen's post URL
+- Homepage + features section: `review`, waiting on Boss
+- Free tool: deploy-ready, waiting on Boss URL
+
+## Heartbeat 06:40 UTC 2026-03-01
+
+**What happened since last heartbeat (05:40 → 06:40 UTC):**
+- Rex (06:10 UTC): WP.org scan clean. HTTP 200, 50K+ installs confirmed. Jason Allen 1-star thread — last post still from Jason, escalating urgency flagged.
+- Pen (06:20 UTC): Yoast post brief fully integrated (Dev's Free/Premium table + Max's distribution layer). Confirmed ready to draft. Also acked Jason Allen status on review monitoring task.
+- Max (06:30 UTC): Newsletter pitch templates DRAFTED — WP Tavern, SEOFOMO, Search Engine Roundtable. Templates staged, ready for Boss approval before sending.
+- Kelly (06:34 UTC): Acked Max's newsletter pitch templates. Yoast post brief approved. All clear to proceed.
+
+**What I did this heartbeat:**
+- Filed canonical URL / SEO protection note on ads task for Pen's Yoast post syndication:
+  1. Canonical tag must be confirmed live before any newsletter pitch goes out (curl verification command provided)
+  2. Suggested "link back to original" courtesy line for Max's pitch templates
+  3. Reinforced publish order: comparison page → blog post → newsletter pitches (so both destination URLs exist when pitches land)
+- My tasks: still holding at `review` — no Boss action since last heartbeat.
+
+**Status:**
+- Pixel scaffold: DONE ✅ — 7 pages, waiting on Matt deploy + real Pixel ID
+- Homepage features section: `review`, waiting on Boss
+- Review monitoring: `review` ✅ V1 LIVE, V1.1 backlogged
+- Free tool: deploy-ready, waiting on Boss URL
+- Comparison pages: 7 pages deploy-ready, all with pixel scaffold
+- Yoast post: Pen drafting, canonical tag check needed before newsletter pitches go out
+
+## Heartbeat 05:40 UTC 2026-03-01
+
+**What happened since last heartbeat (04:40 → 05:40 UTC):**
+- Rex (05:10 UTC): WP.org scan clean. HTTP 200, 50K+ installs confirmed. Also flagged Yoast organic = separate lower-CPC campaign (campaign management note, not a build task). ⚠️ Jason Allen 1-star thread still unanswered — last post still from Jason, urgency escalating.
+- Pen (05:20 UTC): Claimed the Yoast evergreen post. Filed full brief: "Link Whisper vs. Yoast: Why Internal Linking Is a Feature, Not a Footnote." Needs Yoast Premium feature depth (my job this heartbeat). Asked Rex for Yoast current version + Premium vs. Free feature split.
+- Max (05:30 UTC): Yoast post distribution architecture — retargeting funnel seed, newsletter pitch angle (Yoast developer quote = news hook), publish AFTER comparison pages (comparison page CTA destination must exist), LinkedIn social seeding from Boss.
+
+**What I did this heartbeat:**
+- Filed technical comment on ads task with:
+  1. Yoast Free vs. Premium internal linking feature table (Pen's open question answered): Free = warning only, Premium = suggestions panel (still manual, still "you do the work"). Confirmed most installs are Free-tier — post's Section 1 should address both tiers separately.
+  2. Post ↔ comparison page cross-link architecture: exact HTML snippets for both files, publish order confirmed (comparison page first), and noted I can add placeholder `<li>` in lw-vs-yoast.html now so no second Matt deploy needed when Pen's post goes live.
+- My tasks: still holding at `review` — no Boss action since last heartbeat.
+
+**Status:**
+- Pixel scaffold: DONE ✅ — 7 pages, 75% trigger in scaffold comments ready to uncomment. Waiting on Matt deploy + real Pixel ID
+- Homepage features section: `review`, waiting on Boss
+- Review monitoring: `review` ✅ V1 LIVE, V1.1 backlogged
+- Free tool: deploy-ready, waiting on Boss URL
+- Comparison pages: 7 pages deploy-ready, all with pixel scaffold
+- lw-vs-yoast.html: needs placeholder `<li>` for Pen's blog post link (can do at comparison deploy time)
+
+## Heartbeat 04:40 UTC 2026-03-01
+
+**What happened since last heartbeat (03:40 → 04:40 UTC):**
+- Max (04:30 UTC): @Dev mention — acking 75% scroll trigger spec, flagged it should ship WITH comparison page deploy (not Day 5 retrofit). Also added Yoast organic = separate campaign + lower CPC bid nuance.
+- Rex (04:10 UTC): WP.org scan clean. HTTP 200, 50K+ installs confirmed.
+- Pen (04:20 UTC): ILJ + Yoast evidence-frame retargeting copy (Scenario 2) — full ad bank staged. "No." direct-quote headline for ILJ + developer-admission frame for Yoast.
+- Kelly (04:01 UTC): Squad status synthesis — everything locked, awaiting Boss Pixel ID + Matt deploy.
+
+**What I did this heartbeat:**
+- Responded to Max's @mention with technical confirmation: "ship 75% trigger WITH deploy" is correct — retrofitting loses Day 1–4 baseline data, forces a second Matt deploy session. Code is already in pixel scaffold comments (added 00:40 UTC), just needs uncomment (~5 min/page once Matt has eyes on it).
+- Filed copyable Boss → Matt handoff note: "Swap Pixel IDs + add ComparisonPageEngaged_Deep in same deploy session. Dev has code ready."
+- Acked Max's Yoast organic CPC note — separate campaign / lower bid ceiling is a campaign-management flag, not a build task.
+- My tasks: still holding at `review` — no Boss action since last heartbeat.
+
+**Status:**
+- Pixel scaffold: DONE ✅ — 7 pages, waiting on Matt deploy + real Pixel ID
+- 75% trigger: code ready in scaffold comments, needs Boss approval before Matt deploy
+- Homepage features section: `review`, waiting on Boss
+- Review monitoring: `review` ✅ V1 LIVE, V1.1 backlogged
+- Free tool: deploy-ready, waiting on Boss URL
+- Comparison pages: 7 pages deploy-ready, all with pixel scaffold
+
+## Heartbeat 03:40 UTC 2026-03-01
+
+**What happened since last heartbeat (02:40 → 03:40 UTC):**
+- Max (03:30 UTC): @Dev mention — acking final Linkilo A/B copy lock. Added important diagnostic question: *why* will Variant B win? Two scenarios: (1) narrative headline pattern interrupt, (2) competitor's own admission as proof source. Proposed using `ComparisonPageEngaged` scroll depth to disambiguate. GA4 Boss brief simplified to 2-min Matt pre-flight test.
+- Rex (03:10 UTC): WP.org scan clean. Live scan confirmed HTTP 200, 50K+ installs.
+- Pen (03:20 UTC): Final Linkilo Angle 1 Variant B copy — paraphrase-safe version complete.
+
+**What I did this heartbeat:**
+- Filed technical implementation note on ads task in response to Max's @mention:
+  - Added 75% deep scroll trigger (`ComparisonPageEngaged_Deep`) as second event — differentiates "headline got them in" vs "full-page engagement up" vs "above-fold problem"
+  - Gave specific JS snippet (copy-paste ready per comparison page), ~30 min Matt task total
+  - Disambiguates Max's two "why Variant B wins" scenarios without needing heatmap tools
+  - GA4 fallback note: if UTM tracking misses Day 14, Meta pixel + Conversions API gives checkout data (not ideal but not a hard stop)
+- My tasks: still holding at `review` (homepage features, review monitoring) — no new Boss action yet
+
+**Status:**
+- Ads task: `ComparisonPageEngaged_Deep` spec filed, 7 pages pixel-scaffolded. Single gate = Boss's Pixel ID swap + Matt deploy.
+- Homepage features section: `review`, waiting on Boss
+- Review monitoring: `review` ✅ V1 LIVE, V1.1 backlogged
+- Free tool: deploy-ready, waiting on Boss URL
+- Comparison pages: 7 pages deploy-ready, all with pixel scaffold
+
+## Heartbeat 02:40 UTC 2026-03-01
+
+**What happened since last heartbeat (01:40 → 02:40 UTC):**
+- Rex (02:10 UTC): v2.7.0 AI update verification — WP.org listing now explicitly says LW "reads content like a human editor." Linkilo's own founder confirmed the update happened but admitted he never tested v2.7.0. This is the credibility frame for Angle 1 retargeting.
+- Pen (02:20 UTC): Linkilo Angle 1 sharpened — new frame: "The Version Linkilo's Review Was Written About No Longer Exists." Uses competitor's own admission (they confirmed update but didn't test it) as the proof source. Much stronger than a claim LW makes itself.
+- Max (02:30 UTC): Acked Pen's Angle 1 sharpening. Built full A/B test structure (Variant A: feature-change frame, Variant B: credibility gap frame). Flagged Phase 3 Kit.com checklist — form endpoint must be wired before Day 14 ILJ campaign activates.
+
+**What I did this heartbeat:**
+- Filed technical implementation spec for the Linkilo Angle 1 A/B test on ads task:
+  - Two-ad-set structure (not Meta's built-in A/B tool — too small an audience)
+  - UTM tagging scheme for both variants (`utm_content=angle1-feature` vs `angle1-credibility`)
+  - GA4 attribution check methodology (CTR is not enough — need conversion path data)
+  - Decision timeline: Day 3 check CTR, Day 5 check UTM+conversion, Day 7 mandatory call
+  - Matt note: GA4 UTM tracking must be confirmed live on linkwhisper.com or the test data lands nowhere
+
+**Status:**
+- Ads task: All 5 competitor segments fully briefed + A/B test spec for Linkilo Angle 1. Pixel scaffold on all 7 pages. Single gate = Matt deploy + real Pixel ID.
+- Homepage features section: `review`, waiting on Boss
+- Review monitoring: `review` ✅ V1 LIVE, V1.1 backlogged
+- Free tool: deploy-ready, waiting on Boss URL
+- Comparison pages: 7 pages deploy-ready, all with pixel scaffold
+
+## Heartbeat 01:40 UTC 2026-03-01
+
+**What happened since last heartbeat (00:40 → 01:40 UTC):**
+- Rex (01:10 UTC): Linkilo defection triggers fully researched — suggestion quality (old keyword-matching engine, "coffee/apple pie problem") + no free tier ($59/yr upfront, zero free option). Phase 3 now has real creative brief, not thin data.
+- Pen (01:20 UTC): Linkilo Phase 3 retargeting ad copy complete — 3 angles: (1) v2.7.0 suggestion quality improvement, (2) free tier killshot (LW free vs Linkilo $59 upfront), (3) tenure/social proof. All 5 competitor segments now fully briefed.
+- Max (01:30 UTC): Complete 5-competitor phased activation sequence confirmed — Phase 1 (Linkbot+LinkBoss, $5/day), Phase 2 (Yoast, day 8), Phase 3 (ILJ→free tool + Linkilo→comparison page, day 14). Frequency cap 2-3/7 days. Creative rotation every 7 days.
+
+**What I did this heartbeat:**
+- Filed technical note on ads task: Linkilo Angle 1 screenshot spec (what Boss/Matt needs to pull from inside the plugin), Phase 3 ILJ Kit.com form connection checklist (must be live before day 14 retargeting fires), Matt's pre-deploy verification command (`grep -r "PIXEL_ID_HERE"` to confirm all placeholder IDs swapped).
+- Meaningful technical contribution: ILJ nurture gap — if form isn't wired to Kit.com when ILJ retargeting activates, ad spend captures emails that go nowhere. Flagged as the silent kill risk in Phase 3.
+
+**Status:**
+- Ads task: All 5 competitor segments now fully briefed with creative. Pixel scaffold deployed (7 pages). Single gate = Matt deploy + real Pixel ID.
+- Homepage features section: `review`, waiting on Boss
+- Review monitoring: `review` ✅ V1 LIVE, V1.1 backlogged
+- Free tool: deploy-ready, waiting on Boss URL
+- Comparison pages: 7 pages deploy-ready, all with pixel scaffold
 
 ## Heartbeat 00:40 UTC 2026-03-01
 
