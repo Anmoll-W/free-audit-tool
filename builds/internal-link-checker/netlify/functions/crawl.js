@@ -85,13 +85,31 @@ async function fetchPage(url) {
   }
 }
 
-/** Parse a page: extract internal links + check noindex */
+/** Detect WordPress signals in HTML */
+function detectWordPress(html) {
+  const wpSignals = [
+    'wp-content',
+    'wp-json',
+    'wp-login',
+    'wp-includes',
+    'wordpress',
+    '/xmlrpc.php',
+    'wp-emoji',
+    'generator" content="WordPress',
+  ];
+  const lower = html.toLowerCase();
+  return wpSignals.some(sig => lower.includes(sig));
+}
+
+/** Parse a page: extract internal links + check noindex + WP detection */
 function parsePage(html, pageUrl, origin) {
   const $ = cheerio.load(html);
 
   // Respect noindex — don't report on pages search engines can't see
   const robots = $('meta[name="robots"]').attr("content") || "";
   const noindex = robots.toLowerCase().includes("noindex");
+
+  const isWordPress = detectWordPress(html);
 
   const links = [];
   $("a[href]").each((_, el) => {
@@ -103,24 +121,27 @@ function parsePage(html, pageUrl, origin) {
     }
   });
 
-  return { noindex, links };
+  return { noindex, links, isWordPress };
 }
 
-/** Run BFS crawl. Returns the link graph + page metadata. */
+/** Run BFS crawl. Returns the link graph + page metadata + crawl meta. */
 async function crawl(startUrl, origin) {
   const startTime  = Date.now();
-  const visited    = new Map();   // url → { depth, noindex, linksOut: [{to, anchor}] }
+  const visited    = new Map();   // url → { depth, noindex, linksOut: [{to, anchor}], isWordPress }
   const queue      = [{ url: startUrl, depth: 0 }];
   const inQueue    = new Set([startUrl]);
+  let hitCrawlCap  = false;
+  let hitTimeCap   = false;
+  let anyWordPress = false;
 
   const processPage = async ({ url, depth }) => {
     if (visited.has(url)) return;
-    if (visited.size >= MAX_PAGES) return;
-    if (Date.now() - startTime > MAX_TIME_MS) return;
+    if (visited.size >= MAX_PAGES) { hitCrawlCap = true; return; }
+    if (Date.now() - startTime > MAX_TIME_MS) { hitTimeCap = true; return; }
 
     const result = await fetchPage(url);
     if (!result) {
-      visited.set(url, { depth, noindex: false, linksOut: [], fetchFailed: true });
+      visited.set(url, { depth, noindex: false, linksOut: [], fetchFailed: true, isWordPress: false });
       return;
     }
 
@@ -129,14 +150,15 @@ async function crawl(startUrl, origin) {
 
     // If redirect took us off-domain, skip
     if (originOf(normFinal) !== origin) {
-      visited.set(url, { depth, noindex: false, linksOut: [], redirectedOffDomain: true });
+      visited.set(url, { depth, noindex: false, linksOut: [], redirectedOffDomain: true, isWordPress: false });
       return;
     }
 
-    const { noindex, links } = parsePage(html, normFinal, origin);
+    const { noindex, links, isWordPress } = parsePage(html, normFinal, origin);
+    if (isWordPress) anyWordPress = true;
     const uniqueLinks = dedupeLinks(links);
 
-    visited.set(url, { depth, noindex, linksOut: uniqueLinks });
+    visited.set(url, { depth, noindex, linksOut: uniqueLinks, isWordPress });
 
     // Enqueue unvisited internal links
     if (depth < MAX_DEPTH) {
@@ -155,7 +177,11 @@ async function crawl(startUrl, origin) {
     await Promise.all(batch.map(processPage));
   }
 
-  return visited;
+  // Check if we ran out of time or pages
+  if (!hitCrawlCap && queue.length > 0) hitCrawlCap = true;
+  if (Date.now() - startTime > MAX_TIME_MS) hitTimeCap = true;
+
+  return { visited, meta: { hitCrawlCap, hitTimeCap, anyWordPress, queueRemaining: queue.length } };
 }
 
 /** Dedupe links within a page (keep first occurrence for anchor tracking) */
@@ -170,7 +196,7 @@ function dedupeLinks(links) {
 
 // ─── Scoring ────────────────────────────────────────────────────────────────
 
-function analyse(graph) {
+function analyse(graph, crawlMeta) {
   // Build inbound link map
   const inbound = new Map();  // url → [{from, anchor}]
   for (const [pageUrl, data] of graph) {
@@ -242,6 +268,19 @@ function analyse(graph) {
   score -= genericDeduction;
   score = Math.max(0, Math.round(score));
 
+  // ── BUG #1 + #5: If only 1 page crawled, results are unreliable ──
+  const isSinglePageCrawl = pageCount <= 1;
+
+  // ── BUG #4: WordPress detection — default to non-WP warning unless confirmed ──
+  const isWordPress = crawlMeta?.anyWordPress || false;
+
+  // ── BUG #3: Crawl cap disclosure ──
+  const hitCrawlCap = crawlMeta?.hitCrawlCap || false;
+  const hitTimeCap  = crawlMeta?.hitTimeCap || false;
+  const isPartialScan = hitCrawlCap || hitTimeCap;
+
+  // ── Score bucketing — BUG #2 FIX: match documented ranges exactly ──
+  // 0–64 = Critical, 65–84 = Needs Work, 85–100 = Healthy
   const bucket = score >= 85 ? "healthy"
                : score >= 65 ? "needs-work"
                : "critical";
@@ -252,11 +291,13 @@ function analyse(graph) {
     "critical":   "Critical",
   }[bucket];
 
-  const bucketMessage = {
-    "healthy":    "Your internal linking is solid. A few tweaks could still add value.",
-    "needs-work": "Some issues are dragging down your SEO value. Fix these for quick wins.",
-    "critical":   "Significant internal linking gaps. These are costing you organic traffic.",
-  }[bucket];
+  const bucketMessage = isSinglePageCrawl
+    ? "We could only access 1 page. The site may be blocking crawlers. Results are unreliable."
+    : {
+        "healthy":    "Your internal linking is solid. A few tweaks could still add value.",
+        "needs-work": "Some issues are dragging down your SEO value. Fix these for quick wins.",
+        "critical":   "Significant internal linking gaps. These are costing you organic traffic.",
+      }[bucket];
 
   const metrics = {
     pagesCrawled: pageCount,
@@ -268,31 +309,60 @@ function analyse(graph) {
     avgLinksPerPage,
   };
 
-  // Top 3 findings for the free preview
+  // Top findings for the free preview
+  // BUG #5: Suppress issue cards entirely when only 1 page crawled
   const findings = [];
-  if (orphanCount > 0)   findings.push({ type: "orphan",    label: `${orphanCount} orphaned pages found`,       detail: "No other page links to these — search engines struggle to find and rank them." });
-  if (deadEndCount > 0)  findings.push({ type: "dead-end",  label: `${deadEndCount} dead-end pages`,            detail: "Pages that don't link out anywhere — link equity stops here instead of flowing." });
-  if (lowDenseCount > 0) findings.push({ type: "low-density", label: `${lowDenseCount} pages with thin linking`, detail: "Fewer than 2 internal links out — not enough link equity distribution." });
-  if (deepPageCount > 0) findings.push({ type: "deep",      label: `${deepPageCount} hard-to-reach pages`,     detail: "These require 4+ clicks from your homepage — Google may deprioritise them." });
-  if (genericPct > 20)   findings.push({ type: "anchor",    label: `${Math.round(genericPct)}% generic anchor text`, detail: 'Links using "click here", "read more" etc. miss the chance to signal relevance.' });
+  if (!isSinglePageCrawl) {
+    if (orphanCount > 0)   findings.push({ type: "orphan",    label: `${orphanCount} orphaned page${orphanCount !== 1 ? 's' : ''} found`,       detail: "No other page links to these — search engines struggle to find and rank them." });
+    if (deadEndCount > 0)  findings.push({ type: "dead-end",  label: `${deadEndCount} dead-end page${deadEndCount !== 1 ? 's' : ''}`,            detail: "Pages that don't link out anywhere — link equity stops here instead of flowing." });
+    if (lowDenseCount > 0) findings.push({ type: "low-density", label: `${lowDenseCount} page${lowDenseCount !== 1 ? 's' : ''} with thin linking`, detail: "Fewer than 2 internal links out — not enough link equity distribution." });
+    if (deepPageCount > 0) findings.push({ type: "deep",      label: `${deepPageCount} hard-to-reach page${deepPageCount !== 1 ? 's' : ''}`,     detail: "These require 4+ clicks from your homepage — Google may deprioritise them." });
+    if (genericPct > 20)   findings.push({ type: "anchor",    label: `${Math.round(genericPct)}% generic anchor text`, detail: 'Links using "click here", "read more" etc. miss the chance to signal relevance.' });
+  }
+
+  // Build warnings array
+  const warnings = [];
+  if (isSinglePageCrawl) {
+    warnings.push({
+      type: "blocked",
+      message: "We could only access 1 page. The site may be blocking crawlers. Results are unreliable.",
+    });
+  }
+  if (isPartialScan && !isSinglePageCrawl) {
+    warnings.push({
+      type: "partial",
+      message: `Scanned ${pageCount} pages. Your site may have more — score is based on a sample.`,
+    });
+  }
+  if (!isWordPress) {
+    warnings.push({
+      type: "not-wordpress",
+      message: "This doesn't appear to be a WordPress site. The tool is optimised for WordPress — results for other platforms may be less accurate.",
+    });
+  }
 
   const preview = {
-    score,
-    bucket,
-    bucketLabel,
+    score: isSinglePageCrawl ? null : score,
+    bucket: isSinglePageCrawl ? "unreliable" : bucket,
+    bucketLabel: isSinglePageCrawl ? "Unreliable" : bucketLabel,
     bucketMessage,
     metrics,
     topFindings: findings.slice(0, 3),
+    warnings,
+    isSinglePageCrawl,
+    isPartialScan,
+    isWordPress,
   };
 
   // Full report: sorted pages by issue severity
   const fullReport = {
-    score,
-    bucket,
-    bucketLabel,
+    score: isSinglePageCrawl ? null : score,
+    bucket: isSinglePageCrawl ? "unreliable" : bucket,
+    bucketLabel: isSinglePageCrawl ? "Unreliable" : bucketLabel,
     bucketMessage,
     metrics,
     findings,
+    warnings,
     pages: pages
       .sort((a, b) => b.issues.length - a.issues.length || a.url.localeCompare(b.url))
       .map(p => ({
@@ -355,7 +425,7 @@ exports.handler = async (event) => {
   }
 
   try {
-    const graph = await crawl(startUrl, origin);
+    const { visited: graph, meta: crawlMeta } = await crawl(startUrl, origin);
 
     if (graph.size === 0) {
       return {
@@ -367,7 +437,7 @@ exports.handler = async (event) => {
       };
     }
 
-    const { preview, fullReport } = analyse(graph);
+    const { preview, fullReport } = analyse(graph, crawlMeta);
 
     return {
       statusCode: 200,
