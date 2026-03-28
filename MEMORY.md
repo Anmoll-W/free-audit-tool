@@ -9,7 +9,7 @@
 - **OpenClaw ID:** glitch
 
 ## Last Heartbeat
-**2026-03-01 07:40 UTC**
+**2026-03-28 09:40 UTC**
 
 ## Current Tasks
 **1. Onboarding: Glitch — Meet the squad & scope the free internal link checker tool**
@@ -32,6 +32,62 @@
 - Row 4 (Reports): Option A micro-quote in place
 - Section 7 hero testimonial: full quote + "Shotkit — Agency Owner" attribution ✅
 - ROI Dashboard: `action=""` empty — needs Boss's Kit.com URL + ~10 min to wire
+
+## Heartbeat 09:40 UTC 2026-03-28
+
+**What happened since last heartbeat:**
+- Kelly (08:50 UTC): @Dev x2 — 7 bug fixes applied to code (crawl.js + index.html, committed `298b28a`). Needs Netlify deploy. Single blocker for Tier B outreach week of Mar 31.
+- Max (08:30 UTC): @Dev x2 — acking bug fixes, flagging Tier B pitch timing dependency on deploy. Also filed Tier B pre-brief (WPBeginner, AnswerSocrates, QuestionDB, Boomcycle).
+- Rex (09:10 UTC): WPBeginner competitive intel — LW ranked #7 but only specialized internal linking tool in top 7. Warm outreach (active affiliate link). AIOSEO risk flagged with counter-frame.
+- Kelly (08:50): Free tool deploy = single blocker for Tier B. Monday is decision point.
+
+**What I did this heartbeat:**
+- Ran full Netlify deploy diagnostic: Code confirmed good (crawl.js 08:07 UTC, index.html 08:08 UTC, git commit `298b28a`). Netlify CLI broken (semver module error). No auth token or site ID stored. Filed deploy blocker note with curl API path as alternative (needs Boss token + site ID — ~15 min Monday).
+- Filed tech build note on WPBeginner outreach task: AIOSEO "passive vs diagnostic" differentiation angle + specific pitch language for Pen/Max + honest tool behavior note re: deploy.
+
+**Status:**
+- Free Tool Round 2 bugs: **code ready ✅, deploy blocked** — needs Boss Netlify auth or dashboard trigger Monday
+- Tier B outreach: **blocked on deploy** — WPBeginner + others will test tool before including
+- Homepage features section: `waiting_on_human`
+- Review monitoring: `in_progress` (ongoing)
+
+## Heartbeat 09:40 UTC 2026-03-01
+
+**What happened since last heartbeat (08:40 → 09:40 UTC):**
+- Rex (10:10): Rank Math "AI Link Genius" intel — still "Coming Soon" banner on their homepage, 3M+ installs but nothing shipped. Kelly + Pen approved adding FAQ to Yoast blog post.
+- Max (09:30): @Dev mention — acked URL checklist, added Rank Math to newsletter pitch templates as a third proof point ("only shipped AI internal linking tool").
+- Kelly (09:30): FAQ spot-check on Yoast post ✅. Approved Max's Rank Math pitch addition.
+
+**What I did this heartbeat:**
+- Responded to Max's @Dev mention: acked URL checklist lock, added technical differentiation note on Rank Math's likely cloud architecture (content leaves your site vs LW's local model) — privacy + performance angles. Also flagged lw-vs-rankmath.html as a Phase 2 page to backlog if Rank Math ships.
+- Both tasks still in `review` — no Boss action since last heartbeat.
+
+**Status:**
+- All build deliverables: deploy-ready ✅, single gate = Boss/Matt
+- Homepage features section: `review`
+- Review monitoring: `review` ✅ V1 LIVE
+- Free tool: deploy-ready, waiting on Boss URL
+- Comparison pages: 7 pages deploy-ready, all with pixel scaffold + Yoast blog post cross-link
+
+## Heartbeat 08:40 UTC 2026-03-01
+
+**What happened since last heartbeat (07:40 → 08:40 UTC):**
+- Kelly (08:30): Confirmed Pen's Yoast source URL embedded in both docs. Everything locked, awaiting Matt deploy + Boss Pixel ID.
+- Max (08:30): Comparison pages are URL-ready — newsletter pitches now have destination URLs. Yoast post approved → distribution layer primed.
+- Pen (08:30): Yoast source URL confirmed and embedded in both comparison page doc + blog post doc.
+- Rex (08:10): WP.org clean. 50K+ installs confirmed. Jason Allen thread still open.
+
+**What I did this heartbeat:**
+- No new @mentions. Both assigned tasks still in `review` — waiting on Boss.
+- Filed pre-deploy URL verification checklist on comparison pages task: bash commands for Matt to confirm all 7 pages + Yoast blog post return 200, plus canonical tag check before Max sends newsletter pitches. Enforces correct deploy order (pages → post → canonical verified → pitches sent).
+
+**Status:**
+- All build deliverables: deploy-ready ✅, waiting on Boss/Matt
+- Homepage features section: `review`
+- Review monitoring: `review` ✅ V1 LIVE
+- Free tool: deploy-ready, waiting on Boss URL
+- Comparison pages: 7 pages deploy-ready, all with pixel scaffold
+- lw-vs-yoast.html: deploy-ready with Yoast blog post cross-link placeholder
 
 ## Heartbeat 07:40 UTC 2026-03-01
 
