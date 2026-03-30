@@ -1404,6 +1404,65 @@
         trackEvent('tool_scan_complete', { score: preview.score, bucket: preview.bucket });
       }
 
+      // ── Debug flag: ?debug=email-gate ────────────────────────────────────
+      // Lets Pen/Kelly review email gate copy without running a real crawl.
+      // Usage: open page with ?debug=email-gate in the URL.
+      (function initDebugMode() {
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('debug') !== 'email-gate') return;
+
+        // Inject a fake scan result to surface the email gate
+        const fakePreview = {
+          score: 62,
+          bucket: 'critical',
+          bucketLabel: 'Critical',
+          bucketMessage: 'Your internal link structure is actively hurting your rankings.',
+          pagesAnalyzed: 48,
+          totalLinks: 183,
+          orphaned: 12,
+          broken: 3,
+          redirects: 7,
+          findings: [
+            { severity: 'critical', message: '12 orphaned pages — not linked from anywhere' },
+            { severity: 'critical', message: '3 broken internal links detected' },
+            { severity: 'warning', message: '7 redirect chains slow down link equity' },
+          ]
+        };
+
+        // Animate score ring
+        animateRing(fakePreview.score);
+        if (scoreBadge) { scoreBadge.textContent = fakePreview.bucketLabel; scoreBadge.style.color = scoreColor(fakePreview.score); }
+        if (scoreMessage) scoreMessage.textContent = fakePreview.bucketMessage;
+
+        // Render findings
+        if (findingsList) {
+          findingsList.innerHTML = fakePreview.findings.map(f =>
+            `<li style="color:${f.severity==='critical'?'#EF4444':'#F59E0B'}">${f.message}</li>`
+          ).join('');
+        }
+
+        // Render stats row
+        if (statsRow) {
+          statsRow.innerHTML = `
+            <span><strong>${fakePreview.pagesAnalyzed}</strong> pages crawled</span>
+            <span><strong>${fakePreview.totalLinks}</strong> links</span>
+            <span><strong>${fakePreview.orphaned}</strong> orphaned</span>
+          `;
+        }
+
+        // Show results state with email gate visible
+        if (resultsGate) resultsGate.style.display = '';
+        if (gateForm) gateForm.style.display = '';
+        if (fullBlock) fullBlock.style.display = 'none';
+        showState('tool-results');
+
+        // Add debug banner so it's obvious this is debug mode
+        const banner = document.createElement('div');
+        banner.style.cssText = 'background:#7c3aed;color:#fff;text-align:center;padding:8px;font-size:0.8rem;position:fixed;top:0;left:0;right:0;z-index:9999;';
+        banner.textContent = '⚡ DEBUG MODE: email-gate preview — fake data, no real crawl';
+        document.body.prepend(banner);
+      })();
+
       // ── Main scan ────────────────────────────────────────────────────────
 
       async function runScan(rawUrl) {
@@ -1524,8 +1583,35 @@
         });
       }
 
-      // Standalone below-fold email form
-      const standaloneF
+      // Standalone below-fold email form (section#full-report)
+      // This form is always visible (not gated behind a scan result)
+      // and handles direct email capture from users who scroll past results.
+      const standaloneForm = document.querySelector('#full-report form.email-form');
+      if (standaloneForm) {
+        standaloneForm.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const emailInput = standaloneForm.querySelector('input[type="email"]');
+          const email = emailInput?.value?.trim();
+          if (!email) return;
+
+          const btn = standaloneForm.querySelector('button[type="submit"]');
+          if (btn) { btn.disabled = true; btn.textContent = 'Sending…'; }
+
+          const formAction = standaloneForm.getAttribute('action');
+          if (formAction) {
+            try {
+              const fd = new FormData();
+              fd.append('email_address', email);
+              await fetch(formAction, { method: 'POST', body: fd, mode: 'no-cors' });
+            } catch { /* Kit.com CORS is expected */ }
+          }
+
+          trackEvent('tool_standalone_gate_submit', {});
+
+          if (btn) { btn.textContent = '✓ Check your email'; }
+          if (emailInput) emailInput.value = '';
+        });
+      }
   </script>
 
 </body>
