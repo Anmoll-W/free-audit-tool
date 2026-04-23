@@ -299,10 +299,11 @@
       border-radius: var(--radius);
       padding: 32px;
       position: relative;
-      opacity: 0;
-      transform: translateY(24px);
+      opacity: 1;
+      transform: translateY(0);
       transition: opacity 0.5s ease, transform 0.5s ease;
     }
+    .step.animate-ready { opacity: 0; transform: translateY(24px); }
     .step.visible { opacity: 1; transform: translateY(0); }
     .step__num {
       width: 40px;
@@ -329,10 +330,11 @@
     .score-card {
       border-radius: var(--radius);
       padding: 28px;
-      opacity: 0;
-      transform: translateY(24px);
+      opacity: 1;
+      transform: translateY(0);
       transition: opacity 0.5s ease, transform 0.5s ease;
     }
+    .score-card.animate-ready { opacity: 0; transform: translateY(24px); }
     .score-card.visible { opacity: 1; transform: translateY(0); }
     .score-card--green { background: #f0fdf4; border: 2px solid #bbf7d0; }
     .score-card--yellow { background: #fefce8; border: 2px solid #fde68a; }
@@ -475,10 +477,11 @@
       max-width: 680px;
       margin: 0 auto 48px;
       box-shadow: var(--shadow);
-      opacity: 0;
-      transform: translateY(24px);
+      opacity: 1;
+      transform: translateY(0);
       transition: opacity 0.5s ease, transform 0.5s ease;
     }
+    .testimonial.animate-ready { opacity: 0; transform: translateY(24px); }
     .testimonial.visible { opacity: 1; transform: translateY(0); }
     .testimonial__quote {
       font-size: 1.15rem;
@@ -503,10 +506,11 @@
     }
     .stat {
       text-align: center;
-      opacity: 0;
-      transform: translateY(16px);
+      opacity: 1;
+      transform: translateY(0);
       transition: opacity 0.5s ease, transform 0.5s ease;
     }
+    .stat.animate-ready { opacity: 0; transform: translateY(16px); }
     .stat.visible { opacity: 1; transform: translateY(0); }
     .stat__num {
       font-size: 2rem;
@@ -1148,10 +1152,16 @@
     });
 
     // ===== INTERSECTION OBSERVER ANIMATIONS =====
-    const observerOpts = { threshold: 0.15 };
+    // Mark elements as animation-ready (hidden) before observing
+    document.querySelectorAll('.step, .score-card, .testimonial, .stat').forEach(el => {
+      el.classList.add('animate-ready');
+    });
+
+    const observerOpts = { threshold: 0.1, rootMargin: '0px 0px -20px 0px' };
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
+          entry.target.classList.remove('animate-ready');
           entry.target.classList.add('visible');
           observer.unobserve(entry.target);
         }
@@ -1161,6 +1171,14 @@
     document.querySelectorAll('.step, .score-card, .testimonial, .stat').forEach(el => {
       observer.observe(el);
     });
+
+    // Fallback: if IntersectionObserver never fires (e.g. already in viewport), show after 300ms
+    setTimeout(() => {
+      document.querySelectorAll('.step.animate-ready, .score-card.animate-ready, .testimonial.animate-ready, .stat.animate-ready').forEach(el => {
+        el.classList.remove('animate-ready');
+        el.classList.add('visible');
+      });
+    }, 300);
 
     // Stagger steps / score cards
     document.querySelectorAll('.step').forEach((el, i) => {
@@ -1176,6 +1194,7 @@
     // ===== TOOL CORE — URL FORM → CRAWL → RESULTS =====
     (function () {
       const CRAWL_ENDPOINT = '/.netlify/functions/crawl';
+      const MIN_SCAN_DISPLAY_MS = 6000; // always show progress for at least 6s
 
       // DOM refs — matched to actual HTML IDs
       const urlForm        = document.getElementById('url-form');
@@ -1251,31 +1270,88 @@
         requestAnimationFrame(step);
       }
 
-      /** Fake progress bar animation while crawl runs */
+      /** Live page-counter progress animation while crawl runs */
       function startProgressSim() {
         if (!scanProgress) return null;
+
+        scanProgress.style.transition = 'none';
         scanProgress.style.width = '0%';
-        scanProgress.style.transition = 'width 1.6s ease';
-        const waypoints = [
-          [8,   'Starting crawl…'],
-          [20,  'Fetching pages…'],
-          [35,  'Following internal links…'],
-          [50,  'Mapping link graph…'],
-          [65,  'Checking for orphaned pages…'],
-          [80,  'Calculating your score…'],
-          [92,  'Almost done…'],
+
+        let estimatedTotal = 50;
+        let done = false;
+        const startTime = Date.now();
+
+        // Labels at % thresholds — purely time-based, scales to MIN_SCAN_DISPLAY_MS
+        const labels = [
+          { atPct: 0,  text: 'Fetching homepage…' },
+          { atPct: 18, text: 'Discovering internal links…' },
+          { atPct: 35, text: 'Reviewing pages…' },
+          { atPct: 60, text: 'Checking for orphaned pages…' },
+          { atPct: 78, text: 'Building link graph…' },
+          { atPct: 90, text: 'Calculating your score…' },
         ];
-        let idx = 0;
-        const iv = setInterval(() => {
-          if (idx < waypoints.length) {
-            const [pct, msg] = waypoints[idx++];
-            scanProgress.style.width = pct + '%';
-            if (scanningStatus) scanningStatus.textContent = msg;
-          } else {
-            clearInterval(iv);
+
+        let lastLabelIdx = 0;
+
+        const tick = () => {
+          if (done) return;
+          const elapsed = Date.now() - startTime;
+          // Fill to 92% over MIN_SCAN_DISPLAY_MS using eased curve, never reaches 100%
+          const rawPct = elapsed / MIN_SCAN_DISPLAY_MS;
+          // Ease-out curve: fast start, slows near the cap
+          const easedPct = Math.min(1 - Math.pow(1 - rawPct, 2), 1) * 92;
+
+          scanProgress.style.transition = 'width 0.15s linear';
+          scanProgress.style.width = easedPct.toFixed(1) + '%';
+
+          // Update label based on current % 
+          for (let i = labels.length - 1; i >= 0; i--) {
+            if (easedPct >= labels[i].atPct && i > lastLabelIdx) {
+              lastLabelIdx = i;
+              let text = labels[i].text;
+              // Add page counter during the middle phases
+              if (easedPct >= 35 && easedPct < 90) {
+                const pageProgress = (easedPct - 35) / (90 - 35);
+                const pagesReviewed = Math.min(
+                  Math.floor(pageProgress * estimatedTotal),
+                  estimatedTotal - 1
+                );
+                text = `Reviewing pages… (${pagesReviewed} reviewed)`;
+              }
+              if (scanningStatus) scanningStatus.textContent = text;
+              break;
+            }
+            // Keep updating page counter even if label idx hasn't changed
+            if (i === lastLabelIdx && easedPct >= 35 && easedPct < 90) {
+              const pageProgress = (easedPct - 35) / (90 - 35);
+              const pagesReviewed = Math.min(
+                Math.floor(pageProgress * estimatedTotal),
+                estimatedTotal - 1
+              );
+              if (scanningStatus) scanningStatus.textContent = `Reviewing pages… (${pagesReviewed} reviewed)`;
+            }
           }
-        }, 1800);
-        return iv;
+        };
+
+        const iv = setInterval(tick, 100);
+
+        return {
+          interval: iv,
+          complete: (actualPageCount) => {
+            done = true;
+            clearInterval(iv);
+            if (scanningStatus) {
+              scanningStatus.textContent = actualPageCount
+                ? `✓ ${actualPageCount} pages reviewed`
+                : '✓ Scan complete';
+            }
+            if (scanProgress) {
+              scanProgress.style.transition = 'width 0.4s ease';
+              scanProgress.style.width = '100%';
+            }
+          },
+          updateEstimate: (n) => { estimatedTotal = n; }
+        };
       }
 
       const ISSUE_META = {
@@ -1361,8 +1437,17 @@
         }
       }
 
+      // ── Score state (for analytics on gate submit) ──────────────────────
+      let currentScoreBucket = null; // 'Critical' | 'Needs Work' | 'Healthy' | null
+      let currentScoreValue  = null;
+      let currentPagesCrawled = 0;
+
       function renderResults(preview, full) {
         currentFull = full;
+        // Store score state for gate analytics (Kelly 20:50 UTC Mar 30)
+        currentScoreBucket  = preview.isSinglePageCrawl ? null : (preview.bucketLabel || null);
+        currentScoreValue   = preview.isSinglePageCrawl ? null : (preview.score ?? null);
+        currentPagesCrawled = preview.metrics?.pagesCrawled ?? 0;
 
         // BUG #1: If single-page crawl, don't show score ring
         if (preview.isSinglePageCrawl) {
@@ -1471,6 +1556,7 @@
           scanningLabel.innerHTML = `Scanning <strong>${displayUrl}</strong>…`;
         }
         showState('tool-scanning');
+        const scanStartTime = Date.now();
 
         const progressTimer = startProgressSim();
 
@@ -1481,23 +1567,38 @@
             body: JSON.stringify({ url: rawUrl }),
           });
 
-          if (progressTimer) clearInterval(progressTimer);
-          if (scanProgress) {
-            scanProgress.style.transition = 'width 0.3s ease';
-            scanProgress.style.width = '100%';
-          }
-
           if (!res.ok) throw new Error(`Server error ${res.status}`);
 
           const data = await res.json();
           if (data.error) throw new Error(data.error);
           if (!data.preview) throw new Error('No data returned from scan.');
 
-          await new Promise(r => setTimeout(r, 350));
+          // Update the estimate so the counter counts toward the real number
+          const pagesCrawled = data.preview?.metrics?.pagesCrawled || 0;
+          if (progressTimer && progressTimer.updateEstimate && pagesCrawled > 0) {
+            progressTimer.updateEstimate(pagesCrawled);
+          }
+
+          // Enforce minimum display time FIRST — keep animation running naturally
+          const elapsed = Date.now() - scanStartTime;
+          const remaining = Math.max(0, MIN_SCAN_DISPLAY_MS - elapsed);
+          await new Promise(r => setTimeout(r, remaining));
+          if (progressTimer && progressTimer.complete) {
+            progressTimer.complete(pagesCrawled);
+          } else if (progressTimer) {
+            clearInterval(progressTimer.interval || progressTimer);
+            if (scanProgress) { scanProgress.style.width = '100%'; }
+          }
+
+          // Brief pause so user reads the "✓ X pages reviewed" message
+          await new Promise(r => setTimeout(r, 700));
           renderResults(data.preview, data.fullReport);
 
         } catch (err) {
-          if (progressTimer) clearInterval(progressTimer);
+          if (progressTimer) {
+            if (progressTimer.interval) clearInterval(progressTimer.interval);
+            else clearInterval(progressTimer);
+          }
           console.error('Scan error:', err);
           const msg = (err.message || '').toLowerCase();
           if (errorMsg) {
@@ -1534,6 +1635,9 @@
       if (restartBtn) {
         restartBtn.addEventListener('click', () => {
           currentFull = null;
+          currentScoreBucket = null;
+          currentScoreValue = null;
+          currentPagesCrawled = 0;
           if (fullBlock)  fullBlock.style.display = 'none';
           if (fullTbody)  fullTbody.innerHTML = '';
           // Clear warnings
@@ -1566,7 +1670,12 @@
           } catch { /* Kit.com CORS is expected — submission still registers */ }
         }
 
-        trackEvent('tool_email_gate_submit', { has_scan: !!currentFull });
+        trackEvent('tool_email_gate_submit', {
+          has_scan:     !!currentFull,
+          score_bucket: currentScoreBucket || 'unknown',
+          score_value:  currentScoreValue,
+          pages_crawled: currentPagesCrawled || null
+        });
 
         // Reveal full report if we have data
         if (currentFull) {
@@ -1606,7 +1715,11 @@
             } catch { /* Kit.com CORS is expected */ }
           }
 
-          trackEvent('tool_standalone_gate_submit', {});
+          trackEvent('tool_standalone_gate_submit', {
+            score_bucket: currentScoreBucket || 'unknown',
+            score_value:  currentScoreValue,
+            pages_crawled: currentPagesCrawled || null
+          });
 
           if (btn) { btn.textContent = '✓ Check your email'; }
           if (emailInput) emailInput.value = '';

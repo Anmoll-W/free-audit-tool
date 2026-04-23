@@ -68,8 +68,11 @@ async function fetchPage(url) {
     const res = await fetch(url, {
       signal: controller.signal,
       headers: {
-        "User-Agent": "LinkWhisper-HealthChecker/1.0 (+https://linkwhisper.com/internal-link-checker)",
-        "Accept": "text/html,application/xhtml+xml",
+        "User-Agent": "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+        "Accept-Language": "en-US,en;q=0.5",
+        "Accept-Encoding": "gzip, deflate",
+        "Cache-Control": "no-cache",
       },
       redirect: "follow",
     });
@@ -130,6 +133,7 @@ async function crawl(startUrl, origin) {
   const visited    = new Map();   // url → { depth, noindex, linksOut: [{to, anchor}], isWordPress }
   const queue      = [{ url: startUrl, depth: 0 }];
   const inQueue    = new Set([startUrl]);
+  const rootUrl    = startUrl;  // Track root explicitly for orphan detection
   let hitCrawlCap  = false;
   let hitTimeCap   = false;
   let anyWordPress = false;
@@ -181,7 +185,7 @@ async function crawl(startUrl, origin) {
   if (!hitCrawlCap && queue.length > 0) hitCrawlCap = true;
   if (Date.now() - startTime > MAX_TIME_MS) hitTimeCap = true;
 
-  return { visited, meta: { hitCrawlCap, hitTimeCap, anyWordPress, queueRemaining: queue.length } };
+  return { visited, meta: { hitCrawlCap, hitTimeCap, anyWordPress, queueRemaining: queue.length, rootUrl } };
 }
 
 /** Dedupe links within a page (keep first occurrence for anchor tracking) */
@@ -192,6 +196,126 @@ function dedupeLinks(links) {
     seen.add(to);
     return true;
   });
+}
+
+// ─── Sitemap Fallback ────────────────────────────────────────────────────────
+
+/** Extract all <loc> URLs from a sitemap or sitemap index XML string */
+function extractSitemapUrls(xml) {
+  const urls = [];
+  const locRegex = /<loc>\s*(https?:\/\/[^\s<]+)\s*<\/loc>/gi;
+  let match;
+  while ((match = locRegex.exec(xml)) !== null) {
+    urls.push(match[1].trim());
+  }
+  return urls;
+}
+
+/** Try to get all URLs from sitemap (handles sitemap index too). Returns [] on failure. */
+async function fetchSitemapUrls(origin) {
+  const sitemapUrls = [
+    `${origin}/sitemap.xml`,
+    `${origin}/sitemap_index.xml`,
+    `${origin}/wp-sitemap.xml`,
+  ];
+
+  for (const sitemapUrl of sitemapUrls) {
+    try {
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), 10_000);
+      const res = await fetch(sitemapUrl, {
+        signal: controller.signal,
+        headers: { "User-Agent": "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)" },
+        redirect: "follow",
+      });
+      clearTimeout(timer);
+      if (!res.ok) continue;
+      const ct = res.headers.get("content-type") || "";
+      if (!ct.includes("xml") && !ct.includes("text")) continue;
+      const xml = await res.text();
+      const urls = extractSitemapUrls(xml);
+      if (urls.length === 0) continue;
+
+      // Check if it's a sitemap index (contains other sitemaps)
+      const isSitemapIndex = xml.includes("<sitemapindex") || xml.includes("<sitemap>");
+      if (isSitemapIndex) {
+        // Fetch sub-sitemaps (max 2 to stay within time limit)
+        const subSitemaps = urls.filter(u => u.includes("sitemap")).slice(0, 2);
+        const allUrls = [];
+        for (const sub of subSitemaps) {
+          try {
+            const c2 = new AbortController();
+            const t2 = setTimeout(() => c2.abort(), 8_000);
+            const r2 = await fetch(sub, {
+              signal: c2.signal,
+              headers: { "User-Agent": "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)" },
+              redirect: "follow",
+            });
+            clearTimeout(t2);
+            if (!r2.ok) continue;
+            const subXml = await r2.text();
+            allUrls.push(...extractSitemapUrls(subXml));
+            if (allUrls.length >= MAX_PAGES) break;
+          } catch { continue; }
+        }
+        return allUrls.slice(0, MAX_PAGES);
+      }
+
+      return urls.slice(0, MAX_PAGES);
+    } catch { continue; }
+  }
+  return [];
+}
+
+/**
+ * Build a link graph from sitemap URLs by fetching each page's outbound links.
+ * Used as fallback when BFS crawl gets blocked (e.g. Cloudflare).
+ */
+async function crawlViaSitemap(origin, startTime) {
+  const sitemapUrls = await fetchSitemapUrls(origin);
+  if (sitemapUrls.length === 0) return null;
+
+  // Filter to same-origin URLs only, cap at 50 for time budget
+  const internalUrls = sitemapUrls
+    .map(u => normalise(u, origin + "/"))
+    .filter(u => u && originOf(u) === origin)
+    .slice(0, 50);
+
+  if (internalUrls.length === 0) return null;
+
+  const visited = new Map();
+  const rootUrl = normalise(origin + "/", origin + "/") || origin + "/";
+
+  // Fetch each URL to get its outbound links — stop at 40s to leave buffer
+  const BATCH_SIZE = 5;
+  for (let i = 0; i < internalUrls.length && Date.now() - startTime < 40_000; i += BATCH_SIZE) {
+    const batch = internalUrls.slice(i, i + BATCH_SIZE);
+    await Promise.all(batch.map(async (url) => {
+      if (visited.has(url)) return;
+      const depth = url === rootUrl ? 0 : 1;
+      const result = await fetchPage(url);
+      if (!result) {
+        visited.set(url, { depth, noindex: false, linksOut: [], fetchFailed: true, isWordPress: false });
+        return;
+      }
+      const { noindex, links, isWordPress } = parsePage(result.html, url, origin);
+      const uniqueLinks = dedupeLinks(links);
+      visited.set(url, { depth, noindex, linksOut: uniqueLinks, isWordPress });
+    }));
+  }
+
+  return {
+    visited,
+    meta: {
+      hitCrawlCap: internalUrls.length > visited.size,
+      hitTimeCap: Date.now() - startTime >= 50_000,
+      anyWordPress: Array.from(visited.values()).some(v => v.isWordPress),
+      queueRemaining: 0,
+      rootUrl,
+      usedSitemap: true,
+      sitemapPageCount: internalUrls.length,
+    }
+  };
 }
 
 // ─── Scoring ────────────────────────────────────────────────────────────────
@@ -210,6 +334,9 @@ function analyse(graph, crawlMeta) {
   const pageCount = graph.size;
   const pages = [];
 
+  // Use explicit rootUrl from crawl meta for reliable orphan detection
+  const rootUrl = crawlMeta?.rootUrl || Array.from(graph.keys())[0];
+
   // Gather all anchors for generic anchor % calculation
   let totalAnchors = 0;
   let genericAnchors = 0;
@@ -220,7 +347,7 @@ function analyse(graph, crawlMeta) {
     const linksIn  = (inbound.get(url) || []).filter(l => graph.has(l.from));
     const linksOut = (data.linksOut || []).filter(l => graph.has(l.to));
 
-    const isOrphan   = linksIn.length === 0 && url !== Array.from(graph.keys())[0];
+    const isOrphan   = linksIn.length === 0 && url !== rootUrl;
     const isDeadEnd  = linksOut.length === 0;
     const isLowDensity = linksOut.length > 0 && linksOut.length < 2 && !isDeadEnd;
     const isDeepPage = data.depth >= MAX_DEPTH;
@@ -242,7 +369,7 @@ function analyse(graph, crawlMeta) {
       isDeepPage,
       issues: [
         isOrphan      && "orphan",
-        isDeadEnd     && url !== Array.from(graph.keys())[0] && "dead-end",
+        isDeadEnd     && url !== rootUrl && "dead-end",
         isLowDensity  && "low-density",
         isDeepPage    && "deep",
       ].filter(Boolean),
@@ -425,7 +552,20 @@ exports.handler = async (event) => {
   }
 
   try {
-    const { visited: graph, meta: crawlMeta } = await crawl(startUrl, origin);
+    const crawlStartTime = Date.now();
+    let crawlResult = await crawl(startUrl, origin);
+    let { visited: graph, meta: crawlMeta } = crawlResult;
+
+    // If BFS only found 1 page (likely Cloudflare/bot-blocking), try sitemap fallback
+    if (graph.size <= 1) {
+      console.log("BFS blocked or single-page site — trying sitemap fallback");
+      const sitemapResult = await crawlViaSitemap(origin, crawlStartTime);
+      if (sitemapResult && sitemapResult.visited.size > 1) {
+        graph = sitemapResult.visited;
+        crawlMeta = sitemapResult.meta;
+        console.log(`Sitemap fallback: found ${graph.size} pages`);
+      }
+    }
 
     if (graph.size === 0) {
       return {
