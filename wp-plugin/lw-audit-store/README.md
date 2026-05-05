@@ -7,7 +7,11 @@ WordPress plugin powering the Free Audit Tool at `linkwhisper.com/internal-link-
 **Operate:** Matt / Iliya
 **Status:** ship-candidate — verified end-to-end against wp-now sandbox 2026-05-05
 
-> **Read this first if you are Matt / Iliya.** This README + [`DEPLOY.md`](DEPLOY.md) are everything you need. You should not need any external doc to install, verify, or operate this plugin.
+> **Read this first if you are Matt / Iliya.** This README + [`DEPLOY.md`](DEPLOY.md) + [`HANDOFF.md`](HANDOFF.md) are everything you need. You should not need any external doc to install, verify, or operate this plugin.
+>
+> - `README.md` (this file) — what this is, end-to-end install path, required settings.
+> - `DEPLOY.md` — install + configure + verify-curls + ops + failure-state recovery.
+> - `HANDOFF.md` — actual simulation evidence (curl output, SQL output), open questions back to you, things still pending.
 
 ---
 
