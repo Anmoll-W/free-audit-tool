@@ -10,7 +10,9 @@
  *  - permission_callback returns true (public). The frontend is a static
  *    page on linkwhisper.com — no signed session available to the form.
  *  - Rate limit: 5 submits / hour / IP via transients keyed by ip_hash.
- *  - Honeypot: hidden form field `hp_field` must be empty. Filled → silent
+ *  - Honeypot: hidden form field `lw_check` must be empty. Field name is a
+ *    contract with the React frontend (LinkChecker.tsx `name="lw_check"`) —
+ *    drift between sides silently disables the bot trap. Filled → silent
  *    200 (do not signal rejection to the bot).
  *  - Email format validation via is_email().
  *  - verify_hmac() retained as a private utility for future server-to-server
@@ -37,9 +39,11 @@ class LW_Audit_REST_Controller {
 	const SCAN_RATE_LIMIT_PER_HOUR = 10;
 
 	/**
-	 * Origins allowed to POST cross-origin to this route. Add staging /
-	 * preview hosts here as needed. The Netlify production host is the
-	 * primary entry point.
+	 * Built-in allowed origins for cross-origin POSTs. Production calls land
+	 * same-origin (React bundle ships inside the WP theme) so this list is
+	 * primarily for staging/preview environments. Any other origin must be
+	 * added via Settings → LW Audit → Extra CORS Origins. Netlify origin was
+	 * removed v0.3.0 (Vera P0 #1) — the Netlify deploy is being retired.
 	 */
 	const ALLOWED_ORIGINS = array(
 		'https://audit.linkwhisper.com',

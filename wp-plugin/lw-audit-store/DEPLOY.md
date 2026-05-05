@@ -62,7 +62,7 @@ Go to **Settings → LW Audit** and fill in:
 | From Name | Required | Displayed sender name. |
 | Reply-To Email | Required | Where unsubscribe replies land. |
 | **Physical Mailing Address** | **Required** | **CAN-SPAM Sec. 5(a)(5)** — appears in every email footer. Multi-line OK. |
-| Extra CORS Origins | **Required for any non-prod environment** | Newline-separated, no trailing slash, include scheme (e.g. `http://localhost:8080`). Built-in allow-list already includes `linkwhisper.com`, `www.linkwhisper.com`, `audit.linkwhisper.com`, the prod Netlify host. **Any other origin (staging URL, dev `localhost:*`, alternate domain) must be added here or the React app will fail with a misleading "Network error" UI message.** |
+| Extra CORS Origins | **Required for any non-prod environment** | Newline-separated, no trailing slash, include scheme (e.g. `http://localhost:8080`). Built-in allow-list includes only `linkwhisper.com`, `www.linkwhisper.com`, `audit.linkwhisper.com` (Netlify origin removed v0.3.0). **Any other origin (staging URL, dev `localhost:*`, alternate domain) must be added here or the React app will fail with a misleading "Network error" UI message.** |
 
 ### CORS allow-list — hard install step
 

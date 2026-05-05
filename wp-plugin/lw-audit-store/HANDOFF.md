@@ -127,7 +127,7 @@ access-control-allow-origin: https://link-whisperer-internal-link-checker.netlif
 access-control-allow-headers: Authorization, X-WP-Nonce, Content-Disposition, Content-MD5, Content-Type
 ```
 
-Note the disallowed origin gets a fallback Allow-Headers (WordPress's core default) that does **not** include `Idempotency-Key`. The browser will reject the preflight because the React app sends `Idempotency-Key` and it isn't in the allow list. So the disallowed origin is effectively blocked. Allowed origins get the full lw-specific header set.
+**About the `access-control-allow-origin` echo:** WordPress core's default `rest_send_cors_headers` filter is permissive and echoes the request `Origin` back even when our plugin's allow-list rejects it. **This is not the CORS check that matters.** The browser preflight fails on the second header — `access-control-allow-headers` — because the React app sends `Idempotency-Key` and the disallowed-origin response gives the WP core fallback set (Authorization / X-WP-Nonce / Content-Disposition / Content-MD5 / Content-Type) which does not include `Idempotency-Key`. So the disallowed origin is effectively blocked from the actual POST. Allowed origins get our plugin's full lw-specific header set including `Idempotency-Key`. **Verify CORS by checking `Access-Control-Allow-Headers`, not `Access-Control-Allow-Origin`.**
 
 ---
 
@@ -186,6 +186,8 @@ These are the things we don't know — please answer in a comment on the GH comm
 3. **What email do you want as the default `From Email` and `Reply-To` for the audit emails?** (Production probably uses `support@linkwhisper.com` — confirm for staging.)
 4. **What physical mailing address should appear in the email footer?** (CAN-SPAM Sec. 5(a)(5) — required, not optional.)
 5. **Are you OK keeping the plugin under `Anmoll-W/free-audit-tool`** (you now have collaborator push perm), **or do you want to fork it under `linkwhisper/lw-audit-store`** so it lives under the LinkWhisper org?
+
+6. **Is `DISABLE_WP_CRON` set on the staging/prod host, and if so what's hitting `/wp-cron.php` on a schedule?** Many managed WP hosts disable the request-triggered wp-cron and rely on a system cron hitting `/wp-cron.php` every N minutes. If `DISABLE_WP_CRON=true` and no system cron is firing, the 30-min `lw_audit_mail_retry` event sits in the cron array forever — `mail_failed` rows silently never become `mail_dead`, and the operator alert path (the `wp_lw_audits_errors` row that signals "human attention needed") never triggers. Same applies to the hourly `lw_audit_kit_retry`. Confirm one of: (a) `DISABLE_WP_CRON` is unset/false, OR (b) it's set but a system cron / SaaS cron pings `/wp-cron.php` at least every 15 min.
 
 ---
 
