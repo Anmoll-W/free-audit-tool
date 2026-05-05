@@ -39,6 +39,10 @@ class LW_Audit_Installer {
 		if ( $installed_version !== LW_AUDIT_DB_VERSION ) {
 			update_option( self::OPTION_DB_VERSION, LW_AUDIT_DB_VERSION );
 		}
+
+		if ( ! wp_next_scheduled( LW_AUDIT_CRON_HOOK ) ) {
+			wp_schedule_event( time() + HOUR_IN_SECONDS, 'hourly', LW_AUDIT_CRON_HOOK );
+		}
 	}
 
 	/**
@@ -48,6 +52,11 @@ class LW_Audit_Installer {
 	 * without data loss — see uninstall.php for the destructive path.
 	 */
 	public static function deactivate() {
+		$timestamp = wp_next_scheduled( LW_AUDIT_CRON_HOOK );
+		if ( $timestamp ) {
+			wp_unschedule_event( $timestamp, LW_AUDIT_CRON_HOOK );
+		}
+
 		// Audit trail for ops. Matt/Iliya can grep error_log to confirm
 		// when a deactivation happened.
 		error_log( '[lw-audit-store] Plugin deactivated. Tables preserved. Use uninstall (Delete) to drop data.' );
@@ -111,11 +120,15 @@ class LW_Audit_Installer {
 			internal_links int(10) unsigned default NULL,
 			email varchar(190) default NULL,
 			email_status varchar(20) NOT NULL default 'none',
+			kit_status varchar(16) NOT NULL default 'pending',
+			kit_attempts tinyint(3) unsigned NOT NULL default 0,
+			kit_last_error text default NULL,
 			kit_subscriber_id varchar(64) default NULL,
 			utm_source varchar(64) default NULL,
 			utm_medium varchar(64) default NULL,
 			utm_campaign varchar(64) default NULL,
 			utm_content varchar(64) default NULL,
+			utm_term varchar(64) default NULL,
 			referrer text default NULL,
 			user_agent text default NULL,
 			ip_hash char(64) default NULL,
@@ -123,7 +136,9 @@ class LW_Audit_Installer {
 			PRIMARY KEY  (id),
 			KEY created_at (created_at),
 			KEY url_hash (url_hash),
-			KEY email (email)
+			KEY email (email),
+			KEY email_status (email_status),
+			KEY kit_status (kit_status)
 		) {$charset_collate};";
 
 		// ----- wp_lw_audits_errors -------------------------------------------

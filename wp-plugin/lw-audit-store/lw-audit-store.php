@@ -2,8 +2,8 @@
 /**
  * Plugin Name:       LW Audit Store
  * Plugin URI:        https://linkwhisper.com/
- * Description:       Captures Free Audit Tool submissions (URL audited, scan stats, email, UTM) into a dedicated MySQL table on linkwhisper.com. System of record for the free-tool acquisition funnel. Kit.com remains the email-delivery layer only.
- * Version:           0.1.0
+ * Description:       Free Audit Tool backend — crawler (POST /lw/v1/scan) + capture endpoint (POST /lw/v1/emails) + email send + Kit.com sync + hourly retry cron + admin dashboard. System of record for the free-tool acquisition funnel.
+ * Version:           0.3.0
  * Requires at least: 6.0
  * Requires PHP:      7.4
  * Author:            LinkWhisper
@@ -12,9 +12,13 @@
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       lw-audit-store
  *
- * Phase 1 scope: plugin shell, DB schema (wp_lw_audits + wp_lw_audits_errors)
- * via dbDelta, activation/deactivation/uninstall hooks. No REST endpoints,
- * no admin page, no Kit.com integration yet — those are Phases 2-4.
+ * Phase 1 scope (v0.1.0): plugin shell + DB schema.
+ * Phase 2 scope (v0.2.0): REST capture endpoint + HMAC + email send + Kit.com
+ * sync + hourly retry cron + admin settings + admin dashboard.
+ * Phase 3 scope (v0.3.0): /scan REST route + LW_Audit_Crawler. Brings the
+ * audit crawler in-house (PHP) so the React frontend on linkwhisper.com
+ * calls one origin only — capture and crawl both served by this plugin.
+ * Retires the standalone Netlify deploy at audit.linkwhisper.com.
  *
  * @package LW_Audit_Store
  */
@@ -28,18 +32,29 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Plugin constants. Bump LW_AUDIT_DB_VERSION on any schema change so the
  * installer re-runs dbDelta on the next activation / version check.
  */
-define( 'LW_AUDIT_VERSION', '0.1.0' );
-define( 'LW_AUDIT_DB_VERSION', '1' );
+define( 'LW_AUDIT_VERSION', '0.3.0' );
+// DB v3: adds utm_term column and KEY email_status. dbDelta picks up both
+// on activation; existing rows are preserved.
+define( 'LW_AUDIT_DB_VERSION', '3' );
 define( 'LW_AUDIT_DIR', plugin_dir_path( __FILE__ ) );
 define( 'LW_AUDIT_URL', plugin_dir_url( __FILE__ ) );
+define( 'LW_AUDIT_CRON_HOOK', 'lw_audit_kit_retry' );
 
 // Manual require — no Composer in v0. Matt/Iliya don't need a build step
 // to read or edit this plugin.
 require_once LW_AUDIT_DIR . 'includes/class-installer.php';
-
-// Phase 2: REST routes registered in includes/class-rest-controller.php
-// Phase 2: Admin page registered in includes/class-admin-page.php
-// Phase 3: Kit.com client in includes/class-kit-client.php
+require_once LW_AUDIT_DIR . 'includes/class-settings.php';
+require_once LW_AUDIT_DIR . 'includes/class-kit-client.php';
+require_once LW_AUDIT_DIR . 'includes/class-mailer.php';
+require_once LW_AUDIT_DIR . 'includes/class-crawler.php';
+require_once LW_AUDIT_DIR . 'includes/class-rest-controller.php';
+require_once LW_AUDIT_DIR . 'includes/class-cron.php';
+require_once LW_AUDIT_DIR . 'includes/class-admin-page.php';
 
 register_activation_hook( __FILE__, array( 'LW_Audit_Installer', 'activate' ) );
 register_deactivation_hook( __FILE__, array( 'LW_Audit_Installer', 'deactivate' ) );
+
+add_action( 'rest_api_init', array( 'LW_Audit_REST_Controller', 'register_routes' ) );
+add_action( 'admin_init', array( 'LW_Audit_Settings', 'register_settings' ) );
+add_action( 'admin_menu', array( 'LW_Audit_Admin_Page', 'register_pages' ) );
+add_action( LW_AUDIT_CRON_HOOK, array( 'LW_Audit_Cron', 'run_retries' ) );

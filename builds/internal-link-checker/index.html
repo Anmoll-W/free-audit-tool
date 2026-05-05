@@ -758,6 +758,7 @@
                   required
                   aria-label="Your email address"
                 />
+                <input type="text" name="hp_field" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;" />
                 <button type="submit" class="email-form__btn">Send My Full Report →</button>
               </form>
               <p class="email-gate__note" style="margin-top:12px;">No spam. One email with your report. Unsubscribe any time.</p>
@@ -862,8 +863,8 @@
         <h2>Get your full report — free.</h2>
         <p class="email-gate__sub">The top 3 issues are visible above. Your full report shows every problem we found, ranked by impact, with specific URLs and fix recommendations.</p>
 
-        <!-- Email gate form — action="" pending Kit.com URL from Boss (tag: free-tool-checker-user) -->
-        <form class="email-form" action="" method="POST" aria-label="Email gate for full report">
+        <!-- Email gate form — submits to lw-audit-store REST endpoint (handles email send + Kit.com sync) -->
+        <form class="email-form" id="standalone-gate-form" method="POST" aria-label="Email gate for full report">
           <input
             class="email-form__input"
             type="email"
@@ -872,6 +873,7 @@
             required
             aria-label="Your email address"
           />
+          <input type="text" name="hp_field" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;" />
           <button type="submit" class="email-form__btn">Send My Full Report →</button>
         </form>
         <p class="email-gate__note">We'll email you the full report instantly. You'll also get occasional internal linking tips — unsubscribe any time. No spam, obviously.</p>
@@ -1194,7 +1196,33 @@
     // ===== TOOL CORE — URL FORM → CRAWL → RESULTS =====
     (function () {
       const CRAWL_ENDPOINT = '/.netlify/functions/crawl';
+      // lw-audit-store REST endpoint: stores audit + sends email + Kit.com sync.
+      const AUDIT_CAPTURE_ENDPOINT = 'https://linkwhisper.com/wp-json/lw/v1/emails';
       const MIN_SCAN_DISPLAY_MS = 6000; // always show progress for at least 6s
+
+      /** Pull utm_* params from URL → flat object. */
+      function readUTMs() {
+        const out = {};
+        try {
+          const p = new URLSearchParams(window.location.search);
+          ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'].forEach(k => {
+            const v = p.get(k);
+            if (v) out[k] = v;
+          });
+        } catch (_) {}
+        return out;
+      }
+
+      /**
+       * Generate a stable idempotency key for a (url, email) pair. The key is
+       * deliberately deterministic — two retries within an hour for the same
+       * (url, email) collapse to one row. (Date.now() was here before; that
+       * defeated the purpose, so it's gone.)
+       */
+      function idempotencyKey(url, email) {
+        const raw = `${(url || '').trim().toLowerCase()}|${(email || '').trim().toLowerCase()}`;
+        return `lw-${btoa(unescape(encodeURIComponent(raw))).slice(0, 32)}`;
+      }
 
       // DOM refs — matched to actual HTML IDs
       const urlForm        = document.getElementById('url-form');
@@ -1441,6 +1469,8 @@
       let currentScoreBucket = null; // 'Critical' | 'Needs Work' | 'Healthy' | null
       let currentScoreValue  = null;
       let currentPagesCrawled = 0;
+      let currentAuditUrl    = '';   // raw URL the user submitted
+      let currentMetrics     = null; // metrics object from preview
 
       function renderResults(preview, full) {
         currentFull = full;
@@ -1448,6 +1478,7 @@
         currentScoreBucket  = preview.isSinglePageCrawl ? null : (preview.bucketLabel || null);
         currentScoreValue   = preview.isSinglePageCrawl ? null : (preview.score ?? null);
         currentPagesCrawled = preview.metrics?.pagesCrawled ?? 0;
+        currentMetrics      = preview.metrics || null;
 
         // BUG #1: If single-page crawl, don't show score ring
         if (preview.isSinglePageCrawl) {
@@ -1620,6 +1651,7 @@
           e.preventDefault();
           const raw = (urlInput?.value || '').trim();
           if (!raw) return;
+          currentAuditUrl = raw;
           trackEvent('tool_scan_start', { url: raw });
           runScan(raw);
         });
@@ -1638,6 +1670,8 @@
           currentScoreBucket = null;
           currentScoreValue = null;
           currentPagesCrawled = 0;
+          currentAuditUrl = '';
+          currentMetrics = null;
           if (fullBlock)  fullBlock.style.display = 'none';
           if (fullTbody)  fullTbody.innerHTML = '';
           // Clear warnings
@@ -1652,30 +1686,115 @@
 
       // ── Email gate ───────────────────────────────────────────────────────
 
+      /**
+       * Submit a captured email + audit context to lw-audit-store. The
+       * server stores the row, sends the results email via wp_mail, and
+       * syncs to Kit.com (with hourly retry on failure).
+       *
+       * Payload contract — keep in sync with class-rest-controller.php
+       * insert_row() and Mailer::resolve_template_vars().
+       */
+      async function captureEmail(email, source) {
+        const url = currentAuditUrl || (urlInput?.value || '').trim() || window.location.href;
+        const m = currentMetrics || {};
+        const payload = {
+          email,
+          url_audited:    url,
+          score:          currentScoreValue,
+          pages_crawled:  m.pagesCrawled ?? null,
+          broken_count:   m.brokenLinks ?? m.broken ?? null,
+          orphan_count:   m.orphanPages ?? m.orphaned ?? null,
+          internal_links: m.totalLinks ?? m.internalLinks ?? null,
+          referrer:       document.referrer || null,
+          utms:           readUTMs(),
+          raw_results:    currentFull || null,
+          source:         source || 'gate',
+          hp_field:       '', // honeypot — empty for real users
+        };
+
+        // 8s ceiling — Kit.com sometimes hangs and we don't want the form
+        // stuck in "Sending…" forever.
+        const ctrl = new AbortController();
+        const t = setTimeout(() => ctrl.abort(), 8000);
+
+        try {
+          const res = await fetch(AUDIT_CAPTURE_ENDPOINT, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-LW-Idempotency-Key': idempotencyKey(url, email),
+            },
+            body: JSON.stringify(payload),
+            signal: ctrl.signal,
+          });
+          clearTimeout(t);
+          const body = await res.json().catch(() => ({}));
+          if (!res.ok || body.ok !== true) {
+            console.warn('[lw-audit] capture failed', res.status, body);
+            return { ok: false, status: res.status, error: body.error || 'server_error' };
+          }
+          return body;
+        } catch (err) {
+          clearTimeout(t);
+          console.warn('[lw-audit] capture network error', err);
+          return { ok: false, error: err.name === 'AbortError' ? 'timeout' : 'network' };
+        }
+      }
+
+      /**
+       * Render a friendly error in-form. Returns false if no error UI was
+       * shown (caller should treat as success).
+       */
+      function showGateError(form, btn, result) {
+        if (!result || result.ok === true) return false;
+        // Existing error block? Reuse it. Otherwise inject after the form.
+        let err = form.parentElement?.querySelector('.lw-gate-error');
+        if (!err) {
+          err = document.createElement('p');
+          err.className = 'lw-gate-error';
+          err.style.cssText = 'color:#EF4444;font-size:0.9rem;margin-top:10px;';
+          form.insertAdjacentElement('afterend', err);
+        }
+        let msg;
+        if (result.error === 'rate limit exceeded — try again in an hour') {
+          msg = 'You\'ve hit the submission limit for this hour. Please try again later.';
+        } else if (result.error === 'invalid email') {
+          msg = 'That email address looks invalid. Could you double-check?';
+        } else if (result.error === 'timeout') {
+          msg = 'That took longer than expected. Please try again in a moment.';
+        } else if (result.error === 'network') {
+          msg = 'We couldn\'t reach our server. Check your connection and try again.';
+        } else {
+          msg = 'Something went wrong on our end. Please try again, and we\'ll fix it on our side too.';
+        }
+        err.textContent = msg;
+        if (btn) { btn.disabled = false; btn.textContent = 'Send My Full Report →'; }
+        return true;
+      }
+
       async function handleGateSubmit(form) {
         const emailInput = form.querySelector('input[type="email"]');
+        const hpInput    = form.querySelector('input[name="hp_field"]');
         const email = emailInput?.value?.trim();
         if (!email) return;
+
+        // Bot honeypot check (client-side short-circuit; server also checks).
+        if (hpInput && hpInput.value) return;
 
         const btn = form.querySelector('button[type="submit"]');
         if (btn) { btn.disabled = true; btn.textContent = 'Sending…'; }
 
-        // Submit to Kit.com if action is wired
-        const formAction = form.getAttribute('action');
-        if (formAction) {
-          try {
-            const fd = new FormData();
-            fd.append('email_address', email);
-            await fetch(formAction, { method: 'POST', body: fd, mode: 'no-cors' });
-          } catch { /* Kit.com CORS is expected — submission still registers */ }
-        }
+        const result = await captureEmail(email, 'gate');
 
         trackEvent('tool_email_gate_submit', {
           has_scan:     !!currentFull,
           score_bucket: currentScoreBucket || 'unknown',
           score_value:  currentScoreValue,
-          pages_crawled: currentPagesCrawled || null
+          pages_crawled: currentPagesCrawled || null,
+          capture_ok:   result?.ok === true,
         });
+
+        if (showGateError(form, btn, result)) return;
 
         // Reveal full report if we have data
         if (currentFull) {
@@ -1695,36 +1814,36 @@
       // Standalone below-fold email form (section#full-report)
       // This form is always visible (not gated behind a scan result)
       // and handles direct email capture from users who scroll past results.
-      const standaloneForm = document.querySelector('#full-report form.email-form');
+      const standaloneForm = document.getElementById('standalone-gate-form')
+        || document.querySelector('#full-report form.email-form');
       if (standaloneForm) {
         standaloneForm.addEventListener('submit', async (e) => {
           e.preventDefault();
           const emailInput = standaloneForm.querySelector('input[type="email"]');
+          const hpInput    = standaloneForm.querySelector('input[name="hp_field"]');
           const email = emailInput?.value?.trim();
           if (!email) return;
+          if (hpInput && hpInput.value) return;
 
           const btn = standaloneForm.querySelector('button[type="submit"]');
           if (btn) { btn.disabled = true; btn.textContent = 'Sending…'; }
 
-          const formAction = standaloneForm.getAttribute('action');
-          if (formAction) {
-            try {
-              const fd = new FormData();
-              fd.append('email_address', email);
-              await fetch(formAction, { method: 'POST', body: fd, mode: 'no-cors' });
-            } catch { /* Kit.com CORS is expected */ }
-          }
+          const result = await captureEmail(email, 'standalone');
 
           trackEvent('tool_standalone_gate_submit', {
             score_bucket: currentScoreBucket || 'unknown',
             score_value:  currentScoreValue,
-            pages_crawled: currentPagesCrawled || null
+            pages_crawled: currentPagesCrawled || null,
+            capture_ok:   result?.ok === true,
           });
+
+          if (showGateError(standaloneForm, btn, result)) return;
 
           if (btn) { btn.textContent = '✓ Check your email'; }
           if (emailInput) emailInput.value = '';
         });
       }
+    })();
   </script>
 
 </body>

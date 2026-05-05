@@ -32,3 +32,7 @@ $wpdb->query( "DROP TABLE IF EXISTS {$audits_table}" );
 $wpdb->query( "DROP TABLE IF EXISTS {$errors_table}" );
 
 delete_option( 'lw_audit_db_version' );
+// Plugin settings include the Kit.com API key + HMAC secret. They MUST be
+// removed on uninstall so a re-install starts clean and credentials don't
+// linger in wp_options after a "delete" gesture.
+delete_option( 'lw_audit_settings' );
