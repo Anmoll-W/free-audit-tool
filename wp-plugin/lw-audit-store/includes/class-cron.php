@@ -51,6 +51,57 @@ class LW_Audit_Cron {
 		}
 	}
 
+	/**
+	 * One-shot wp_mail retry handler (Vera P0 #1 + Quinn async blind-spot).
+	 *
+	 * Fires 30 min after the inline send marks email_status = 'mail_failed'.
+	 * Idempotent: exits immediately if status is no longer 'mail_failed'.
+	 * On second failure: marks 'mail_dead' + logs to wp_lw_audits_errors.
+	 * No further automatic attempts — operator handles manually.
+	 */
+	public static function retry_mail( $audit_id ) {
+		$audit_id = intval( $audit_id );
+		if ( $audit_id <= 0 ) {
+			return;
+		}
+
+		global $wpdb;
+		$table = $wpdb->prefix . 'lw_audits';
+
+		$row = $wpdb->get_row( $wpdb->prepare(
+			"SELECT * FROM {$table} WHERE id = %d",
+			$audit_id
+		), ARRAY_A );
+
+		if ( ! $row || 'mail_failed' !== $row['email_status'] ) {
+			// Already retried, manually fixed, or row missing — skip.
+			return;
+		}
+
+		$result = LW_Audit_Mailer::send_audit_results( $row );
+
+		if ( $result['ok'] ) {
+			$wpdb->update( $table, array( 'email_status' => 'sent' ), array( 'id' => $audit_id ) );
+			return;
+		}
+
+		// Second failure — give up and alert via error log.
+		$wpdb->update( $table, array( 'email_status' => 'mail_dead' ), array( 'id' => $audit_id ) );
+
+		$errors_table = $wpdb->prefix . 'lw_audits_errors';
+		$wpdb->insert( $errors_table, array(
+			'endpoint'      => 'mail_dead',
+			'payload_hash'  => str_pad( (string) $audit_id, 64, '0', STR_PAD_LEFT ),
+			'error_message' => substr( (string) $result['error'], 0, 65535 ),
+		) );
+
+		error_log( sprintf(
+			'[lw-audit-store] mail_dead: audit_id=%d error=%s',
+			$audit_id,
+			(string) $result['error']
+		) );
+	}
+
 	private static function process_batch() {
 		global $wpdb;
 		$table = $wpdb->prefix . 'lw_audits';

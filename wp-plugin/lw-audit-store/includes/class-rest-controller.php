@@ -45,7 +45,6 @@ class LW_Audit_REST_Controller {
 		'https://audit.linkwhisper.com',
 		'https://linkwhisper.com',
 		'https://www.linkwhisper.com',
-		'https://link-whisperer-internal-link-checker.netlify.app',
 	);
 
 	public static function register_routes() {
@@ -205,9 +204,10 @@ class LW_Audit_REST_Controller {
 			return new WP_REST_Response( array( 'ok' => false, 'error' => 'bad json' ), 400 );
 		}
 
-		// Honeypot — silent 200 if a bot filled the hidden field. Do not
-		// reveal that the field is a trap (bots would adapt).
-		if ( ! empty( $payload['hp_field'] ) ) {
+		// Honeypot — silent 200 if a bot filled the hidden field. Field name
+		// must match the React form's `name="lw_check"` (see LinkChecker.tsx).
+		// Do not reveal the trap — bots would adapt.
+		if ( ! empty( $payload['lw_check'] ) ) {
 			self::log_error( 'honeypot', '', 'honeypot field filled' );
 			return new WP_REST_Response( array( 'ok' => true, 'audit_id' => 0 ), 200 );
 		}
@@ -277,6 +277,8 @@ class LW_Audit_REST_Controller {
 		self::update_row( $audit_id, array( 'email_status' => $email_status ) );
 		if ( ! $mail_result['ok'] ) {
 			self::log_error( 'mail', hash( 'sha256', wp_json_encode( $row ) ), (string) $mail_result['error'] );
+			// Vera P0 #1 + Quinn async blind-spot: schedule one retry 30 min out; on second failure → mail_dead.
+			wp_schedule_single_event( time() + 30 * MINUTE_IN_SECONDS, 'lw_audit_mail_retry', array( $audit_id ) );
 		}
 
 		// Custom fields enable Kit segmentation by score bucket / orphan

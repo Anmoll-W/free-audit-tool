@@ -58,3 +58,4 @@ add_action( 'rest_api_init', array( 'LW_Audit_REST_Controller', 'register_routes
 add_action( 'admin_init', array( 'LW_Audit_Settings', 'register_settings' ) );
 add_action( 'admin_menu', array( 'LW_Audit_Admin_Page', 'register_pages' ) );
 add_action( LW_AUDIT_CRON_HOOK, array( 'LW_Audit_Cron', 'run_retries' ) );
+add_action( 'lw_audit_mail_retry', array( 'LW_Audit_Cron', 'retry_mail' ) );

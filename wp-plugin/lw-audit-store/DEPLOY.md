@@ -35,11 +35,26 @@ The plugin is the **system of record** for every free-tool acquisition. Kit.com 
 
 ## Configure — required before first capture
 
+### Pre-install — confirm outbound SMTP
+
+This plugin uses WordPress core `wp_mail()` to send the audit-results email. **Production LinkWhisper WP already routes `wp_mail` through a transactional relay with SPF + DKIM configured (the same path that sends purchase receipts and password resets). The staging WP needs the same path — confirm before installing this plugin.**
+
+Matt tick-list before activating the plugin:
+
+- [ ] `wp_mail` on this host is routed through the same SMTP relay LinkWhisper production uses (`WP Mail SMTP`, `Fluent SMTP`, or equivalent — pointed at Postmark / SendGrid / AWS SES / Resend / whichever relay LW uses).
+- [ ] DNS for the From-domain has an **SPF** record that authorises that relay.
+- [ ] DNS for the From-domain has a **DKIM** record matching the relay's signing key.
+- [ ] A manual `wp_mail` test send (e.g. `WP Mail SMTP`'s built-in tester) lands in a real Gmail/Outlook inbox — not spam — when sent to an external address.
+
+If any item above is unchecked, audit emails will record `email_status: sent` because PHP successfully handed the email to the relay, but the customer's inbox will never see them. The 30-min retry won't help — the failure is upstream of `wp_mail`.
+
+If you confirm all four items: proceed to Configure below.
+
 Go to **Settings → LW Audit** and fill in:
 
 | Field | Required? | Notes |
 |---|---|---|
-| HMAC Shared Secret | Optional | Only needed if you flip the controller to require signed requests. Frontend currently does not sign. Min 32 chars when set. |
+| HMAC Shared Secret | **Required (32+ chars)** | Used to salt request fingerprinting (`ip_hash`) and rate-limit transient keys. Generate 32+ random chars (`openssl rand -hex 32`). **Do not rotate without expecting rate-limit counters to reset** — every existing transient key derives from this secret. |
 | Kit.com API Key | Required | From Kit account settings → API. |
 | Kit.com Form ID | Required | The form that subscribers should land on. |
 | Kit.com Tag ID | Optional | Tag applied to every subscriber after add. |
@@ -78,11 +93,22 @@ If `Idempotency-Key` is missing from the Allow-Headers list, your origin isn't i
 2. Paste a small WordPress site URL (e.g. a personal blog) → **Check My Site**.
 3. Wait for results (10–50s). You should see a score, four stat cards, and the top issues.
 4. Enter a test email → **Unlock report**.
-5. In WP admin → **LW Audit** → confirm the row appears with `email_status: sent` and `kit_status: synced` (or `pending` if Kit was slow — the cron will retry within an hour).
+5. In WP admin → **LW Audit** → confirm the row appears with `email_status: sent` and `kit_status: synced` (or `pending` if Kit was slow — the cron will retry within an hour). If you see `email_status: mail_failed` after the curl POST, that's expected when SMTP isn't configured — see Failure States above. The retry will fire in 30 min if cron is running.
 6. Check the inbox: subject begins with `Your link health score: …`. Footer must show:
    - The "you received this email because…" line
    - Your physical mailing address
    - The Unsubscribe link
+
+---
+
+## Failure States
+
+| Status | What it means | Operator action |
+|---|---|---|
+| `email_status: mail_failed` | First `wp_mail` attempt failed. A 30-min retry is auto-scheduled. | Wait 30 min; status will flip to `sent` (success) or `mail_dead` (gave up). Check SMTP relay logs if the pattern repeats. |
+| `email_status: mail_dead` | Retry also failed. No further automatic attempts. Customer never received the email. | Inspect `wp_lw_audits_errors` for the row's `mail_dead` entry. Most common causes: SMTP relay credentials expired, From-domain SPF/DKIM regression, recipient address bounce. After fixing root cause, re-send manually: `UPDATE wp_lw_audits SET email_status='queued' WHERE id=N;` + trigger via SQL or admin tool. |
+| `kit_status: failed` | Kit subscribe call failed inline. Hourly cron retries, max 3 attempts. | No action needed unless persistent. |
+| `kit_status: dead` | All 3 Kit retries failed. | Check Kit API key in Settings. Re-attempt by setting `kit_status='pending'` and `kit_attempts=0` for the row. |
 
 ---
 
@@ -113,7 +139,7 @@ If signed requests are ever enabled: rotate the secret in **Settings → LW Audi
 - **Inline mail + Kit dispatch.** The capture endpoint sends `wp_mail` and calls Kit synchronously. Kit timeout is 3s; total inline budget is ~5s worst case. Async dispatch (background queue) is a follow-up.
 - **No HMAC enforcement.** The controller accepts unsigned POSTs from allow-listed origins. Add HMAC enforcement once the operator workflow is settled.
 - **Crawler is single-process.** No queue, no horizontal scaling. Each scan ties up one PHP-FPM worker for up to 50s. With the 10/hour rate limit per IP this is fine; revisit if traffic grows.
-- **No retry for `wp_mail` failures.** If `wp_mail` returns false the row is marked `email_status: mail_failed` and never retried automatically. Watch the dashboard.
+- **Single `wp_mail` retry only.** If the inline send fails, one retry fires 30 min later via `wp_schedule_single_event`. After the second failure the row is marked `mail_dead` and not retried again. See Failure States for operator recovery steps.
 
 ---
 
