@@ -47,11 +47,28 @@ Go to **Settings → LW Audit** and fill in:
 | From Name | Required | Displayed sender name. |
 | Reply-To Email | Required | Where unsubscribe replies land. |
 | **Physical Mailing Address** | **Required** | **CAN-SPAM Sec. 5(a)(5)** — appears in every email footer. Multi-line OK. |
-| Extra CORS Origins | Optional | Newline-separated. Built-in allow-list already includes `linkwhisper.com`, `www.linkwhisper.com`, `audit.linkwhisper.com`, the prod Netlify host. Add staging / preview hosts here. |
+| Extra CORS Origins | **Required for any non-prod environment** | Newline-separated, no trailing slash, include scheme (e.g. `http://localhost:8080`). Built-in allow-list already includes `linkwhisper.com`, `www.linkwhisper.com`, `audit.linkwhisper.com`, the prod Netlify host. **Any other origin (staging URL, dev `localhost:*`, alternate domain) must be added here or the React app will fail with a misleading "Network error" UI message.** |
 
-### CORS allow-list reminder
+### CORS allow-list — hard install step
 
-The React app at `https://linkwhisper.com/internal-link-checker` calls this plugin same-origin (the bundle ships inside the WP theme). For any other origin to work — staging, localhost dev — that origin must be in the allow-list above.
+The React app at `https://linkwhisper.com/internal-link-checker` calls this plugin same-origin (the bundle ships inside the WP theme), so production needs no CORS config. **Every other environment does.** If you skip the Extra CORS Origins setting on a staging install, the browser will reject the email-submit OPTIONS preflight (the `Idempotency-Key` request header is not in WP core's default Allow-Headers), the React app will show "Network error. Please check your connection.", and curl from the same machine will still return 200 — making it look like a frontend bug. It isn't.
+
+**Verify the allow-list took effect after editing the setting:**
+
+```bash
+curl -i -X OPTIONS \
+  "https://YOUR-STAGING-HOST/wp-json/lw/v1/emails" \
+  -H "Origin: https://YOUR-FRONTEND-ORIGIN" \
+  -H "Access-Control-Request-Method: POST" \
+  -H "Access-Control-Request-Headers: Idempotency-Key, Content-Type"
+```
+
+Expected response headers:
+- `Access-Control-Allow-Origin: https://YOUR-FRONTEND-ORIGIN`
+- `Access-Control-Allow-Headers: Content-Type, X-LW-Idempotency-Key, Idempotency-Key, X-LW-Signature`
+- `Access-Control-Max-Age: 86400`
+
+If `Idempotency-Key` is missing from the Allow-Headers list, your origin isn't in the allow-list — re-check Settings → LW Audit → Extra CORS Origins (one origin per line, no trailing slash, include scheme).
 
 ---
 
