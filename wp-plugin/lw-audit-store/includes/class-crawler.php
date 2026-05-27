@@ -37,12 +37,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class LW_Audit_Crawler {
 
-	const MAX_PAGES     = 75;
+	const MAX_PAGES     = 100;
 	const MAX_DEPTH     = 4;
-	const MAX_TIME_S    = 50;     // total crawl budget
-	const FETCH_TIMEOUT = 8;      // per-page fetch timeout (seconds)
-	const CONCURRENCY   = 3;      // parallel fetches per BFS batch
+	const MAX_TIME_S    = 55;     // total crawl budget
+	const FETCH_TIMEOUT = 15;     // per-page fetch timeout (seconds)
+	const CONCURRENCY   = 5;      // parallel fetches per BFS batch
 	const SITEMAP_TIME_S = 40;    // sitemap fallback budget
+	const SITEMAP_INDEX_FETCH_LIMIT = 10; // max child sitemaps to inspect from an index
 	const USER_AGENT    = 'Mozilla/5.0 (compatible; LinkWhisperBot/1.0; +https://linkwhisper.com/bot)';
 
 	/**
@@ -237,12 +238,30 @@ class LW_Audit_Crawler {
 		return $o;
 	}
 
+	private static function origin_matches( $origin_a, $origin_b ) {
+		$a = wp_parse_url( $origin_a );
+		$b = wp_parse_url( $origin_b );
+		if ( empty( $a['host'] ) || empty( $b['host'] ) ) {
+			return false;
+		}
+
+		$host_a = preg_replace( '#^www\.#i', '', strtolower( $a['host'] ) );
+		$host_b = preg_replace( '#^www\.#i', '', strtolower( $b['host'] ) );
+		if ( $host_a !== $host_b ) {
+			return false;
+		}
+
+		$port_a = isset( $a['port'] ) ? intval( $a['port'] ) : null;
+		$port_b = isset( $b['port'] ) ? intval( $b['port'] ) : null;
+		return null === $port_a || null === $port_b || $port_a === $port_b;
+	}
+
 	private static function is_internal( $href, $origin ) {
 		$norm = self::normalise( $href, $origin . '/' );
 		if ( ! $norm ) {
 			return false;
 		}
-		return self::origin_of( $norm ) === $origin;
+		return self::origin_matches( self::origin_of( $norm ), $origin );
 	}
 
 	// ─── HTTP fetch ────────────────────────────────────────────────────────
@@ -526,7 +545,7 @@ class LW_Audit_Crawler {
 				if ( ! $norm_final ) {
 					$norm_final = $url;
 				}
-				if ( self::origin_of( $norm_final ) !== $origin ) {
+				if ( ! self::origin_matches( self::origin_of( $norm_final ), $origin ) ) {
 					$visited[ $url ] = array(
 						'depth'                => $depth,
 						'noindex'              => false,
@@ -598,14 +617,31 @@ class LW_Audit_Crawler {
 	 * of sitemap-index nesting. Caps at MAX_PAGES.
 	 */
 	private static function fetch_sitemap_urls( $origin ) {
-		$candidates = array(
-			$origin . '/sitemap.xml',
-			$origin . '/sitemap_index.xml',
-			$origin . '/wp-sitemap.xml',
-		);
+		$candidate_origins = array( $origin );
+		$origin_parts      = wp_parse_url( $origin );
+		if ( ! empty( $origin_parts['scheme'] ) && ! empty( $origin_parts['host'] ) ) {
+			$host = strtolower( $origin_parts['host'] );
+			if ( 0 === strpos( $host, 'www.' ) ) {
+				$host = substr( $host, 4 );
+			} else {
+				$host = 'www.' . $host;
+			}
+			$alt_origin = strtolower( $origin_parts['scheme'] ) . '://' . $host;
+			if ( ! empty( $origin_parts['port'] ) ) {
+				$alt_origin .= ':' . intval( $origin_parts['port'] );
+			}
+			$candidate_origins[] = $alt_origin;
+		}
+
+		$candidates = array();
+		foreach ( array_unique( $candidate_origins ) as $candidate_origin ) {
+			$candidates[] = $candidate_origin . '/sitemap.xml';
+			$candidates[] = $candidate_origin . '/sitemap_index.xml';
+			$candidates[] = $candidate_origin . '/wp-sitemap.xml';
+		}
 
 		$args = array(
-			'timeout'     => 10,
+			'timeout'     => self::FETCH_TIMEOUT,
 			'redirection' => 5,
 			'user-agent'  => self::USER_AGENT,
 		);
@@ -635,14 +671,14 @@ class LW_Audit_Crawler {
 				foreach ( $urls as $u ) {
 					if ( stripos( $u, 'sitemap' ) !== false ) {
 						$sub_sitemaps[] = $u;
-						if ( count( $sub_sitemaps ) >= 2 ) {
+						if ( count( $sub_sitemaps ) >= self::SITEMAP_INDEX_FETCH_LIMIT ) {
 							break;
 						}
 					}
 				}
 				$all_urls = array();
 				foreach ( $sub_sitemaps as $sub ) {
-					$sr = wp_remote_get( $sub, array_merge( $args, array( 'timeout' => 8 ) ) );
+					$sr = wp_remote_get( $sub, $args );
 					if ( is_wp_error( $sr ) ) {
 						continue;
 					}
@@ -673,12 +709,11 @@ class LW_Audit_Crawler {
 		$internal = array();
 		foreach ( $sitemap_urls as $u ) {
 			$norm = self::normalise( $u, $origin . '/' );
-			if ( $norm && self::origin_of( $norm ) === $origin ) {
+			if ( $norm && self::origin_matches( self::origin_of( $norm ), $origin ) ) {
 				$internal[] = $norm;
 			}
 		}
-		// Cap at 50 for time budget (matches JS version).
-		$internal = array_slice( array_values( array_unique( $internal ) ), 0, 50 );
+		$internal = array_slice( array_values( array_unique( $internal ) ), 0, self::MAX_PAGES );
 		if ( empty( $internal ) ) {
 			return null;
 		}

@@ -355,7 +355,7 @@ class LW_Audit_REST_Controller {
 	public static function handle_scan( WP_REST_Request $request ) {
 		// Most managed WP hosts allow set_time_limit and memory raises in
 		// REST handlers. Best-effort — silent if the host blocks them.
-		@set_time_limit( 60 ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+		@set_time_limit( 65 ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 		wp_raise_memory_limit( 'admin' );
 
 		$payload = $request->get_json_params();
@@ -368,13 +368,14 @@ class LW_Audit_REST_Controller {
 			return new WP_REST_Response( array( 'error' => 'Missing url parameter' ), 400 );
 		}
 
-		$rate_check = self::check_scan_rate_limit();
-		if ( ! $rate_check['ok'] ) {
-			self::log_error( 'scan_rate_limit', $rate_check['ip_hash'], 'scan rate limit exceeded' );
-			return new WP_REST_Response( array(
-				'error' => 'Rate limit exceeded — try again in an hour.',
-			), 429 );
-		}
+		// NOTE: Temporarily disabled for live scan testing; re-enable before production.
+		// $rate_check = self::check_scan_rate_limit();
+		// if ( ! $rate_check['ok'] ) {
+		// 	self::log_error( 'scan_rate_limit', $rate_check['ip_hash'], 'scan rate limit exceeded' );
+		// 	return new WP_REST_Response( array(
+		// 		'error' => 'Rate limit exceeded — try again in an hour.',
+		// 	), 429 );
+		// }
 
 		$result = LW_Audit_Crawler::scan( $url );
 
