@@ -55,9 +55,10 @@ Go to **Settings → LW Audit** and fill in:
 | Field | Required? | Notes |
 |---|---|---|
 | HMAC Shared Secret | **Required (32+ chars)** | Used to salt request fingerprinting (`ip_hash`) and rate-limit transient keys. Generate 32+ random chars (`openssl rand -hex 32`). **Do not rotate without expecting rate-limit counters to reset** — every existing transient key derives from this secret. |
-| Kit.com API Key | Required | From Kit account settings → API. |
-| Kit.com Form ID | Required | The form that subscribers should land on. |
-| Kit.com Tag ID | Optional | Tag applied to every subscriber after add. |
+| Kit.com V3 API Key | Required | Sent as `api_key` to `https://api.convertkit.com/v3/forms/{form_id}/subscribe`. |
+| Kit.com V3 API Secret | Required | Sent as `api_secret` to the same V3 form/tag subscribe endpoints. |
+| Kit.com Form ID | Required | The form subscribers should land on. |
+| Kit.com Tag ID | Optional | Tag applied through the V3 tag subscribe endpoint after form subscription. |
 | From Email | Required | Must be a domain wp_mail can authenticate (typically `support@linkwhisper.com`). |
 | From Name | Required | Displayed sender name. |
 | Reply-To Email | Required | Where unsubscribe replies land. |

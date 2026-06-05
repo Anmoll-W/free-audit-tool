@@ -368,14 +368,13 @@ class LW_Audit_REST_Controller {
 			return new WP_REST_Response( array( 'error' => 'Missing url parameter' ), 400 );
 		}
 
-		// NOTE: Temporarily disabled for live scan testing; re-enable before production.
-		// $rate_check = self::check_scan_rate_limit();
-		// if ( ! $rate_check['ok'] ) {
-		// 	self::log_error( 'scan_rate_limit', $rate_check['ip_hash'], 'scan rate limit exceeded' );
-		// 	return new WP_REST_Response( array(
-		// 		'error' => 'Rate limit exceeded — try again in an hour.',
-		// 	), 429 );
-		// }
+		$rate_check = self::check_scan_rate_limit();
+		if ( ! $rate_check['ok'] ) {
+			self::log_error( 'scan_rate_limit', $rate_check['ip_hash'], 'scan rate limit exceeded' );
+			return new WP_REST_Response( array(
+				'error' => 'Rate limit exceeded - try again in an hour.',
+			), 429 );
+		}
 
 		$result = LW_Audit_Crawler::scan( $url );
 

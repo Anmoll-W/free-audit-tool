@@ -27,7 +27,8 @@ class LW_Audit_Settings {
 	public static function defaults() {
 		return array(
 			'hmac_secret'             => '',
-			'kit_api_key'             => '',
+			'kit_v3_api_key'          => '',
+			'kit_v3_api_secret'       => '',
 			'kit_form_id'             => '',
 			'kit_tag_id'              => '',
 			'support_email_from'      => 'support@linkwhisper.com',
@@ -83,7 +84,7 @@ class LW_Audit_Settings {
 			if ( ! isset( $input[ $key ] ) ) {
 				continue;
 			}
-			$val = (string) $input[ $key ];
+			$val = trim( (string) $input[ $key ] );
 			if ( in_array( $key, array( 'support_email_from', 'support_email_replyto' ), true ) ) {
 				$val = sanitize_email( $val );
 			} elseif ( 'support_physical_address' === $key ) {
@@ -138,22 +139,35 @@ class LW_Audit_Settings {
 						<th scope="row"><label for="hmac_secret">HMAC Shared Secret</label></th>
 						<td>
 							<input type="password" id="hmac_secret" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[hmac_secret]" value="<?php echo esc_attr( $opts['hmac_secret'] ); ?>" class="regular-text" autocomplete="new-password" spellcheck="false">
-							<p class="description">Min 32 chars. Frontend signs request body with HMAC-SHA256 using this. Rotate by updating both ends together.</p>
+							<p class="description">Min 32 chars. Used to salt IP hashes and rate-limit keys. Rotating it resets rate-limit counters.</p>
 						</td>
 					</tr>
 					<tr>
-						<th scope="row"><label for="kit_api_key">Kit.com API Key</label></th>
-						<td><input type="password" id="kit_api_key" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[kit_api_key]" value="<?php echo esc_attr( $opts['kit_api_key'] ); ?>" class="regular-text" autocomplete="new-password" spellcheck="false"></td>
+						<th scope="row"><label for="kit_v3_api_key">Kit.com V3 API Key</label></th>
+						<td>
+							<input type="password" id="kit_v3_api_key" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[kit_v3_api_key]" value="<?php echo esc_attr( $opts['kit_v3_api_key'] ); ?>" class="regular-text" autocomplete="new-password" spellcheck="false">
+							<p class="description">Required. Sent as <code>api_key</code> to the legacy V3 form/tag subscribe endpoints.</p>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row"><label for="kit_v3_api_secret">Kit.com V3 API Secret</label></th>
+						<td>
+							<input type="password" id="kit_v3_api_secret" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[kit_v3_api_secret]" value="<?php echo esc_attr( $opts['kit_v3_api_secret'] ); ?>" class="regular-text" autocomplete="new-password" spellcheck="false">
+							<p class="description">Required. Sent as <code>api_secret</code> to <code>https://api.convertkit.com/v3/forms/{form_id}/subscribe</code>.</p>
+						</td>
 					</tr>
 					<tr>
 						<th scope="row"><label for="kit_form_id">Kit.com Form ID</label></th>
-						<td><input type="text" id="kit_form_id" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[kit_form_id]" value="<?php echo esc_attr( $opts['kit_form_id'] ); ?>" class="regular-text"></td>
+						<td>
+							<input type="text" id="kit_form_id" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[kit_form_id]" value="<?php echo esc_attr( $opts['kit_form_id'] ); ?>" class="regular-text">
+							<p class="description">Required for form subscription. Uses the legacy V3 form subscribe endpoint.</p>
+						</td>
 					</tr>
 					<tr>
 						<th scope="row"><label for="kit_tag_id">Kit.com Tag ID</label></th>
 						<td>
 							<input type="text" id="kit_tag_id" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[kit_tag_id]" value="<?php echo esc_attr( $opts['kit_tag_id'] ); ?>" class="regular-text">
-							<p class="description">Optional. Tag applied to the subscriber after add.</p>
+							<p class="description">Optional. Tag applied after subscriber create/update. Useful for Kit automations when skipping form subscription.</p>
 						</td>
 					</tr>
 					<tr>

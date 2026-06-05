@@ -128,8 +128,8 @@ class LW_Audit_Cron {
 		foreach ( $rows as $row ) {
 			$id = intval( $row['id'] );
 			$result = LW_Audit_Kit_Client::subscribe( (string) $row['email'], array(
-				'audit_url' => (string) $row['url_audited'],
-				'score'     => isset( $row['score'] ) ? (string) intval( $row['score'] ) : '',
+				'audit_url'   => (string) $row['url_audited'],
+				'audit_score' => isset( $row['score'] ) ? (string) intval( $row['score'] ) : '',
 			) );
 
 			// Atomic increment via SQL — two concurrent runs can't lose the +1.

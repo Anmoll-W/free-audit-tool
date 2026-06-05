@@ -129,7 +129,7 @@ This is the full sequence from "plugin in GitHub" to "live on linkwhisper.com." 
 Plugin will activate without these, but no audit will work until they are set:
 
 - [ ] **HMAC Shared Secret** (32+ chars) — `openssl rand -hex 32`
-- [ ] **Kit.com API Key** + **Form ID** (Tag ID optional)
+- [ ] **Kit.com V3 API Key + V3 API Secret** and **Form ID** (Tag ID optional)
 - [ ] **From Email**, **From Name**, **Reply-To Email** (must be a domain `wp_mail` can authenticate)
 - [ ] **Physical Mailing Address** — required for CAN-SPAM compliance, appears in every email footer
 - [ ] **Extra CORS Origins** — required on staging or any non-prod environment (built-in allow-list covers `linkwhisper.com` only)
