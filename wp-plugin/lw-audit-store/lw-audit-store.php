@@ -48,6 +48,7 @@ require_once LW_AUDIT_DIR . 'includes/class-settings.php';
 require_once LW_AUDIT_DIR . 'includes/class-kit-client.php';
 require_once LW_AUDIT_DIR . 'includes/class-mailer.php';
 require_once LW_AUDIT_DIR . 'includes/class-crawler.php';
+require_once LW_AUDIT_DIR . 'includes/class-sitemap.php'; // extends LW_Audit_Crawler — must load after it
 require_once LW_AUDIT_DIR . 'includes/class-rest-controller.php';
 require_once LW_AUDIT_DIR . 'includes/class-cron.php';
 require_once LW_AUDIT_DIR . 'includes/class-admin-page.php';

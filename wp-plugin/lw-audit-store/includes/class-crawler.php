@@ -119,7 +119,7 @@ class LW_Audit_Crawler {
 	 * Normalise a URL: resolve against base, strip fragment, drop trailing
 	 * slash (unless root), enforce http/https. Returns null on failure.
 	 */
-	private static function normalise( $raw, $base ) {
+	protected static function normalise( $raw, $base ) {
 		if ( ! is_string( $raw ) ) {
 			return null;
 		}
@@ -170,7 +170,7 @@ class LW_Audit_Crawler {
 	 * absolute (http://x), protocol-relative (//x), root-relative (/x),
 	 * path-relative (x/y or ./x or ../x).
 	 */
-	private static function resolve_url( $rel, $base ) {
+	protected static function resolve_url( $rel, $base ) {
 		// Absolute http(s).
 		if ( preg_match( '#^https?://#i', $rel ) ) {
 			return $rel;
@@ -226,7 +226,7 @@ class LW_Audit_Crawler {
 		return $origin . $resolved_path;
 	}
 
-	private static function origin_of( $url ) {
+	protected static function origin_of( $url ) {
 		$p = wp_parse_url( $url );
 		if ( empty( $p['scheme'] ) || empty( $p['host'] ) ) {
 			return null;
@@ -238,7 +238,7 @@ class LW_Audit_Crawler {
 		return $o;
 	}
 
-	private static function origin_matches( $origin_a, $origin_b ) {
+	protected static function origin_matches( $origin_a, $origin_b ) {
 		$a = wp_parse_url( $origin_a );
 		$b = wp_parse_url( $origin_b );
 		if ( empty( $a['host'] ) || empty( $b['host'] ) ) {
@@ -256,7 +256,7 @@ class LW_Audit_Crawler {
 		return null === $port_a || null === $port_b || $port_a === $port_b;
 	}
 
-	private static function is_internal( $href, $origin ) {
+	protected static function is_internal( $href, $origin ) {
 		$norm = self::normalise( $href, $origin . '/' );
 		if ( ! $norm ) {
 			return false;
@@ -270,7 +270,7 @@ class LW_Audit_Crawler {
 	 * Fetch many URLs in parallel via the Requests library bundled with WP.
 	 * Returns map: url → { html, final_url } | null on per-page failure.
 	 */
-	private static function fetch_pages_parallel( array $urls ) {
+	protected static function fetch_pages_parallel( array $urls ) {
 		if ( empty( $urls ) ) {
 			return array();
 		}
@@ -347,7 +347,7 @@ class LW_Audit_Crawler {
 	 * Fallback for hosts where Requests::request_multiple is unavailable.
 	 * Sequential — slow, but functionally correct.
 	 */
-	private static function fetch_pages_sequential( array $urls ) {
+	protected static function fetch_pages_sequential( array $urls ) {
 		$args = array(
 			'timeout'    => self::FETCH_TIMEOUT,
 			'redirection' => 5,
@@ -382,7 +382,7 @@ class LW_Audit_Crawler {
 		return $out;
 	}
 
-	private static function requests_class() {
+	protected static function requests_class() {
 		if ( class_exists( '\WpOrg\Requests\Requests' ) ) {
 			return '\WpOrg\Requests\Requests';
 		}
@@ -398,7 +398,7 @@ class LW_Audit_Crawler {
 	 * Extract internal anchors + noindex flag + WP-platform signal.
 	 * @return array { noindex: bool, links: [{to, anchor}], isWordPress: bool }
 	 */
-	private static function parse_page( $html, $page_url, $origin ) {
+	protected static function parse_page( $html, $page_url, $origin ) {
 		$is_wp = self::detect_wordpress( $html );
 
 		$dom = new DOMDocument();
@@ -407,6 +407,15 @@ class LW_Audit_Crawler {
 		// Force UTF-8 — DOMDocument's charset detection is unreliable with messy HTML.
 		$prefixed = '<?xml encoding="utf-8" ?>' . $html;
 		$dom->loadHTML( $prefixed, LIBXML_NOERROR | LIBXML_NOWARNING );
+
+		// Page title: prefer <title>, then first <h1>. May be '' — callers that
+		// need a guaranteed label (sitemap tree) apply a slug fallback. The scan
+		// path (analyse()) ignores this key, so adding it is behaviour-neutral.
+		$title_node = $dom->getElementsByTagName( 'title' )->item( 0 );
+		$meta_title = $title_node ? trim( preg_replace( '/\s+/u', ' ', (string) $title_node->textContent ) ) : '';
+		$h1_node    = $dom->getElementsByTagName( 'h1' )->item( 0 );
+		$h1_title   = $h1_node ? trim( preg_replace( '/\s+/u', ' ', (string) $h1_node->textContent ) ) : '';
+		$title      = '' !== $meta_title ? $meta_title : $h1_title;
 
 		$noindex = false;
 		foreach ( $dom->getElementsByTagName( 'meta' ) as $meta ) {
@@ -446,10 +455,11 @@ class LW_Audit_Crawler {
 			'noindex'     => $noindex,
 			'links'       => $links,
 			'isWordPress' => $is_wp,
+			'title'       => $title,
 		);
 	}
 
-	private static function detect_wordpress( $html ) {
+	protected static function detect_wordpress( $html ) {
 		$signals = array(
 			'wp-content',
 			'wp-json',
@@ -469,7 +479,7 @@ class LW_Audit_Crawler {
 		return false;
 	}
 
-	private static function dedupe_links( array $links ) {
+	protected static function dedupe_links( array $links ) {
 		$seen = array();
 		$out  = array();
 		foreach ( $links as $l ) {
@@ -602,7 +612,7 @@ class LW_Audit_Crawler {
 
 	// ─── Sitemap fallback ─────────────────────────────────────────────────
 
-	private static function extract_sitemap_urls( $xml ) {
+	protected static function extract_sitemap_urls( $xml ) {
 		$urls = array();
 		if ( preg_match_all( '#<loc>\s*(https?://[^\s<]+)\s*</loc>#i', $xml, $m ) ) {
 			foreach ( $m[1] as $u ) {
@@ -616,7 +626,7 @@ class LW_Audit_Crawler {
 	 * Try to enumerate URLs from common sitemap locations. Walks one level
 	 * of sitemap-index nesting. Caps at MAX_PAGES.
 	 */
-	private static function fetch_sitemap_urls( $origin ) {
+	protected static function fetch_sitemap_urls( $origin ) {
 		$candidate_origins = array( $origin );
 		$origin_parts      = wp_parse_url( $origin );
 		if ( ! empty( $origin_parts['scheme'] ) && ! empty( $origin_parts['host'] ) ) {

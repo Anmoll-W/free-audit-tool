@@ -31,12 +31,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class LW_Audit_REST_Controller {
 
-	const NS                       = 'lw/v1';
-	const ROUTE                    = '/emails';
-	const ROUTE_SCAN               = '/scan';
-	const RATE_LIMIT_PER_HOUR      = 5;
-	const RATE_LIMIT_WINDOW        = HOUR_IN_SECONDS;
-	const SCAN_RATE_LIMIT_PER_HOUR = 10;
+	const NS                          = 'lw/v1';
+	const ROUTE                       = '/emails';
+	const ROUTE_SCAN                  = '/scan';
+	const ROUTE_SITEMAP               = '/sitemap';
+	const RATE_LIMIT_PER_HOUR         = 5;
+	const RATE_LIMIT_WINDOW           = HOUR_IN_SECONDS;
+	const SCAN_RATE_LIMIT_PER_HOUR    = 10;
+	const SITEMAP_RATE_LIMIT_PER_HOUR = 10;
 
 	/**
 	 * Built-in allowed origins for cross-origin POSTs. Production calls land
@@ -78,7 +80,21 @@ class LW_Audit_REST_Controller {
 			),
 		) );
 
-		// Override WP's default CORS handler for our namespace only.
+		register_rest_route( self::NS, self::ROUTE_SITEMAP, array(
+			array(
+				'methods'             => 'POST',
+				'callback'            => array( __CLASS__, 'handle_sitemap' ),
+				'permission_callback' => '__return_true',
+			),
+			array(
+				'methods'             => 'OPTIONS',
+				'callback'            => array( __CLASS__, 'handle_preflight' ),
+				'permission_callback' => '__return_true',
+			),
+		) );
+
+		// Override WP's default CORS handler for our namespace only. The filter
+		// matches the whole /lw/v1/ namespace, so /sitemap is covered too.
 		add_filter( 'rest_pre_serve_request', array( __CLASS__, 'send_cors_headers' ), 10, 4 );
 	}
 
@@ -411,6 +427,70 @@ class LW_Audit_REST_Controller {
 
 		$count = (int) get_transient( $key );
 		if ( $count >= self::SCAN_RATE_LIMIT_PER_HOUR ) {
+			return array( 'ok' => false, 'ip_hash' => $ip_hash, 'count' => $count );
+		}
+		set_transient( $key, $count + 1, self::RATE_LIMIT_WINDOW );
+		return array( 'ok' => true, 'ip_hash' => $ip_hash, 'count' => $count + 1 );
+	}
+
+	/**
+	 * Sitemap handler: POST /wp-json/lw/v1/sitemap { url }
+	 *
+	 * Public endpoint, rate-limited 10/IP/hour (own counter — same crawl cost
+	 * profile as /scan). Builds a visual sitemap via LW_Sitemap::generate() and
+	 * returns { preview, fullReport }. Resource sizing mirrors handle_scan().
+	 */
+	public static function handle_sitemap( WP_REST_Request $request ) {
+		@set_time_limit( 65 ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+		wp_raise_memory_limit( 'admin' );
+
+		$payload = $request->get_json_params();
+		if ( ! is_array( $payload ) ) {
+			return new WP_REST_Response( array( 'error' => 'Invalid JSON body' ), 400 );
+		}
+
+		$url = isset( $payload['url'] ) ? trim( (string) $payload['url'] ) : '';
+		if ( '' === $url ) {
+			return new WP_REST_Response( array( 'error' => 'Missing url parameter' ), 400 );
+		}
+
+		$rate_check = self::check_sitemap_rate_limit();
+		if ( ! $rate_check['ok'] ) {
+			self::log_error( 'sitemap_rate_limit', $rate_check['ip_hash'], 'sitemap rate limit exceeded' );
+			return new WP_REST_Response( array(
+				'error' => 'Rate limit exceeded - try again in an hour.',
+			), 429 );
+		}
+
+		$result = LW_Sitemap::generate( $url );
+
+		if ( is_wp_error( $result ) ) {
+			$err_data = $result->get_error_data();
+			$status   = ( is_array( $err_data ) && isset( $err_data['status'] ) ) ? (int) $err_data['status'] : 500;
+			// Match Netlify version: 200 with `error` field for crawl-blocked.
+			if ( 'lw_blocked' === $result->get_error_code() ) {
+				return new WP_REST_Response( array( 'error' => $result->get_error_message() ), 200 );
+			}
+			self::log_error( 'sitemap', hash( 'sha256', $url ), $result->get_error_code() . ': ' . $result->get_error_message() );
+			return new WP_REST_Response( array( 'error' => $result->get_error_message() ), $status );
+		}
+
+		return new WP_REST_Response( $result, 200 );
+	}
+
+	/**
+	 * Per-IP rate limit for sitemap generation. Separate transient key from
+	 * /scan so the two tools don't share a bucket (a user can run both).
+	 */
+	private static function check_sitemap_rate_limit() {
+		$ip_raw  = self::get_client_ip();
+		$secret  = LW_Audit_Settings::get( 'hmac_secret' );
+		$salt    = '' !== $secret ? $secret : 'lw-audit-fallback-salt';
+		$ip_hash = hash( 'sha256', $ip_raw . $salt );
+		$key     = 'lw_audit_sitemap_rl_' . substr( $ip_hash, 0, 32 );
+
+		$count = (int) get_transient( $key );
+		if ( $count >= self::SITEMAP_RATE_LIMIT_PER_HOUR ) {
 			return array( 'ok' => false, 'ip_hash' => $ip_hash, 'count' => $count );
 		}
 		set_transient( $key, $count + 1, self::RATE_LIMIT_WINDOW );
