@@ -63,6 +63,16 @@ class LW_Audit_Mailer {
 	 * user just saw.
 	 */
 	private static function subject_for( $row, $score ) {
+		// Tool-specific subjects.
+		if ( isset( $row['tool'] ) && 'link-map' === $row['tool'] ) {
+			$orphan_count = isset( $row['orphan_count'] ) ? intval( $row['orphan_count'] ) : 0;
+			return sprintf(
+				'Your Internal Link Map — %d orphaned %s found',
+				$orphan_count,
+				1 === $orphan_count ? 'page' : 'pages'
+			);
+		}
+
 		if ( null === $score ) {
 			return 'Your LinkWhisper audit is ready';
 		}

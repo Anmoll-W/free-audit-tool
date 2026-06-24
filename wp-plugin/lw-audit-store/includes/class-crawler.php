@@ -1020,6 +1020,30 @@ class LW_Audit_Crawler {
 			);
 		}
 
+		// Build edges array for client-side SVG graph rendering.
+		// Capped at 300 to limit response body size on dense sites.
+		$edges = array();
+		foreach ( $graph as $from_url => $data ) {
+			if ( count( $edges ) >= 300 ) {
+				break;
+			}
+			if ( ! empty( $data['fetchFailed'] ) || ! empty( $data['redirectedOffDomain'] ) ) {
+				continue;
+			}
+			$links_out = isset( $data['linksOut'] ) ? $data['linksOut'] : array();
+			foreach ( $links_out as $l ) {
+				if ( isset( $graph[ $l['to'] ] ) ) {
+					$edges[] = array(
+						'f' => $from_url,
+						't' => $l['to'],
+					);
+					if ( count( $edges ) >= 300 ) {
+						break;
+					}
+				}
+			}
+		}
+
 		$preview = array(
 			'score'             => $preview_score,
 			'bucket'            => $preview_bucket,
@@ -1042,6 +1066,7 @@ class LW_Audit_Crawler {
 			'findings'      => $findings,
 			'warnings'      => $warnings,
 			'pages'         => $full_pages,
+			'edges'         => $edges,
 		);
 
 		return array(

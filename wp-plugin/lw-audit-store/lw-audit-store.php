@@ -3,7 +3,7 @@
  * Plugin Name:       LW Audit Store
  * Plugin URI:        https://linkwhisper.com/
  * Description:       Free Audit Tool backend — crawler (POST /lw/v1/scan) + capture endpoint (POST /lw/v1/emails) + email send + Kit.com sync + hourly retry cron + admin dashboard. System of record for the free-tool acquisition funnel.
- * Version:           0.3.0
+ * Version:           0.4.0
  * Requires at least: 6.0
  * Requires PHP:      7.4
  * Author:            LinkWhisper
@@ -19,6 +19,8 @@
  * audit crawler in-house (PHP) so the React frontend on linkwhisper.com
  * calls one origin only — capture and crawl both served by this plugin.
  * Retires the standalone Netlify deploy at audit.linkwhisper.com.
+ * Phase 4 scope (v0.4.0): adds edges[] to /scan fullReport, tool column to
+ * DB schema, tool-aware email subjects. Enables Internal Link Map tool.
  *
  * @package LW_Audit_Store
  */
@@ -32,10 +34,9 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Plugin constants. Bump LW_AUDIT_DB_VERSION on any schema change so the
  * installer re-runs dbDelta on the next activation / version check.
  */
-define( 'LW_AUDIT_VERSION', '0.3.0' );
-// DB v3: adds utm_term column and KEY email_status. dbDelta picks up both
-// on activation; existing rows are preserved.
-define( 'LW_AUDIT_DB_VERSION', '3' );
+define( 'LW_AUDIT_VERSION', '0.4.0' );
+// DB v4: adds tool column for multi-tool segmentation (link-auditor, link-map, etc.).
+define( 'LW_AUDIT_DB_VERSION', '4' );
 define( 'LW_AUDIT_DIR', plugin_dir_path( __FILE__ ) );
 define( 'LW_AUDIT_URL', plugin_dir_url( __FILE__ ) );
 define( 'LW_AUDIT_CRON_HOOK', 'lw_audit_kit_retry' );

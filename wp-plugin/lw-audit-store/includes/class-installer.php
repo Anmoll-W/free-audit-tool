@@ -133,12 +133,14 @@ class LW_Audit_Installer {
 			user_agent text default NULL,
 			ip_hash char(64) default NULL,
 			raw_results longtext default NULL,
+			tool varchar(50) NOT NULL default 'link-auditor',
 			PRIMARY KEY  (id),
 			KEY created_at (created_at),
 			KEY url_hash (url_hash),
 			KEY email (email),
 			KEY email_status (email_status),
-			KEY kit_status (kit_status)
+			KEY kit_status (kit_status),
+			KEY tool (tool)
 		) {$charset_collate};";
 
 		// ----- wp_lw_audits_errors -------------------------------------------

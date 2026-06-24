@@ -291,6 +291,9 @@ class LW_Audit_REST_Controller {
 		$score_int = isset( $row['score'] ) && '' !== $row['score'] ? (int) $row['score'] : null;
 		$bucket    = null === $score_int ? 'unknown' : ( $score_int < 65 ? 'critical' : ( $score_int < 85 ? 'needs_work' : 'healthy' ) );
 
+		$kit_tool = isset( $payload['tool'] ) ? sanitize_text_field( $payload['tool'] ) : 'link-auditor';
+		$kit_tool = substr( $kit_tool, 0, 50 );
+
 		$kit_result = LW_Audit_Kit_Client::subscribe( $email, array(
 			'audit_url'      => $url_audited,
 			'audit_score'    => null === $score_int ? '' : (string) $score_int,
@@ -301,6 +304,7 @@ class LW_Audit_REST_Controller {
 			'audit_id'       => (string) $audit_id,
 			'utm_source'     => isset( $row['utm_source'] ) ? (string) $row['utm_source'] : '',
 			'utm_campaign'   => isset( $row['utm_campaign'] ) ? (string) $row['utm_campaign'] : '',
+			'tool'           => $kit_tool,
 		) );
 
 		// Atomic increment: kit_attempts = kit_attempts + 1 in SQL. Avoids
@@ -423,6 +427,8 @@ class LW_Audit_REST_Controller {
 		$orphan_count   = isset( $payload['orphan_count'] ) ? max( 0, intval( $payload['orphan_count'] ) ) : null;
 		$internal_links = isset( $payload['internal_links'] ) ? max( 0, intval( $payload['internal_links'] ) ) : null;
 		$raw_results    = isset( $payload['raw_results'] ) ? wp_json_encode( $payload['raw_results'] ) : null;
+		$tool           = isset( $payload['tool'] ) ? sanitize_text_field( $payload['tool'] ) : 'link-auditor';
+		$tool           = substr( $tool, 0, 50 ); // max 50 chars, matches DB column
 
 		$utms = isset( $payload['utms'] ) && is_array( $payload['utms'] ) ? $payload['utms'] : array();
 
@@ -454,6 +460,7 @@ class LW_Audit_REST_Controller {
 				'user_agent'      => isset( $_SERVER['HTTP_USER_AGENT'] ) ? substr( (string) $_SERVER['HTTP_USER_AGENT'], 0, 500 ) : null,
 				'ip_hash'         => $ip_hash,
 				'raw_results'     => $raw_results,
+				'tool'            => $tool,
 			)
 		);
 
